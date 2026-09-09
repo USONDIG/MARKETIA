@@ -1,7 +1,42 @@
 [
-  {"source":"boamp","last_status":"OK","records_seen":0,"records_saved":0},
-  {"source":"bodacc","last_status":"OK","records_seen":0,"records_saved":0},
-  {"source":"ted","last_status":"OK","records_seen":0,"records_saved":0},
-  {"source":"arbeitnow","last_status":"OK","records_seen":0,"records_saved":0},
-  {"source":"gdelt","last_status":"OK","records_seen":0,"records_saved":0}
+  {
+    "source": "arbeitnow",
+    "last_run": "2026-09-09T20:19:39.840450+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 399,
+    "error": null
+  },
+  {
+    "source": "boamp",
+    "last_run": "2026-09-09T20:19:39.838639+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 0,
+    "error": null
+  },
+  {
+    "source": "bodacc",
+    "last_run": "2026-09-09T20:19:39.839180+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 0,
+    "error": null
+  },
+  {
+    "source": "gdelt",
+    "last_run": "2026-09-09T20:19:39.841051+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 250,
+    "error": null
+  },
+  {
+    "source": "ted",
+    "last_run": "2026-09-09T20:19:39.839762+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 0,
+    "error": null
+  }
 ]

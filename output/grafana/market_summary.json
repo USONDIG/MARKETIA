@@ -1,7 +1,38 @@
 [
-  {"label":"Recrutement technique recent","count":4},
-  {"label":"Recrutement Infrastructure / IA","count":2},
-  {"label":"GPU / HPC / IA","count":1},
-  {"label":"Stockage / Backup","count":1},
-  {"label":"Serveurs / Compute","count":1}
+  {
+    "label": "Datacenter / Salle IT",
+    "count": 10
+  },
+  {
+    "label": "FinOps / Cloud Repatriation",
+    "count": 4
+  },
+  {
+    "label": "GPU / HPC / IA",
+    "count": 50
+  },
+  {
+    "label": "Projet technologique public",
+    "count": 9
+  },
+  {
+    "label": "Recrutement Infrastructure / IA",
+    "count": 172
+  },
+  {
+    "label": "Reseau Datacenter",
+    "count": 306
+  },
+  {
+    "label": "Serveurs / Compute",
+    "count": 78
+  },
+  {
+    "label": "Stockage / Backup",
+    "count": 1078
+  },
+  {
+    "label": "Virtualisation / Private Cloud",
+    "count": 13
+  }
 ]

@@ -1,12 +1,12 @@
 [
   {
-    "generated_at": "2026-09-09T20:07:00Z",
-    "opportunities": 20,
-    "critical": 2,
-    "hot": 6,
-    "warm": 12,
-    "avg_score": 82.1,
-    "events": 20,
-    "signals": 20
+    "generated_at": "2026-09-09T20:19:45Z",
+    "opportunities": 500,
+    "critical": 8,
+    "hot": 8,
+    "warm": 74,
+    "avg_score": 30.57,
+    "events": 2500,
+    "signals": 5000
   }
 ]
