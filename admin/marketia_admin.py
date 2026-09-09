@@ -4,14 +4,15 @@ import base64
 import hmac
 from copy import deepcopy
 
+import pandas as pd
 import requests
 import streamlit as st
-import streamlit.components.v1 as components
 import yaml
 
 REPO = "USONDIG/MARKETIA"
 CONFIG_PATH = "config.yaml"
 GITHUB_API = f"https://api.github.com/repos/{REPO}/contents/{CONFIG_PATH}"
+RAW_BASE = f"https://raw.githubusercontent.com/{REPO}/main/output/grafana"
 
 NAF_GROUPS = {
     "Agriculture": [f"{n:02d}" for n in range(1, 4)],
@@ -70,6 +71,13 @@ def load_config() -> tuple[dict, str]:
     return yaml.safe_load(raw), payload["sha"]
 
 
+@st.cache_data(ttl=60, show_spinner=False)
+def load_json_feed(name: str):
+    response = requests.get(f"{RAW_BASE}/{name}", timeout=20)
+    response.raise_for_status()
+    return response.json()
+
+
 def save_config(config: dict, sha: str) -> str:
     encoded = base64.b64encode(
         yaml.safe_dump(config, sort_keys=False, allow_unicode=True).encode("utf-8")
@@ -92,6 +100,118 @@ def _selected_groups(allowed: list[str]) -> list[str]:
         if set(codes).issubset(allowed_set):
             selected.append(label)
     return selected
+
+
+def _safe_df(payload) -> pd.DataFrame:
+    if not payload:
+        return pd.DataFrame()
+    if isinstance(payload, list):
+        return pd.DataFrame(payload)
+    if isinstance(payload, dict):
+        return pd.DataFrame([payload])
+    return pd.DataFrame()
+
+
+def render_dashboard() -> None:
+    st.subheader("Dashboard MARKETIA")
+    st.caption("Vue native Streamlit alimentée par les mêmes flux JSON que Grafana.")
+
+    try:
+        stats = _safe_df(load_json_feed("dashboard_stats.json"))
+        opportunities = _safe_df(load_json_feed("opportunities.json"))
+        signals = _safe_df(load_json_feed("signals.json"))
+        events = _safe_df(load_json_feed("events.json"))
+        market_summary = _safe_df(load_json_feed("market_summary.json"))
+        country_summary = _safe_df(load_json_feed("country_summary.json"))
+        source_summary = _safe_df(load_json_feed("source_summary.json"))
+    except Exception as exc:
+        st.error(f"Impossible de charger les flux MARKETIA : {exc}")
+        return
+
+    if not stats.empty:
+        row = stats.iloc[0]
+        c1, c2, c3, c4, c5 = st.columns(5)
+        c1.metric("CRITICAL", int(row.get("critical", 0) or 0))
+        c2.metric("HOT", int(row.get("hot", 0) or 0))
+        c3.metric("WARM", int(row.get("warm", 0) or 0))
+        c4.metric("Opportunités", int(row.get("opportunities", 0) or 0))
+        c5.metric("Score moyen", float(row.get("avg_score", 0) or 0))
+
+    with st.expander("Filtres", expanded=True):
+        f1, f2, f3, f4 = st.columns(4)
+        priorities = sorted([x for x in opportunities.get("priority", pd.Series(dtype=str)).dropna().unique().tolist()]) if not opportunities.empty else []
+        countries = sorted([x for x in opportunities.get("country", pd.Series(dtype=str)).dropna().unique().tolist()]) if not opportunities.empty else []
+        with f1:
+            selected_priorities = st.multiselect("Priorité", priorities, default=priorities)
+        with f2:
+            selected_countries = st.multiselect("Pays", countries, default=countries)
+        with f3:
+            min_score = st.slider("Score minimum", 0, 100, 0)
+        with f4:
+            company_search = st.text_input("Entreprise contient", "")
+
+    filtered = opportunities.copy()
+    if not filtered.empty:
+        if selected_priorities:
+            filtered = filtered[filtered["priority"].isin(selected_priorities)]
+        if selected_countries and "country" in filtered.columns:
+            filtered = filtered[filtered["country"].isin(selected_countries)]
+        if "opportunity_score" in filtered.columns:
+            filtered = filtered[pd.to_numeric(filtered["opportunity_score"], errors="coerce").fillna(0) >= min_score]
+        if company_search and "company_name" in filtered.columns:
+            filtered = filtered[filtered["company_name"].astype(str).str.contains(company_search, case=False, na=False)]
+
+    left, right = st.columns([2, 1])
+    with left:
+        st.markdown("### Top opportunités")
+        preferred_cols = [
+            "priority", "opportunity_score", "company_name", "country", "naf", "employees",
+            "infra_fit", "buying_intent", "timing", "top_signal",
+        ]
+        cols = [c for c in preferred_cols if c in filtered.columns]
+        st.dataframe(filtered[cols] if cols else filtered, use_container_width=True, hide_index=True, height=420)
+
+    with right:
+        st.markdown("### Répartition par pays")
+        if not country_summary.empty and {"country", "opportunities"}.issubset(country_summary.columns):
+            chart_df = country_summary[["country", "opportunities"]].dropna().set_index("country")
+            st.bar_chart(chart_df)
+        else:
+            st.info("Pas encore de données pays.")
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("### Signaux par marché")
+        if not market_summary.empty and {"label", "count"}.issubset(market_summary.columns):
+            st.bar_chart(market_summary[["label", "count"]].set_index("label"))
+        else:
+            st.info("Pas encore de synthèse marché.")
+    with c2:
+        st.markdown("### Événements par source")
+        if not source_summary.empty and {"source", "count"}.issubset(source_summary.columns):
+            st.bar_chart(source_summary[["source", "count"]].set_index("source"))
+        else:
+            st.info("Pas encore de synthèse source.")
+
+    st.markdown("### Pourquoi maintenant ?")
+    company_options = sorted(filtered["company_name"].dropna().astype(str).unique().tolist()) if not filtered.empty and "company_name" in filtered.columns else []
+    selected_company = st.selectbox("Choisir une entreprise", [""] + company_options)
+    if selected_company:
+        company_signals = signals[signals["company_name"].astype(str) == selected_company] if not signals.empty and "company_name" in signals.columns else pd.DataFrame()
+        company_events = events[events["company_name"].astype(str) == selected_company] if not events.empty and "company_name" in events.columns else pd.DataFrame()
+        s1, s2 = st.columns(2)
+        with s1:
+            st.caption("Signaux détectés")
+            sig_cols = [c for c in ["event_date", "source", "signal_type", "label", "strength", "title", "url"] if c in company_signals.columns]
+            st.dataframe(company_signals[sig_cols] if sig_cols else company_signals, use_container_width=True, hide_index=True, height=320)
+        with s2:
+            st.caption("Événements sources")
+            evt_cols = [c for c in ["event_date", "source", "event_type", "title", "detected_signals", "url"] if c in company_events.columns]
+            st.dataframe(company_events[evt_cols] if evt_cols else company_events, use_container_width=True, hide_index=True, height=320)
+
+    grafana_url = str(st.secrets.get("grafana_url", "")).strip()
+    if grafana_url:
+        st.link_button("Ouvrir Grafana pour l'analyse avancée", grafana_url, use_container_width=False)
 
 
 def main() -> None:
@@ -125,14 +245,7 @@ def main() -> None:
     )
 
     with tab_dashboard:
-        st.subheader("Dashboard Grafana")
-        grafana_url = str(st.secrets.get("grafana_url", "")).strip()
-        if grafana_url:
-            components.iframe(grafana_url, height=1000, scrolling=True)
-            st.caption("Si Grafana refuse l'affichage intégré, il faut autoriser l'embed côté Grafana et vérifier les en-têtes CSP/X-Frame-Options.")
-        else:
-            st.info("Ajoute `grafana_url` dans les Secrets Streamlit pour afficher ton dashboard ici.")
-            st.code('grafana_url = "https://ton-instance.grafana.net/d/marketia-infra-radar"', language="toml")
+        render_dashboard()
 
     with tab_target:
         q = edited.setdefault("qualification", {})
