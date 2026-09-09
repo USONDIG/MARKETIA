@@ -9,6 +9,8 @@ import requests
 import streamlit as st
 import yaml
 
+from admin.radar_view import render_radar_discovery
+
 REPO = "USONDIG/MARKETIA"
 CONFIG_PATH = "config.yaml"
 WORKFLOW_FILE = "radar.yml"
@@ -116,12 +118,8 @@ def save_config(config: dict, sha: str) -> str:
 
 
 def _selected_groups(allowed: list[str]) -> list[str]:
-    selected = []
     allowed_set = set(allowed)
-    for label, codes in NAF_GROUPS.items():
-        if set(codes).issubset(allowed_set):
-            selected.append(label)
-    return selected
+    return [label for label, codes in NAF_GROUPS.items() if set(codes).issubset(allowed_set)]
 
 
 def _safe_df(payload) -> pd.DataFrame:
@@ -268,7 +266,10 @@ def render_dashboard() -> None:
     left, right = st.columns([2, 1])
     with left:
         st.markdown("### Top opportunités")
-        preferred = ["priority", "opportunity_score", "company_name", "country", "naf", "employees", "infra_fit", "buying_intent", "timing", "top_signal"]
+        preferred = [
+            "priority", "opportunity_score", "company_name", "country", "employee_range",
+            "business_theme", "theme_confidence", "infra_fit", "buying_intent", "timing", "top_signal",
+        ]
         cols = [c for c in preferred if c in filtered.columns]
         st.dataframe(filtered[cols] if cols else filtered, use_container_width=True, hide_index=True, height=420)
     with right:
@@ -312,106 +313,7 @@ def render_dashboard() -> None:
 
 
 def render_discovery() -> None:
-    st.subheader("📡 Radar / Discovery")
-    st.caption("Vue large des comptes détectés, même lorsqu'ils ne sont pas encore totalement enrichis ou qualifiés.")
-    try:
-        discovery = _safe_df(load_json_feed("discovery.json"))
-        stats = _safe_df(load_json_feed("dashboard_stats.json"))
-    except Exception as exc:
-        st.error(f"Impossible de charger le Radar Discovery : {exc}")
-        return
-
-    if st.button("Actualiser Discovery", key="refresh_discovery"):
-        load_json_feed.clear()
-        st.rerun()
-
-    if not stats.empty:
-        row = stats.iloc[0]
-        c1, c2, c3, c4, c5 = st.columns(5)
-        c1.metric("Détectées", int(row.get("discovery_entities", 0) or 0))
-        c2.metric("HIGH", int(row.get("discovery_high", 0) or 0))
-        c3.metric("MEDIUM", int(row.get("discovery_medium", 0) or 0))
-        c4.metric("Identifiées +", int(row.get("identified_or_better", 0) or 0))
-        c5.metric("Qualifiées", int(row.get("qualified_from_discovery", 0) or 0))
-
-    if discovery.empty:
-        st.info("Aucun compte Discovery disponible.")
-        return
-
-    employee_ranges = sorted(
-        [value for value in discovery.get("employee_range", pd.Series(dtype=str)).dropna().astype(str).unique().tolist() if value != "Inconnu"]
-    )
-
-    with st.expander("Filtres Discovery", expanded=True):
-        a, b, c, d = st.columns(4)
-        priorities = sorted(discovery.get("discovery_priority", pd.Series(dtype=str)).dropna().astype(str).unique().tolist())
-        statuses = sorted(discovery.get("status", pd.Series(dtype=str)).dropna().astype(str).unique().tolist())
-        countries = sorted(discovery.get("country", pd.Series(dtype=str)).dropna().astype(str).unique().tolist())
-        with a:
-            selected_priorities = st.multiselect("Priorité Discovery", priorities, default=priorities, key="disc_priorities")
-        with b:
-            selected_statuses = st.multiselect("Statut", statuses, default=statuses, key="disc_statuses")
-        with c:
-            selected_countries = st.multiselect("Pays", countries, default=countries, key="disc_countries")
-        with d:
-            min_score = st.slider("Score Discovery minimum", 0, 100, 0, key="disc_score")
-
-        e, f, g = st.columns([2, 2, 3])
-        with e:
-            selected_employee_ranges = st.multiselect(
-                "Tranches d'effectif",
-                employee_ranges,
-                default=employee_ranges,
-                key="disc_employee_ranges",
-                help="Les comptes avec effectif inconnu restent visibles sauf si un effectif minimum est demandé.",
-            )
-        with f:
-            min_employees = int(st.number_input(
-                "Effectif minimum connu",
-                min_value=0,
-                max_value=100000,
-                value=0,
-                step=10,
-                key="disc_min_employees",
-            ))
-        with g:
-            search = st.text_input("Entreprise / signal / marché contient", "", key="disc_search")
-
-    filtered = discovery.copy()
-    if selected_priorities and "discovery_priority" in filtered.columns:
-        filtered = filtered[filtered["discovery_priority"].isin(selected_priorities)]
-    if selected_statuses and "status" in filtered.columns:
-        filtered = filtered[filtered["status"].isin(selected_statuses)]
-    if selected_countries and "country" in filtered.columns:
-        filtered = filtered[filtered["country"].isin(selected_countries)]
-    if "discovery_score" in filtered.columns:
-        filtered = filtered[pd.to_numeric(filtered["discovery_score"], errors="coerce").fillna(0) >= min_score]
-
-    if "employee_range" in filtered.columns and selected_employee_ranges:
-        known_mask = filtered["employee_range"].isin(selected_employee_ranges)
-        unknown_mask = filtered["employee_range"].fillna("Inconnu").eq("Inconnu")
-        filtered = filtered[known_mask | unknown_mask]
-
-    if min_employees > 0 and "employee_min" in filtered.columns:
-        employee_min = pd.to_numeric(filtered["employee_min"], errors="coerce")
-        filtered = filtered[employee_min >= min_employees]
-
-    if search:
-        mask = pd.Series(False, index=filtered.index)
-        for column in ["company_name", "markets", "top_signals", "sources"]:
-            if column in filtered.columns:
-                mask |= filtered[column].astype(str).str.contains(search, case=False, na=False)
-        filtered = filtered[mask]
-
-    st.markdown(f"### Comptes détectés — {len(filtered)}")
-    preferred = [
-        "discovery_priority", "discovery_score", "status", "company_name", "country", "country_code", "naf",
-        "employee_range", "employee_min", "event_count", "signal_count", "sources", "markets", "top_signals",
-        "latest_event_date", "latest_title", "latest_url",
-    ]
-    cols = [c for c in preferred if c in filtered.columns]
-    st.dataframe(filtered[cols] if cols else filtered, use_container_width=True, hide_index=True, height=650)
-    st.info("DISCOVERED = signal détecté ; IDENTIFIED = entreprise identifiée ; ENRICHED = métadonnées disponibles ; QUALIFIED = conforme au ciblage MARKETIA.")
+    render_radar_discovery(load_json_feed, key_prefix="main_radar")
 
 
 def main() -> None:
