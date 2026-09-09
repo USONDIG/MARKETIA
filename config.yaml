@@ -185,6 +185,17 @@ automation:
   request_timeout_seconds: 45
   user_agent: "MARKETIA/1.0 public-data-commercial-intelligence"
 
+grafana:
+  enabled: true
+  top_opportunities: 500
+  recent_events: 2500
+  recent_signals: 5000
+
+history:
+  enabled: true
+  retention_days: 30
+  archive_excel: true
+
 sources:
   boamp:
     enabled: true
