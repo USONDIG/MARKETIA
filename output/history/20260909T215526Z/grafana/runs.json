@@ -1,0 +1,42 @@
+[
+  {
+    "source": "arbeitnow",
+    "last_run": "2026-09-09T21:55:23.142023+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 0,
+    "error": null
+  },
+  {
+    "source": "boamp",
+    "last_run": "2026-09-09T21:55:23.140282+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 0,
+    "error": null
+  },
+  {
+    "source": "bodacc",
+    "last_run": "2026-09-09T21:55:23.140886+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 0,
+    "error": null
+  },
+  {
+    "source": "gdelt",
+    "last_run": "2026-09-09T21:55:23.142585+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 0,
+    "error": null
+  },
+  {
+    "source": "ted",
+    "last_run": "2026-09-09T21:55:23.141473+00:00",
+    "last_status": "OK",
+    "records_seen": 0,
+    "records_saved": 0,
+    "error": null
+  }
+]
