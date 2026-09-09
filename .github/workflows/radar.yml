@@ -19,6 +19,9 @@ concurrency:
   group: marketia-radar
   cancel-in-progress: false
 
+env:
+  PYTHONPATH: ${{ github.workspace }}
+
 jobs:
   radar:
     runs-on: ubuntu-latest
