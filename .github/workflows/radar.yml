@@ -2,6 +2,12 @@ name: MARKETIA Radar
 
 on:
   workflow_dispatch:
+    inputs:
+      reset_data:
+        description: "Reinitialiser la BDD, les sorties et l'historique avant ce run"
+        required: false
+        default: false
+        type: boolean
   push:
     branches: [main]
     paths:
@@ -10,6 +16,7 @@ on:
       - "requirements.txt"
       - "grafana/**"
       - ".github/workflows/radar.yml"
+      - ".marketia-reset"
   schedule:
     - cron: "15 5,11,17,23 * * *"
 
@@ -35,6 +42,26 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Reset generated data when requested
+        id: reset
+        shell: bash
+        run: |
+          RESET=false
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.reset_data }}" = "true" ]; then
+            RESET=true
+          fi
+          if [ -f .marketia-reset ]; then
+            RESET=true
+          fi
+
+          echo "requested=$RESET" >> "$GITHUB_OUTPUT"
+          if [ "$RESET" = "true" ]; then
+            echo "Reinitialisation complete des donnees MARKETIA"
+            rm -f data/radar.db
+            rm -rf output
+            mkdir -p data output/grafana output/history
+          fi
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -56,12 +83,15 @@ jobs:
         if: always()
         run: |
           echo "## MARKETIA Radar" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ steps.reset.outputs.requested }}" = "true" ]; then
+            echo "Mode: reinitialisation complete" >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -f output/alerts.csv ]; then
             COUNT=$(($(wc -l < output/alerts.csv)-1))
-            echo "Alertes générées: $COUNT" >> "$GITHUB_STEP_SUMMARY"
+            echo "Alertes generees: $COUNT" >> "$GITHUB_STEP_SUMMARY"
             head -n 21 output/alerts.csv >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "Aucun fichier d'alertes généré." >> "$GITHUB_STEP_SUMMARY"
+            echo "Aucun fichier d'alertes genere." >> "$GITHUB_STEP_SUMMARY"
           fi
           echo "Grafana feeds: output/grafana/" >> "$GITHUB_STEP_SUMMARY"
           echo "History: output/history/" >> "$GITHUB_STEP_SUMMARY"
@@ -77,15 +107,15 @@ jobs:
             {
               echo "# MARKETIA Radar Alerts"
               echo
-              echo "Dernière mise à jour automatique : $(date -u '+%Y-%m-%d %H:%M UTC')"
+              echo "Derniere mise a jour automatique : $(date -u '+%Y-%m-%d %H:%M UTC')"
               echo
-              echo "**$COUNT opportunité(s) au-dessus du seuil configuré.**"
+              echo "**$COUNT opportunite(s) au-dessus du seuil configure.**"
               echo
               echo '```csv'
               head -n 31 output/alerts.csv
               echo '```'
               echo
-              echo "Le détail complet est disponible dans \`output/server_infra_radar.xlsx\`."
+              echo "Le detail complet est disponible dans \`output/server_infra_radar.xlsx\`."
             } > "$BODY"
             ISSUE=$(gh issue list --state open --search 'MARKETIA Radar Alerts in:title' --json number,title --jq '.[] | select(.title == "MARKETIA Radar Alerts") | .number' | head -n 1)
             if [ -n "$ISSUE" ]; then
@@ -96,12 +126,45 @@ jobs:
           fi
 
       - name: Persist database, current outputs and history
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "marketia-radar-bot"
           git config user.email "marketia-radar-bot@users.noreply.github.com"
-          git add data/radar.db output/ || true
-          if ! git diff --cached --quiet; then
+
+          SNAPSHOT=$(mktemp -d)
+          mkdir -p "$SNAPSHOT/data" "$SNAPSHOT/output"
+          [ -d data ] && cp -a data/. "$SNAPSHOT/data/"
+          [ -d output ] && cp -a output/. "$SNAPSHOT/output/"
+
+          for ATTEMPT in 1 2 3; do
+            echo "Persistence attempt $ATTEMPT/3"
+            git fetch origin main
+            git reset --hard origin/main
+
+            rm -rf data output
+            mkdir -p data output
+            cp -a "$SNAPSHOT/data/." data/
+            cp -a "$SNAPSHOT/output/." output/
+
+            if [ "${{ steps.reset.outputs.requested }}" = "true" ]; then
+              rm -f .marketia-reset
+            fi
+
+            git add -A data output .marketia-reset 2>/dev/null || git add -A data output
+            if git diff --cached --quiet; then
+              echo "Aucun changement genere a publier."
+              exit 0
+            fi
+
             git commit -m "chore: automatic MARKETIA radar update [skip ci]"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
+            if git push origin HEAD:main; then
+              echo "Resultats MARKETIA publies sans conflit."
+              exit 0
+            fi
+
+            echo "La branche main a avance pendant le push, nouvelle tentative..."
+          done
+
+          echo "Echec de publication apres 3 tentatives."
+          exit 1
