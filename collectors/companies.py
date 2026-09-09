@@ -16,14 +16,19 @@ def _pick(result: dict[str, Any], *keys: str) -> Any:
     return None
 
 
-def search_company(name: str, config: dict) -> dict[str, Any] | None:
-    if not name or not config["sources"]["recherche_entreprises"].get("enabled", True):
+def search_company(query: str, config: dict) -> dict[str, Any] | None:
+    if not query or not config["sources"]["recherche_entreprises"].get("enabled", True):
         return None
 
     base = config["sources"]["recherche_entreprises"]["base_url"].rstrip("/")
     timeout = int(config["automation"].get("request_timeout_seconds", 45))
     headers = {"User-Agent": config["automation"].get("user_agent", "MARKETIA/1.0")}
-    response = requests.get(f"{base}/search", params={"q": name, "per_page": 1}, headers=headers, timeout=timeout)
+    response = requests.get(
+        f"{base}/search",
+        params={"q": query, "per_page": 1},
+        headers=headers,
+        timeout=timeout,
+    )
     response.raise_for_status()
     payload = response.json()
     results = payload.get("results") or payload.get("etablissements") or []
@@ -36,7 +41,7 @@ def search_company(name: str, config: dict) -> dict[str, Any] | None:
         return None
 
     siege = result.get("siege") if isinstance(result.get("siege"), dict) else {}
-    name_value = _pick(result, "nom_complet", "nom_raison_sociale", "denomination", "nom") or name
+    name_value = _pick(result, "nom_complet", "nom_raison_sociale", "denomination", "nom") or query
     city = _pick(siege, "libelle_commune", "commune", "ville") or _pick(result, "libelle_commune", "ville")
     return {
         "siren": siren,
@@ -54,23 +59,26 @@ def search_company(name: str, config: dict) -> dict[str, Any] | None:
 
 def enrich_events(events: list[dict[str, Any]], config: dict, max_lookups: int = 100) -> dict[str, dict[str, Any]]:
     companies: dict[str, dict[str, Any]] = {}
-    seen_names: set[str] = set()
+    seen_queries: set[str] = set()
     lookups = 0
 
-    for event in events:
-        if event.get("siren"):
+    # Prefer entities already carrying a SIREN (especially BODACC), then company names.
+    ordered = sorted(events, key=lambda event: 0 if event.get("siren") else 1)
+    for event in ordered:
+        if lookups >= max_lookups:
+            break
+        query = str(event.get("siren") or (event.get("company_name") or "").strip())
+        if not query or query.lower() in seen_queries:
             continue
-        name = (event.get("company_name") or "").strip()
-        if not name or name.lower() in seen_names or lookups >= max_lookups:
-            continue
-        seen_names.add(name.lower())
+        seen_queries.add(query.lower())
         try:
-            company = search_company(name, config)
+            company = search_company(query, config)
             lookups += 1
             if company:
                 companies[company["siren"]] = company
-                event["siren"] = company["siren"]
-            time.sleep(0.16)  # below the documented 7 requests/second ceiling
+                if not event.get("siren"):
+                    event["siren"] = company["siren"]
+            time.sleep(0.16)
         except requests.RequestException:
             continue
 
