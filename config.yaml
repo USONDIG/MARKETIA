@@ -22,6 +22,22 @@ qualification:
   require_company_metadata: true
   min_employees: 50
   allowed_naf_divisions:
+  - '05'
+  - '06'
+  - '07'
+  - '08'
+  - '09'
+  - '10'
+  - '11'
+  - '12'
+  - '13'
+  - '14'
+  - '15'
+  - '16'
+  - '17'
+  - '18'
+  - '19'
+  - '20'
   - '21'
   - '22'
   - '23'
@@ -396,5 +412,4 @@ sources:
     base_url: https://api.gdeltproject.org/api/v2/doc/doc
     timespan: 14d
     max_records: 250
-    query: (server OR servers OR datacenter OR "data center" OR GPU OR HPC OR "private
-      cloud" OR storage OR backup OR virtualization OR Kubernetes OR "artificial intelligence")
+    query: (server OR servers OR datacenter OR "data center" OR GPU OR HPC OR "private cloud" OR storage OR backup OR virtualization OR Kubernetes OR "artificial intelligence")
