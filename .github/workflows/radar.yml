@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -53,7 +55,8 @@ jobs:
         run: |
           echo "## MARKETIA Radar" >> "$GITHUB_STEP_SUMMARY"
           if [ -f output/alerts.csv ]; then
-            echo "Alertes générées: $(($(wc -l < output/alerts.csv)-1))" >> "$GITHUB_STEP_SUMMARY"
+            COUNT=$(($(wc -l < output/alerts.csv)-1))
+            echo "Alertes générées: $COUNT" >> "$GITHUB_STEP_SUMMARY"
             head -n 21 output/alerts.csv >> "$GITHUB_STEP_SUMMARY"
           else
             echo "Aucun fichier d'alertes généré." >> "$GITHUB_STEP_SUMMARY"
@@ -66,5 +69,6 @@ jobs:
           git add data/radar.db output/server_infra_radar.xlsx output/alerts.csv || true
           if ! git diff --cached --quiet; then
             git commit -m "chore: automatic MARKETIA radar update [skip ci]"
-            git push
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
