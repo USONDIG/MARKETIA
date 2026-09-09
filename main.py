@@ -9,6 +9,8 @@ from collectors.companies import enrich_events
 from collectors.ods import collect_ods
 from collectors.public_web import collect_jobs, collect_news
 from collectors.ted import collect_ted
+from contact_database import init_contact_db
+from contact_exporter import export_contact_feeds
 from database import (
     init_db,
     insert_event,
@@ -45,6 +47,7 @@ def collect_source(name: str, config: dict) -> list[dict]:
 def run() -> None:
     config = load_config()
     init_db()
+    init_contact_db()
     all_events: list[dict] = []
     source_names = ("boamp", "bodacc", "ted", "arbeitnow", "gdelt")
 
@@ -64,8 +67,6 @@ def run() -> None:
             print(f"[{source}] ERROR: {exc}")
             traceback.print_exc()
 
-    # Detect commercial signals before enrichment so the finite company lookup
-    # budget is spent on events that can actually become opportunities.
     signals_by_event: dict[str, list[dict]] = {}
     relevant_events: list[dict] = []
     for event in all_events:
@@ -75,9 +76,6 @@ def run() -> None:
             event["_signal_count"] = len(signals)
             relevant_events.append(event)
 
-    # Prefer richer signal sets, public tenders and events already carrying a
-    # SIREN. This substantially improves the qualification hit rate after a
-    # clean reset while preserving the strict >=50 employee targeting rule.
     relevant_events.sort(
         key=lambda event: (
             0 if event.get("siren") else 1,
@@ -118,9 +116,11 @@ def run() -> None:
 
     export_outputs(config)
     export_grafana_and_history(config)
+    export_contact_feeds(config)
     print("[export] output/server_infra_radar.xlsx")
     print("[export] output/alerts.csv")
     print("[export] output/grafana/*.json")
+    print("[contacts] output/grafana/contact_targets.json + contacts.json")
     print("[history] output/history/<timestamp>/")
 
 
