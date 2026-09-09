@@ -9,7 +9,7 @@
   },
   {
     "priority": "LOW",
-    "count": 365
+    "count": 364
   },
   {
     "priority": "WARM",
@@ -17,6 +17,6 @@
   },
   {
     "priority": "WATCH",
-    "count": 45
+    "count": 46
   }
 ]

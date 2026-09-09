@@ -1,0 +1,14 @@
+[
+  {
+    "country": "FR",
+    "opportunities": 15,
+    "avg_score": 7.4,
+    "max_score": 7.4
+  },
+  {
+    "country": null,
+    "opportunities": 485,
+    "avg_score": 31.664948453608247,
+    "max_score": 100.0
+  }
+]

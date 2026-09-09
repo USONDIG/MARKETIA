@@ -1,7 +1,7 @@
 [
   {
     "label": "Datacenter / Salle IT",
-    "count": 10
+    "count": 14
   },
   {
     "label": "FinOps / Cloud Repatriation",
@@ -9,11 +9,11 @@
   },
   {
     "label": "GPU / HPC / IA",
-    "count": 50
+    "count": 48
   },
   {
     "label": "Projet technologique public",
-    "count": 9
+    "count": 17
   },
   {
     "label": "Recrutement Infrastructure / IA",
@@ -25,11 +25,11 @@
   },
   {
     "label": "Serveurs / Compute",
-    "count": 78
+    "count": 82
   },
   {
     "label": "Stockage / Backup",
-    "count": 1078
+    "count": 1077
   },
   {
     "label": "Virtualisation / Private Cloud",
