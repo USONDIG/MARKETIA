@@ -18,6 +18,58 @@ target:
     - PL
     - CZ
 
+qualification:
+  enabled: true
+  require_company_metadata: true
+  min_employees: 50
+  allowed_naf_divisions:
+    # Services marchands / tertiaires, hors commerce et administration publique.
+    # H Transport, I Hebergement-restauration, J Information-communication,
+    # K Finance-assurance, L Immobilier, M Activites specialisees/scientifiques,
+    # N Services administratifs/support, P Enseignement, Q Sante/action sociale,
+    # R Arts/loisirs, S Autres services.
+    - "49"
+    - "50"
+    - "51"
+    - "52"
+    - "53"
+    - "55"
+    - "56"
+    - "58"
+    - "59"
+    - "60"
+    - "61"
+    - "62"
+    - "63"
+    - "64"
+    - "65"
+    - "66"
+    - "68"
+    - "69"
+    - "70"
+    - "71"
+    - "72"
+    - "73"
+    - "74"
+    - "75"
+    - "77"
+    - "78"
+    - "79"
+    - "80"
+    - "81"
+    - "82"
+    - "85"
+    - "86"
+    - "87"
+    - "88"
+    - "90"
+    - "91"
+    - "92"
+    - "93"
+    - "94"
+    - "95"
+    - "96"
+
 sectors:
   - id: ai
     enabled: true
