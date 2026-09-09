@@ -9,7 +9,7 @@ import requests
 import streamlit as st
 import yaml
 
-from admin.radar_view import render_radar_discovery
+from radar_view import render_radar_discovery
 
 REPO = "USONDIG/MARKETIA"
 CONFIG_PATH = "config.yaml"
