@@ -1,0 +1,8 @@
+[
+  {"company_name":"Pammys™ (dieseo GmbH)","source":"ARBEITNOW","signal_type":"job","label":"Recrutement technique recent","strength":1.0,"weight":24,"event_date":"2026-09-09"},
+  {"company_name":"Speechify","source":"ARBEITNOW","signal_type":"job","label":"Recrutement technique recent","strength":1.0,"weight":24,"event_date":"2026-09-09"},
+  {"company_name":"Stark","source":"GDELT","signal_type":"market","label":"GPU / HPC / IA","strength":1.0,"weight":30,"event_date":"2026-09-09"},
+  {"company_name":"virtual7 GmbH","source":"ARBEITNOW","signal_type":"job","label":"Recrutement Infrastructure / IA","strength":1.0,"weight":24,"event_date":"2026-09-09"},
+  {"company_name":"Alan","source":"GDELT","signal_type":"market","label":"Stockage / Backup","strength":1.0,"weight":24,"event_date":"2026-09-09"},
+  {"company_name":"Almetra","source":"GDELT","signal_type":"market","label":"Serveurs / Compute","strength":1.0,"weight":25,"event_date":"2026-09-09"}
+]
