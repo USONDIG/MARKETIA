@@ -6,6 +6,7 @@ from typing import Any
 
 import pandas as pd
 
+from business_themes import add_business_theme_columns
 from database import connect
 from qualification import employee_info, naf_division, qualifies_company
 from utils import now_iso
@@ -186,4 +187,5 @@ def build_discovery(config: dict, limit: int = 1000) -> pd.DataFrame:
         })
 
     output.sort(key=lambda row: (row["discovery_score"], row["signal_count"]), reverse=True)
-    return pd.DataFrame(output[:limit])
+    discovery = pd.DataFrame(output[:limit])
+    return add_business_theme_columns(discovery)
