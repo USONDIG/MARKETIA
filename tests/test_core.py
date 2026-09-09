@@ -2,6 +2,7 @@ from pathlib import Path
 
 import yaml
 
+from qualification import employee_info, is_service_naf
 from signal_engine import detect_signals
 from scoring import clamp
 
@@ -35,6 +36,17 @@ def test_signal_detection_for_gpu_tender():
     assert "GPU / HPC / IA" in labels
     assert "Serveurs / Compute" in labels
     assert "Appel d'offres recent" in labels
+
+
+def test_service_and_employee_qualification_rules():
+    config = load_config()
+    assert employee_info("12")["employee_min"] == 20
+    assert employee_info("21")["employee_min"] == 50
+    assert employee_info("42")["employee_min"] == 1000
+    assert is_service_naf("62.01Z", config)
+    assert is_service_naf("70.22Z", config)
+    assert not is_service_naf("25.11Z", config)
+    assert not is_service_naf("47.91A", config)
 
 
 def test_clamp():
