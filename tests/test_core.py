@@ -38,15 +38,19 @@ def test_signal_detection_for_gpu_tender():
     assert "Appel d'offres recent" in labels
 
 
-def test_service_and_employee_qualification_rules():
+def test_target_and_employee_qualification_rules():
     config = load_config()
     assert employee_info("12")["employee_min"] == 20
     assert employee_info("21")["employee_min"] == 50
     assert employee_info("42")["employee_min"] == 1000
-    assert is_service_naf("62.01Z", config)
-    assert is_service_naf("70.22Z", config)
-    assert not is_service_naf("25.11Z", config)
-    assert not is_service_naf("47.91A", config)
+
+    # Current target intentionally includes industry, commerce, services,
+    # and public administration.
+    assert is_service_naf("25.11Z", config)  # Industry
+    assert is_service_naf("47.91A", config)  # Commerce
+    assert is_service_naf("62.01Z", config)  # IT services
+    assert is_service_naf("70.22Z", config)  # Consulting
+    assert is_service_naf("84.11Z", config)  # Public administration
 
 
 def test_clamp():
