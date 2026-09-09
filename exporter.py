@@ -9,6 +9,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 from database import connect
+from qualification import employee_info, naf_division
 
 OUTPUT_DIR = Path("output")
 XLSX_PATH = OUTPUT_DIR / "server_infra_radar.xlsx"
@@ -18,6 +19,17 @@ ALERTS_PATH = OUTPUT_DIR / "alerts.csv"
 def _query_df(sql: str) -> pd.DataFrame:
     with connect() as db:
         return pd.read_sql_query(sql, db)
+
+
+def _add_qualification_columns(df: pd.DataFrame) -> pd.DataFrame:
+    if df.empty:
+        return df
+    df = df.copy()
+    df["naf_division"] = df["naf"].apply(naf_division)
+    df["employee_min"] = df["employees"].apply(lambda value: employee_info(value)["employee_min"])
+    df["employee_range"] = df["employees"].apply(lambda value: employee_info(value)["employee_range"])
+    df["qualified_target"] = True
+    return df
 
 
 def export_outputs(config: dict) -> None:
@@ -39,6 +51,7 @@ def export_outputs(config: dict) -> None:
             c.city,
             c.employees,
             c.sites,
+            c.headquarters_country,
             s.top_signal,
             s.calculated_at
         FROM scores s
@@ -47,6 +60,7 @@ def export_outputs(config: dict) -> None:
         LIMIT {top_n}
         """
     )
+    opportunities = _add_qualification_columns(opportunities)
 
     events = _query_df(
         """
@@ -80,12 +94,12 @@ def export_outputs(config: dict) -> None:
     alerts.to_csv(ALERTS_PATH, index=False, encoding="utf-8-sig")
 
     dashboard = pd.DataFrame([
-        ["Leads scores", int(len(opportunities))],
+        ["Leads qualifies", int(len(opportunities))],
         ["CRITICAL", int((opportunities["priority"] == "CRITICAL").sum()) if not opportunities.empty else 0],
         ["HOT", int((opportunities["priority"] == "HOT").sum()) if not opportunities.empty else 0],
         ["WARM", int((opportunities["priority"] == "WARM").sum()) if not opportunities.empty else 0],
         ["Alertes >= seuil", int(len(alerts))],
-        ["Evenements collectes", int(len(events))],
+        ["Cible", "Services FR, 50+ salaries"],
         ["Seuil d'alerte", threshold],
     ], columns=["Indicateur", "Valeur"])
 
