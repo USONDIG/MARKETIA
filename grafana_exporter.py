@@ -8,6 +8,7 @@ from pathlib import Path
 import pandas as pd
 
 from database import connect
+from discovery import build_discovery
 from qualification import employee_info, naf_division
 
 OUTPUT_DIR = Path("output")
@@ -64,6 +65,7 @@ def export_grafana_and_history(config: dict) -> None:
         return
 
     top_n = int(grafana_cfg.get("top_opportunities", 500))
+    discovery_n = int(grafana_cfg.get("top_discovery", 1000))
     event_limit = int(grafana_cfg.get("recent_events", 2500))
     signal_limit = int(grafana_cfg.get("recent_signals", 5000))
 
@@ -78,6 +80,7 @@ def export_grafana_and_history(config: dict) -> None:
         LIMIT {top_n}
     """)
     opportunities = _add_qualification_columns(opportunities)
+    discovery = build_discovery(config, limit=discovery_n)
 
     qualified_sirens = set(opportunities["siren"].dropna().astype(str)) if not opportunities.empty else set()
 
@@ -91,10 +94,11 @@ def export_grafana_and_history(config: dict) -> None:
         ORDER BY COALESCE(e.event_date, e.collected_at) DESC
         LIMIT {event_limit}
     """)
-    if qualified_sirens and not events.empty:
-        events = events[events["siren"].astype(str).isin(qualified_sirens)]
+    qualified_events = events.copy()
+    if qualified_sirens and not qualified_events.empty:
+        qualified_events = qualified_events[qualified_events["siren"].astype(str).isin(qualified_sirens)]
     else:
-        events = events.iloc[0:0]
+        qualified_events = qualified_events.iloc[0:0]
 
     signals = _query(f"""
         SELECT e.company_name, e.siren, e.source, e.country, e.event_date,
@@ -105,22 +109,30 @@ def export_grafana_and_history(config: dict) -> None:
         ORDER BY s.detected_at DESC
         LIMIT {signal_limit}
     """)
-    if qualified_sirens and not signals.empty:
-        signals = signals[signals["siren"].astype(str).isin(qualified_sirens)]
+    qualified_signals = signals.copy()
+    if qualified_sirens and not qualified_signals.empty:
+        qualified_signals = qualified_signals[qualified_signals["siren"].astype(str).isin(qualified_sirens)]
     else:
-        signals = signals.iloc[0:0]
+        qualified_signals = qualified_signals.iloc[0:0]
 
     runs = _query("SELECT * FROM runs ORDER BY source")
 
     priority_summary = opportunities.groupby("priority", dropna=False).size().reset_index(name="count") if not opportunities.empty else pd.DataFrame(columns=["priority", "count"])
-    source_summary = events.groupby("source", dropna=False).size().reset_index(name="count") if not events.empty else pd.DataFrame(columns=["source", "count"])
+    source_summary = qualified_events.groupby("source", dropna=False).size().reset_index(name="count") if not qualified_events.empty else pd.DataFrame(columns=["source", "count"])
     country_summary = opportunities.groupby("country", dropna=False).agg(opportunities=("company_name", "count"), avg_score=("opportunity_score", "mean"), max_score=("opportunity_score", "max")).reset_index() if not opportunities.empty else pd.DataFrame(columns=["country", "opportunities", "avg_score", "max_score"])
-    market_summary = signals[signals["signal_type"].isin(["market", "job", "web_expansion", "web_tech"])].groupby("label", dropna=False).size().reset_index(name="count") if not signals.empty else pd.DataFrame(columns=["label", "count"])
+    market_summary = qualified_signals[qualified_signals["signal_type"].isin(["market", "job", "web_expansion", "web_tech"])].groupby("label", dropna=False).size().reset_index(name="count") if not qualified_signals.empty else pd.DataFrame(columns=["label", "count"])
+    discovery_status_summary = discovery.groupby("status", dropna=False).size().reset_index(name="count") if not discovery.empty else pd.DataFrame(columns=["status", "count"])
+    discovery_source_summary = discovery.assign(source=discovery["sources"].fillna("Unknown")).groupby("source", dropna=False).size().reset_index(name="count") if not discovery.empty else pd.DataFrame(columns=["source", "count"])
 
     now = datetime.now(timezone.utc).replace(microsecond=0)
     stats = {
         "generated_at": now.isoformat().replace("+00:00", "Z"),
-        "target_rule": "Services FR, 50+ salaries",
+        "target_rule": "Industry + commerce + services + public administration, FR, 50+ salaries",
+        "discovery_entities": int(len(discovery)),
+        "discovery_high": int((discovery["discovery_priority"] == "HIGH").sum()) if not discovery.empty else 0,
+        "discovery_medium": int((discovery["discovery_priority"] == "MEDIUM").sum()) if not discovery.empty else 0,
+        "identified_or_better": int(discovery["status"].isin(["IDENTIFIED", "ENRICHED", "QUALIFIED"]).sum()) if not discovery.empty else 0,
+        "qualified_from_discovery": int((discovery["status"] == "QUALIFIED").sum()) if not discovery.empty else 0,
         "opportunities": int(len(opportunities)),
         "critical": int((opportunities["priority"] == "CRITICAL").sum()) if not opportunities.empty else 0,
         "hot": int((opportunities["priority"] == "HOT").sum()) if not opportunities.empty else 0,
@@ -131,14 +143,19 @@ def export_grafana_and_history(config: dict) -> None:
     }
 
     GRAFANA_DIR.mkdir(parents=True, exist_ok=True)
+    _write_json(GRAFANA_DIR / "discovery.json", _records(discovery))
     _write_json(GRAFANA_DIR / "opportunities.json", _records(opportunities))
     _write_json(GRAFANA_DIR / "events.json", _records(events))
+    _write_json(GRAFANA_DIR / "qualified_events.json", _records(qualified_events))
     _write_json(GRAFANA_DIR / "signals.json", _records(signals))
+    _write_json(GRAFANA_DIR / "qualified_signals.json", _records(qualified_signals))
     _write_json(GRAFANA_DIR / "runs.json", _records(runs))
     _write_json(GRAFANA_DIR / "priority_summary.json", _records(priority_summary))
     _write_json(GRAFANA_DIR / "source_summary.json", _records(source_summary))
     _write_json(GRAFANA_DIR / "country_summary.json", _records(country_summary))
     _write_json(GRAFANA_DIR / "market_summary.json", _records(market_summary))
+    _write_json(GRAFANA_DIR / "discovery_status_summary.json", _records(discovery_status_summary))
+    _write_json(GRAFANA_DIR / "discovery_source_summary.json", _records(discovery_source_summary))
     _write_json(GRAFANA_DIR / "dashboard_stats.json", [stats])
 
     history_cfg = config.get("history", {})
