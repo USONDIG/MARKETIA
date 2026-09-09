@@ -6,6 +6,7 @@ from copy import deepcopy
 
 import requests
 import streamlit as st
+import streamlit.components.v1 as components
 import yaml
 
 REPO = "USONDIG/MARKETIA"
@@ -101,7 +102,7 @@ def main() -> None:
     top_left, top_right = st.columns([5, 1])
     with top_left:
         st.title("MARKETIA — Console de ciblage")
-        st.caption("Les modifications sont enregistrées dans config.yaml et déclenchent automatiquement MARKETIA.")
+        st.caption("Dashboard commercial et configuration MARKETIA dans une seule interface.")
     with top_right:
         if st.button("Déconnexion", use_container_width=True):
             st.session_state.clear()
@@ -119,9 +120,19 @@ def main() -> None:
 
     edited = deepcopy(config)
 
-    tab_target, tab_sectors, tab_markets, tab_scoring, tab_raw = st.tabs(
-        ["Ciblage", "Secteurs", "Marchés", "Scoring", "Avancé"]
+    tab_dashboard, tab_target, tab_sectors, tab_markets, tab_scoring, tab_raw = st.tabs(
+        ["Dashboard", "Ciblage", "Secteurs", "Marchés", "Scoring", "Avancé"]
     )
+
+    with tab_dashboard:
+        st.subheader("Dashboard Grafana")
+        grafana_url = str(st.secrets.get("grafana_url", "")).strip()
+        if grafana_url:
+            components.iframe(grafana_url, height=1000, scrolling=True)
+            st.caption("Si Grafana refuse l'affichage intégré, il faut autoriser l'embed côté Grafana et vérifier les en-têtes CSP/X-Frame-Options.")
+        else:
+            st.info("Ajoute `grafana_url` dans les Secrets Streamlit pour afficher ton dashboard ici.")
+            st.code('grafana_url = "https://ton-instance.grafana.net/d/marketia-infra-radar"', language="toml")
 
     with tab_target:
         q = edited.setdefault("qualification", {})
