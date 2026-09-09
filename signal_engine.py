@@ -84,6 +84,53 @@ def detect_signals(event: dict[str, Any], config: dict) -> list[dict[str, Any]]:
                 "detected_at": detected_at,
             })
 
+    if event.get("event_type") == "job_posting" and config.get("job_signals", {}).get("enabled", True):
+        matches = _matched(text, config.get("job_signals", {}).get("keywords", []))
+        if matches:
+            signals.append({
+                "siren": event.get("siren"),
+                "signal_type": "market",
+                "label": "Recrutement Infrastructure / IA",
+                "strength": min(1.0, 0.7 + 0.08 * len(matches)),
+                "weight": float(config.get("job_signals", {}).get("weight", 18)),
+                "matched_terms": matches,
+                "detected_at": detected_at,
+            })
+            signals.append({
+                "siren": event.get("siren"),
+                "signal_type": "timing",
+                "label": "Recrutement technique recent",
+                "strength": freshness_strength(_days_old(event.get("event_date"))),
+                "weight": float(config.get("job_signals", {}).get("timing_weight", 18)),
+                "matched_terms": matches,
+                "detected_at": detected_at,
+            })
+
+    if event.get("event_type") == "web_news":
+        web_cfg = config.get("web_signals", {})
+        expansion_matches = _matched(text, web_cfg.get("expansion_keywords", []))
+        tech_matches = _matched(text, web_cfg.get("tech_keywords", []))
+        if expansion_matches:
+            signals.append({
+                "siren": event.get("siren"),
+                "signal_type": "timing",
+                "label": "Expansion / investissement",
+                "strength": min(1.0, 0.65 + 0.08 * len(expansion_matches)),
+                "weight": float(web_cfg.get("expansion_weight", 20)),
+                "matched_terms": expansion_matches,
+                "detected_at": detected_at,
+            })
+        if tech_matches:
+            signals.append({
+                "siren": event.get("siren"),
+                "signal_type": "market",
+                "label": "Projet technologique public",
+                "strength": min(1.0, 0.6 + 0.08 * len(tech_matches)),
+                "weight": float(web_cfg.get("tech_weight", 20)),
+                "matched_terms": tech_matches,
+                "detected_at": detected_at,
+            })
+
     if event.get("event_type") == "public_tender":
         days = _days_old(event.get("event_date"))
         signals.append({
