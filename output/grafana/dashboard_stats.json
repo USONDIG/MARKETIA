@@ -1,13 +1,13 @@
 [
   {
-    "generated_at": "2026-09-09T21:26:54Z",
+    "generated_at": "2026-09-09T21:30:47Z",
     "target_rule": "Services FR, 50+ salaries",
     "opportunities": 1,
     "critical": 0,
     "hot": 0,
     "warm": 0,
     "avg_score": 0.1,
-    "events": 0,
+    "events": 1,
     "signals": 1
   }
 ]
