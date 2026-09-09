@@ -11,6 +11,7 @@ from collectors.public_web import collect_jobs, collect_news
 from collectors.ted import collect_ted
 from contact_database import init_contact_db
 from contact_exporter import export_contact_feeds
+from contact_search import discover_contacts
 from database import (
     init_db,
     insert_event,
@@ -113,6 +114,16 @@ def run() -> None:
 
     scores = calculate_scores(config)
     print(f"[scoring] entities={len(scores)}")
+
+    try:
+        contact_stats = discover_contacts(config)
+        print(
+            f"[contacts] queries={contact_stats['queries']} "
+            f"found={contact_stats['found']} saved={contact_stats['saved']}"
+        )
+    except Exception as exc:
+        print(f"[contacts] discovery warning: {exc}")
+        traceback.print_exc()
 
     export_outputs(config)
     export_grafana_and_history(config)
