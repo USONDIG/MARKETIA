@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 from collections import defaultdict
 from typing import Any
 
@@ -8,6 +9,43 @@ import pandas as pd
 from database import connect
 from qualification import employee_info, naf_division, qualifies_company
 from utils import now_iso
+
+
+COUNTRY_NAMES = {
+    "AT": "Autriche", "AUT": "Autriche",
+    "BE": "Belgique", "BEL": "Belgique",
+    "BG": "Bulgarie", "BGR": "Bulgarie",
+    "HR": "Croatie", "HRV": "Croatie",
+    "CY": "Chypre", "CYP": "Chypre",
+    "CZ": "Tchéquie", "CZE": "Tchéquie",
+    "DK": "Danemark", "DNK": "Danemark",
+    "EE": "Estonie", "EST": "Estonie",
+    "FI": "Finlande", "FIN": "Finlande",
+    "FR": "France", "FRA": "France",
+    "DE": "Allemagne", "DEU": "Allemagne",
+    "GR": "Grèce", "GRC": "Grèce", "EL": "Grèce",
+    "HU": "Hongrie", "HUN": "Hongrie",
+    "IE": "Irlande", "IRL": "Irlande",
+    "IT": "Italie", "ITA": "Italie",
+    "LV": "Lettonie", "LVA": "Lettonie",
+    "LT": "Lituanie", "LTU": "Lituanie",
+    "LU": "Luxembourg", "LUX": "Luxembourg",
+    "MT": "Malte", "MLT": "Malte",
+    "NL": "Nederland", "NLD": "Nederland", "NDL": "Nederland",
+    "PL": "Pologne", "POL": "Pologne",
+    "PT": "Portugal", "PRT": "Portugal",
+    "RO": "Roumanie", "ROU": "Roumanie",
+    "SK": "Slovaquie", "SVK": "Slovaquie",
+    "SI": "Slovénie", "SVN": "Slovénie",
+    "ES": "Espagne", "ESP": "Espagne",
+    "SE": "Suède", "SWE": "Suède",
+    "GB": "Royaume-Uni", "GBR": "Royaume-Uni", "UK": "Royaume-Uni",
+    "NO": "Norvège", "NOR": "Norvège",
+    "CH": "Suisse", "CHE": "Suisse",
+    "IS": "Islande", "ISL": "Islande",
+    "US": "États-Unis", "USA": "États-Unis",
+    "CA": "Canada", "CAN": "Canada",
+}
 
 
 def _priority(score: float) -> str:
@@ -20,13 +58,33 @@ def _priority(score: float) -> str:
     return "LOW"
 
 
-def build_discovery(config: dict, limit: int = 1000) -> pd.DataFrame:
-    """Build a broad discovery radar without weakening strict qualification.
+def _country_code(value: Any) -> str | None:
+    if value is None:
+        return None
+    raw = str(value).strip()
+    if not raw:
+        return None
+    try:
+        parsed = ast.literal_eval(raw)
+        if isinstance(parsed, (list, tuple)) and parsed:
+            raw = str(parsed[0])
+        elif isinstance(parsed, str):
+            raw = parsed
+    except (ValueError, SyntaxError):
+        pass
+    raw = raw.strip().strip("[](){}'\" ").upper()
+    return raw or None
 
-    Every entity carrying at least one detected signal can appear here, even if
-    company metadata is incomplete. Strict qualification is exposed as a status
-    and remains enforced separately by the normal scores/opportunities pipeline.
-    """
+
+def country_name(value: Any) -> str | None:
+    code = _country_code(value)
+    if not code:
+        return None
+    return COUNTRY_NAMES.get(code, code)
+
+
+def build_discovery(config: dict, limit: int = 1000) -> pd.DataFrame:
+    """Build a broad discovery radar without weakening strict qualification."""
     with connect() as db:
         rows = db.execute(
             """
@@ -77,7 +135,6 @@ def build_discovery(config: dict, limit: int = 1000) -> pd.DataFrame:
             if row["event_type"] == "public_tender":
                 has_tender = True
 
-        # Broad signal score: intentionally independent from strict qualification.
         score = min(100.0, max_contribution + min(25.0, total_signal_power * 0.12))
         if has_tender:
             score = max(score, 65.0)
@@ -99,6 +156,8 @@ def build_discovery(config: dict, limit: int = 1000) -> pd.DataFrame:
             status = "DISCOVERED"
 
         employee = employee_info(first["employees"])
+        raw_country = first["headquarters_country"] or first["country"]
+        code = _country_code(raw_country)
         output.append({
             "discovery_priority": _priority(score),
             "discovery_score": round(score, 1),
@@ -112,7 +171,8 @@ def build_discovery(config: dict, limit: int = 1000) -> pd.DataFrame:
             "employees": first["employees"],
             "employee_min": employee["employee_min"],
             "employee_range": employee["employee_range"],
-            "country": first["headquarters_country"] or first["country"],
+            "country_code": code,
+            "country": country_name(raw_country),
             "event_count": len(event_ids),
             "signal_count": len(entity_rows),
             "source_count": len(sources),
