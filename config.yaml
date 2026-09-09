@@ -22,215 +22,83 @@ sectors:
   - id: ai
     enabled: true
     label: "IA / Machine Learning"
-    keywords:
-      - intelligence artificielle
-      - artificial intelligence
-      - machine learning
-      - deep learning
-      - generative ai
-      - gpu
-      - cuda
-      - inference
-      - llm
+    keywords: ["intelligence artificielle", "artificial intelligence", "machine learning", "deep learning", "generative ai", "gpu", "cuda", "inference", "llm"]
     weight: 20
-
   - id: biotech
     enabled: true
     label: "Biotech / Bioinformatique"
-    keywords:
-      - bioinformatique
-      - bioinformatics
-      - sequencing
-      - genomique
-      - genomics
-      - hpc
-      - computational biology
+    keywords: ["bioinformatique", "bioinformatics", "sequencing", "genomique", "genomics", "hpc", "computational biology"]
     weight: 16
-
   - id: industry
     enabled: true
     label: "Industrie 4.0"
-    keywords:
-      - industrie 4.0
-      - industry 4.0
-      - digital twin
-      - simulation
-      - edge computing
-      - vision industrielle
-      - computer vision
+    keywords: ["industrie 4.0", "industry 4.0", "digital twin", "simulation", "edge computing", "vision industrielle", "computer vision"]
     weight: 14
-
   - id: healthcare
     enabled: true
     label: "Sante / HealthTech"
-    keywords:
-      - healthtech
-      - imagerie medicale
-      - medical imaging
-      - hopital
-      - hospital
-      - donnees de sante
-      - health data
+    keywords: ["healthtech", "imagerie medicale", "medical imaging", "hopital", "hospital", "donnees de sante", "health data"]
     weight: 15
-
   - id: finance
     enabled: true
     label: "Finance / FinTech / Assurance"
-    keywords:
-      - fintech
-      - assurance
-      - insurance
-      - banque
-      - bank
-      - trading
-      - risk engine
+    keywords: ["fintech", "assurance", "insurance", "banque", "bank", "trading", "risk engine"]
     weight: 13
-
   - id: hosting
     enabled: true
     label: "Hebergement / MSP / Cloud prive"
-    keywords:
-      - hebergeur
-      - hosting
-      - managed service provider
-      - msp
-      - private cloud
-      - cloud prive
-      - datacenter
+    keywords: ["hebergeur", "hosting", "managed service provider", "msp", "private cloud", "cloud prive", "datacenter"]
     weight: 22
-
   - id: media
     enabled: true
     label: "Media / Video / Gaming"
-    keywords:
-      - streaming
-      - video
-      - rendering
-      - rendu 3d
-      - gaming
-      - vfx
+    keywords: ["streaming", "video", "rendering", "rendu 3d", "gaming", "vfx"]
     weight: 14
-
   - id: logistics
     enabled: true
     label: "Logistique automatisee"
-    keywords:
-      - logistique
-      - logistics
-      - warehouse automation
-      - automatisation entrepot
-      - computer vision
+    keywords: ["logistique", "logistics", "warehouse automation", "automatisation entrepot", "computer vision"]
     weight: 12
 
 markets:
   server:
     enabled: true
     label: "Serveurs / Compute"
-    keywords:
-      - serveur
-      - serveurs
-      - server
-      - servers
-      - compute node
-      - blade server
-      - rack server
-      - infrastructure de calcul
-    cpv:
-      - "48820000"
-      - "30211000"
+    keywords: ["serveur", "serveurs", "server", "servers", "compute node", "blade server", "rack server", "infrastructure de calcul"]
+    cpv: ["48820000", "30211000"]
     weight: 25
-
   gpu:
     enabled: true
     label: "GPU / HPC / IA"
-    keywords:
-      - gpu
-      - nvidia
-      - cuda
-      - h100
-      - h200
-      - b200
-      - accelerator
-      - accelerateur
-      - high performance computing
-      - hpc
-    cpv:
-      - "30200000"
+    keywords: ["gpu", "nvidia", "cuda", "h100", "h200", "b200", "accelerator", "accelerateur", "high performance computing", "hpc"]
+    cpv: ["30200000"]
     weight: 30
-
   storage:
     enabled: true
     label: "Stockage / Backup"
-    keywords:
-      - stockage
-      - storage
-      - san
-      - nas
-      - object storage
-      - backup
-      - sauvegarde
-      - immutable backup
-      - disaster recovery
-    cpv:
-      - "30233100"
-      - "30233000"
+    keywords: ["stockage", "storage", "san", "nas", "object storage", "backup", "sauvegarde", "immutable backup", "disaster recovery"]
+    cpv: ["30233100", "30233000"]
     weight: 24
-
   virtualization:
     enabled: true
     label: "Virtualisation / Private Cloud"
-    keywords:
-      - virtualisation
-      - virtualization
-      - vmware
-      - proxmox
-      - hyper-v
-      - private cloud
-      - cloud prive
-      - hyperconverged
-      - hci
+    keywords: ["virtualisation", "virtualization", "vmware", "proxmox", "hyper-v", "private cloud", "cloud prive", "hyperconverged", "hci"]
     weight: 20
-
   network:
     enabled: true
     label: "Reseau Datacenter"
-    keywords:
-      - reseau
-      - network
-      - ethernet
-      - infiniband
-      - 100gbe
-      - 400gbe
-      - switch datacenter
-      - spine leaf
-    cpv:
-      - "32420000"
-      - "32422000"
+    keywords: ["reseau", "network", "ethernet", "infiniband", "100gbe", "400gbe", "switch datacenter", "spine leaf"]
+    cpv: ["32420000", "32422000"]
     weight: 18
-
   datacenter:
     enabled: true
     label: "Datacenter / Salle IT"
-    keywords:
-      - datacenter
-      - data center
-      - centre de donnees
-      - salle informatique
-      - infrastructure informatique
-      - infrastructure it
+    keywords: ["datacenter", "data center", "centre de donnees", "salle informatique", "infrastructure informatique", "infrastructure it"]
     weight: 22
-
   cloud_repatriation:
     enabled: true
     label: "FinOps / Cloud Repatriation"
-    keywords:
-      - finops
-      - cloud cost
-      - cout cloud
-      - cloud repatriation
-      - rapatriement cloud
-      - hybrid cloud
-      - cloud hybride
+    keywords: ["finops", "cloud cost", "cout cloud", "cloud repatriation", "rapatriement cloud", "hybrid cloud", "cloud hybride"]
     weight: 20
 
 job_signals:
@@ -247,7 +115,54 @@ job_signals:
     - network engineer
     - cloud architect
     - gpu engineer
-  weight: 18
+    - kubernetes
+    - vmware
+    - storage engineer
+    - datacenter engineer
+    - hpc engineer
+    - machine learning engineer
+    - mlops
+  weight: 24
+  timing_weight: 20
+
+web_signals:
+  enabled: true
+  expansion_keywords:
+    - opens new site
+    - new facility
+    - new office
+    - expansion
+    - expands
+    - investment
+    - invests
+    - funding
+    - new factory
+    - new datacenter
+    - data center expansion
+    - ouvre un site
+    - nouveau site
+    - nouvelle usine
+    - investissement
+    - levee de fonds
+  tech_keywords:
+    - artificial intelligence
+    - generative ai
+    - gpu
+    - hpc
+    - datacenter
+    - data center
+    - kubernetes
+    - private cloud
+    - storage
+    - server
+    - infrastructure
+    - cloud repatriation
+    - intelligence artificielle
+    - cloud prive
+    - serveur
+    - stockage
+  expansion_weight: 22
+  tech_weight: 22
 
 alerts:
   minimum_score: 65
@@ -276,10 +191,20 @@ sources:
     base_url: "https://boamp-datadila.opendatasoft.com/api/explore/v2.0/catalog/datasets/boamp/records"
   bodacc:
     enabled: true
-    base_url: "https://bodacc-datadila.opendatasoft.com/api/explore/v2.0/catalog/datasets/bodacc/records"
+    base_url: "https://bodacc-datadila.opendatasoft.com/api/explore/v2.0/catalog/datasets/annonces-commerciales/records"
   ted:
     enabled: true
     base_url: "https://api.ted.europa.eu/v3/notices/search"
   recherche_entreprises:
     enabled: true
     base_url: "https://recherche-entreprises.api.gouv.fr"
+  arbeitnow:
+    enabled: true
+    base_url: "https://www.arbeitnow.com/api/job-board-api"
+    max_pages: 5
+  gdelt:
+    enabled: true
+    base_url: "https://api.gdeltproject.org/api/v2/doc/doc"
+    timespan: "14d"
+    max_records: 250
+    query: '(server OR servers OR datacenter OR "data center" OR GPU OR HPC OR "private cloud" OR storage OR backup OR virtualization OR Kubernetes OR "artificial intelligence")'
