@@ -14,7 +14,7 @@ from discovery import build_discovery
 from utils import now_iso
 
 SEARCH_URL = "https://html.duckduckgo.com/html/"
-BLOCKED_DOMAINS = {"linkedin.com", "www.linkedin.com"}
+LINKEDIN_DOMAINS = {"linkedin.com", "www.linkedin.com"}
 
 ROLE_PATTERNS = {
     "BUYER": ["procurement", "purchasing", "buyer", "achats", "category manager"],
@@ -54,9 +54,9 @@ def _domain(url: str) -> str:
     return urlparse(url).netloc.lower().split(":")[0]
 
 
-def _is_blocked(url: str) -> bool:
+def _is_linkedin(url: str) -> bool:
     domain = _domain(url)
-    return domain in BLOCKED_DOMAINS or domain.endswith(".linkedin.com")
+    return domain in LINKEDIN_DOMAINS or domain.endswith(".linkedin.com")
 
 
 def _role_class_for_title(title: str) -> str:
@@ -80,6 +80,7 @@ def _extract_name(title: str, snippet: str, company_name: str, target_title: str
     combined = f"{title} {snippet}"
     exclusions = {part.lower() for part in re.split(r"\W+", company_name) if part}
     exclusions.update(part.lower() for part in re.split(r"\W+", target_title) if part)
+    exclusions.update({"linkedin", "profil", "profile", "france"})
     for candidate in NAME_RE.findall(combined):
         words = candidate.split()
         lowered = {word.lower().strip(".,") for word in words}
@@ -104,7 +105,7 @@ def _search(query: str, timeout: int, user_agent: str, max_results: int) -> list
     results: list[dict[str, str]] = []
     for idx, (raw_url, raw_title) in enumerate(anchors[:max_results]):
         url = _unwrap_duckduckgo_url(raw_url)
-        if not url.startswith("http") or _is_blocked(url):
+        if not url.startswith("http"):
             continue
         results.append({
             "url": url,
@@ -115,7 +116,9 @@ def _search(query: str, timeout: int, user_agent: str, max_results: int) -> list
 
 
 def _public_coordinates(url: str, timeout: int, user_agent: str) -> tuple[str | None, str | None]:
-    if _is_blocked(url):
+    # LinkedIn pages are deliberately not crawled. We only retain the public
+    # profile URL and search-result evidence exposed by the search engine.
+    if _is_linkedin(url):
         return None, None
     try:
         response = requests.get(url, headers={"User-Agent": user_agent}, timeout=timeout, allow_redirects=True)
@@ -168,7 +171,7 @@ def _search_targets(config: dict, max_companies: int) -> list[dict[str, Any]]:
                 "target_title": title,
                 "relevance_score": 80,
                 "markets": lead.get("markets"),
-                "preferred_sources": "site corporate, communiqués, conférences/speakers, réseaux professionnels publics",
+                "preferred_sources": "LinkedIn public search, site corporate, communiqués, conférences/speakers",
             })
     return rows
 
@@ -176,7 +179,7 @@ def _search_targets(config: dict, max_companies: int) -> list[dict[str, Any]]:
 def discover_contacts(config: dict) -> dict[str, int]:
     settings = config.get("contacts", {})
     if not settings.get("enabled", True) or not settings.get("search_enabled", True):
-        return {"queries": 0, "found": 0, "saved": 0}
+        return {"queries": 0, "found": 0, "saved": 0, "linkedin": 0}
 
     max_companies = int(settings.get("search_max_companies", 25))
     roles_per_company = int(settings.get("search_roles_per_company", 6))
@@ -187,9 +190,9 @@ def discover_contacts(config: dict) -> dict[str, int]:
 
     targets = _search_targets(config, max_companies)
     if not targets:
-        return {"queries": 0, "found": 0, "saved": 0}
+        return {"queries": 0, "found": 0, "saved": 0, "linkedin": 0}
 
-    queries = found = saved = 0
+    queries = found = saved = linkedin_found = 0
     seen_companies: dict[str, int] = {}
     seen_contacts: set[tuple[str, str, str]] = set()
 
@@ -206,15 +209,25 @@ def discover_contacts(config: dict) -> dict[str, int]:
             continue
         seen_companies[entity_key] = count + 1
 
-        query = f'"{company_name}" "{target_title}"'
-        queries += 1
-        try:
-            results = _search(query, timeout=timeout, user_agent=user_agent, max_results=results_per_query)
-        except requests.RequestException as exc:
-            print(f"[contacts] search warning company={company_name!r} role={target_title!r}: {exc}")
-            continue
+        search_queries = [
+            f'"{company_name}" "{target_title}"',
+            f'site:linkedin.com/in "{company_name}" "{target_title}"',
+        ]
 
+        results: list[dict[str, str]] = []
+        for query in search_queries:
+            queries += 1
+            try:
+                results.extend(_search(query, timeout=timeout, user_agent=user_agent, max_results=results_per_query))
+            except requests.RequestException as exc:
+                print(f"[contacts] search warning company={company_name!r} role={target_title!r}: {exc}")
+            time.sleep(max(0.0, delay))
+
+        seen_urls: set[str] = set()
         for result in results:
+            if result["url"] in seen_urls:
+                continue
+            seen_urls.add(result["url"])
             evidence = f"{result['title']} {result['snippet']}"
             if company_name.lower() not in evidence.lower():
                 continue
@@ -230,10 +243,20 @@ def discover_contacts(config: dict) -> dict[str, int]:
             seen_contacts.add(dedupe)
             found += 1
 
+            is_linkedin = _is_linkedin(result["url"])
             professional_email, professional_phone = _public_coordinates(result["url"], timeout, user_agent)
             source_domain = _domain(result["url"])
             exact_role = target_title.lower() in evidence.lower()
-            confidence = 78.0 if exact_role and (professional_email or professional_phone) else (72.0 if exact_role else 58.0)
+            if is_linkedin:
+                linkedin_found += 1
+                confidence = 76.0 if exact_role else 64.0
+                source_name = "LinkedIn public search"
+                status = "LINKEDIN_PROFILE_FOUND"
+            else:
+                confidence = 78.0 if exact_role and (professional_email or professional_phone) else (72.0 if exact_role else 58.0)
+                source_name = source_domain or "public_web"
+                status = "PUBLIC_SOURCE_FOUND"
+
             contact: dict[str, Any] = {
                 "entity_key": entity_key,
                 "siren": row.get("siren"),
@@ -242,20 +265,18 @@ def discover_contacts(config: dict) -> dict[str, int]:
                 "job_title": target_title,
                 "role_class": role_class,
                 "relevance_score": float(row.get("relevance_score") or 0),
-                "linkedin_url": None,
+                "linkedin_url": result["url"] if is_linkedin else None,
                 "professional_email": professional_email,
                 "professional_phone": professional_phone,
-                "source_name": source_domain or "public_web",
+                "source_name": source_name,
                 "source_url": result["url"],
                 "confidence": confidence,
                 "verified_at": now_iso(),
-                "status": "PUBLIC_SOURCE_FOUND",
-                "raw_json": str({"query": query, "title": result["title"], "snippet": result["snippet"]}),
+                "status": status,
+                "raw_json": str({"query": search_queries, "title": result["title"], "snippet": result["snippet"]}),
                 "updated_at": now_iso(),
             }
             upsert_contact(contact)
             saved += 1
 
-        time.sleep(max(0.0, delay))
-
-    return {"queries": queries, "found": found, "saved": saved}
+    return {"queries": queries, "found": found, "saved": saved, "linkedin": linkedin_found}
