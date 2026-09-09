@@ -17,6 +17,7 @@ from database import (
     upsert_company,
 )
 from exporter import export_outputs
+from grafana_exporter import export_grafana_and_history
 from scoring import calculate_scores
 from signal_engine import detect_signals
 from utils import now_iso
@@ -90,8 +91,11 @@ def run() -> None:
     print(f"[scoring] entities={len(scores)}")
 
     export_outputs(config)
+    export_grafana_and_history(config)
     print("[export] output/server_infra_radar.xlsx")
     print("[export] output/alerts.csv")
+    print("[export] output/grafana/*.json")
+    print("[history] output/history/<timestamp>/")
 
 
 if __name__ == "__main__":
