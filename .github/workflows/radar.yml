@@ -1,0 +1,62 @@
+name: MARKETIA Radar
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "**.py"
+      - "config.yaml"
+      - "requirements.txt"
+      - ".github/workflows/radar.yml"
+  schedule:
+    - cron: "15 5,11,17,23 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: marketia-radar
+  cancel-in-progress: false
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run collectors, scoring and exports
+        run: python main.py
+
+      - name: Show generated alerts
+        if: always()
+        run: |
+          echo "## MARKETIA Radar" >> "$GITHUB_STEP_SUMMARY"
+          if [ -f output/alerts.csv ]; then
+            echo "Alertes générées: $(($(wc -l < output/alerts.csv)-1))" >> "$GITHUB_STEP_SUMMARY"
+            head -n 21 output/alerts.csv >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Aucun fichier d'alertes généré." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Persist database and outputs
+        run: |
+          git config user.name "marketia-radar-bot"
+          git config user.email "marketia-radar-bot@users.noreply.github.com"
+          git add data/radar.db output/server_infra_radar.xlsx output/alerts.csv || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: automatic MARKETIA radar update [skip ci]"
+            git push
+          fi
