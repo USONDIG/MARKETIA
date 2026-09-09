@@ -5,6 +5,12 @@ Cette interface permet d'éditer graphiquement `config.yaml` sans modifier le co
 ## Fonctions
 
 - connexion par identifiant / mot de passe
+- dashboard MARKETIA natif
+- état des derniers runs GitHub Actions
+- statut visuel : en attente / en cours / réussi / échoué
+- bouton pour actualiser l'état des runs
+- bouton pour lancer MARKETIA immédiatement
+- relance d'un run terminé depuis l'interface
 - seuil minimum d'employés
 - familles d'activité et divisions NAF
 - pays de siège ciblés
@@ -38,11 +44,12 @@ github_token = "github_pat_xxxxxxxxxxxxxxxxx"
 
 ## Token GitHub recommandé
 
-Créer un **fine-grained personal access token** limité au dépôt `USONDIG/MARKETIA` avec uniquement la permission nécessaire pour modifier le contenu du dépôt :
+Créer un **fine-grained personal access token** limité au dépôt `USONDIG/MARKETIA` avec les permissions suivantes :
 
 - Repository permissions > Contents : Read and write
+- Repository permissions > Actions : Read and write
 
-Le workflow GitHub Actions se déclenche ensuite automatiquement après la modification de `config.yaml`, il n'est donc pas nécessaire de donner au token une permission Actions en écriture.
+`Contents` permet à la console d'enregistrer `config.yaml`. `Actions` permet d'afficher l'état des runs, de lancer MARKETIA immédiatement et de relancer un run depuis Streamlit.
 
 Ne jamais mettre le token, le login ou le mot de passe dans GitHub. Ils doivent rester uniquement dans les Secrets Streamlit.
 
