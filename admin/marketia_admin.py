@@ -338,6 +338,10 @@ def render_discovery() -> None:
         st.info("Aucun compte Discovery disponible.")
         return
 
+    employee_ranges = sorted(
+        [value for value in discovery.get("employee_range", pd.Series(dtype=str)).dropna().astype(str).unique().tolist() if value != "Inconnu"]
+    )
+
     with st.expander("Filtres Discovery", expanded=True):
         a, b, c, d = st.columns(4)
         priorities = sorted(discovery.get("discovery_priority", pd.Series(dtype=str)).dropna().astype(str).unique().tolist())
@@ -351,7 +355,27 @@ def render_discovery() -> None:
             selected_countries = st.multiselect("Pays", countries, default=countries, key="disc_countries")
         with d:
             min_score = st.slider("Score Discovery minimum", 0, 100, 0, key="disc_score")
-        search = st.text_input("Entreprise / signal / marché contient", "", key="disc_search")
+
+        e, f, g = st.columns([2, 2, 3])
+        with e:
+            selected_employee_ranges = st.multiselect(
+                "Tranches d'effectif",
+                employee_ranges,
+                default=employee_ranges,
+                key="disc_employee_ranges",
+                help="Les comptes avec effectif inconnu restent visibles sauf si un effectif minimum est demandé.",
+            )
+        with f:
+            min_employees = int(st.number_input(
+                "Effectif minimum connu",
+                min_value=0,
+                max_value=100000,
+                value=0,
+                step=10,
+                key="disc_min_employees",
+            ))
+        with g:
+            search = st.text_input("Entreprise / signal / marché contient", "", key="disc_search")
 
     filtered = discovery.copy()
     if selected_priorities and "discovery_priority" in filtered.columns:
@@ -362,6 +386,16 @@ def render_discovery() -> None:
         filtered = filtered[filtered["country"].isin(selected_countries)]
     if "discovery_score" in filtered.columns:
         filtered = filtered[pd.to_numeric(filtered["discovery_score"], errors="coerce").fillna(0) >= min_score]
+
+    if "employee_range" in filtered.columns and selected_employee_ranges:
+        known_mask = filtered["employee_range"].isin(selected_employee_ranges)
+        unknown_mask = filtered["employee_range"].fillna("Inconnu").eq("Inconnu")
+        filtered = filtered[known_mask | unknown_mask]
+
+    if min_employees > 0 and "employee_min" in filtered.columns:
+        employee_min = pd.to_numeric(filtered["employee_min"], errors="coerce")
+        filtered = filtered[employee_min >= min_employees]
+
     if search:
         mask = pd.Series(False, index=filtered.index)
         for column in ["company_name", "markets", "top_signals", "sources"]:
@@ -371,8 +405,8 @@ def render_discovery() -> None:
 
     st.markdown(f"### Comptes détectés — {len(filtered)}")
     preferred = [
-        "discovery_priority", "discovery_score", "status", "company_name", "country", "naf",
-        "employee_range", "event_count", "signal_count", "sources", "markets", "top_signals",
+        "discovery_priority", "discovery_score", "status", "company_name", "country", "country_code", "naf",
+        "employee_range", "employee_min", "event_count", "signal_count", "sources", "markets", "top_signals",
         "latest_event_date", "latest_title", "latest_url",
     ]
     cols = [c for c in preferred if c in filtered.columns]
