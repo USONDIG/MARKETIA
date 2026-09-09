@@ -8,6 +8,7 @@ from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
+from business_themes import add_business_theme_columns
 from database import connect
 from discovery import build_discovery
 from qualification import employee_info, naf_division
@@ -63,6 +64,7 @@ def export_outputs(config: dict) -> None:
         """
     )
     opportunities = _add_qualification_columns(opportunities)
+    opportunities = add_business_theme_columns(opportunities)
     discovery = build_discovery(config, limit=discovery_n)
 
     events = _query_df(
