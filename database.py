@@ -34,6 +34,18 @@ def init_db() -> None:
                 updated_at TEXT NOT NULL
             );
 
+            CREATE TABLE IF NOT EXISTS company_snapshots (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                siren TEXT NOT NULL,
+                snapshot_at TEXT NOT NULL,
+                naf TEXT,
+                employees TEXT,
+                sites INTEGER,
+                city TEXT,
+                UNIQUE(siren, snapshot_at)
+            );
+            CREATE INDEX IF NOT EXISTS idx_snapshots_siren ON company_snapshots(siren);
+
             CREATE TABLE IF NOT EXISTS events (
                 id TEXT PRIMARY KEY,
                 siren TEXT,
@@ -48,7 +60,6 @@ def init_db() -> None:
                 raw_json TEXT,
                 collected_at TEXT NOT NULL
             );
-
             CREATE INDEX IF NOT EXISTS idx_events_siren ON events(siren);
             CREATE INDEX IF NOT EXISTS idx_events_source ON events(source);
             CREATE INDEX IF NOT EXISTS idx_events_date ON events(event_date);
@@ -65,7 +76,6 @@ def init_db() -> None:
                 detected_at TEXT NOT NULL,
                 UNIQUE(event_id, signal_type, label)
             );
-
             CREATE INDEX IF NOT EXISTS idx_signals_siren ON signals(siren);
 
             CREATE TABLE IF NOT EXISTS scores (
@@ -120,6 +130,30 @@ def upsert_company(company: dict[str, Any]) -> None:
                 company["updated_at"],
             ),
         )
+        db.execute(
+            """
+            INSERT OR IGNORE INTO company_snapshots
+                (siren, snapshot_at, naf, employees, sites, city)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                company["siren"], company["updated_at"], company.get("naf"),
+                company.get("employees"), company.get("sites"), company.get("city")
+            ),
+        )
+
+
+def get_previous_snapshot(siren: str) -> sqlite3.Row | None:
+    with connect() as db:
+        return db.execute(
+            """
+            SELECT * FROM company_snapshots
+            WHERE siren=?
+            ORDER BY snapshot_at DESC
+            LIMIT 1 OFFSET 1
+            """,
+            (siren,),
+        ).fetchone()
 
 
 def insert_event(event: dict[str, Any]) -> bool:
