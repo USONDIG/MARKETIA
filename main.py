@@ -7,6 +7,7 @@ import yaml
 
 from collectors.companies import enrich_events
 from collectors.ods import collect_ods
+from collectors.public_web import collect_jobs, collect_news
 from collectors.ted import collect_ted
 from database import (
     init_db,
@@ -33,6 +34,10 @@ def collect_source(name: str, config: dict) -> list[dict]:
         return collect_ods(name, config)
     if name == "ted":
         return collect_ted(config)
+    if name == "arbeitnow":
+        return collect_jobs(config)
+    if name == "gdelt":
+        return collect_news(config)
     raise ValueError(f"Unknown source: {name}")
 
 
@@ -40,8 +45,9 @@ def run() -> None:
     config = load_config()
     init_db()
     all_events: list[dict] = []
+    source_names = ("boamp", "bodacc", "ted", "arbeitnow", "gdelt")
 
-    for source in ("boamp", "bodacc", "ted"):
+    for source in source_names:
         if not config.get("sources", {}).get(source, {}).get("enabled", True):
             continue
         started = now_iso()
@@ -57,9 +63,8 @@ def run() -> None:
             print(f"[{source}] ERROR: {exc}")
             traceback.print_exc()
 
-    # Best-effort enrichment of French entities. Failures never block the pipeline.
     try:
-        companies = enrich_events(all_events, config, max_lookups=100)
+        companies = enrich_events(all_events, config, max_lookups=150)
         for company in companies.values():
             upsert_company(company)
         print(f"[companies] enriched={len(companies)}")
@@ -74,7 +79,7 @@ def run() -> None:
         signals = detect_signals(event, config)
         replace_signals_for_event(event["id"], signals)
 
-    for source in ("boamp", "bodacc", "ted"):
+    for source in source_names:
         if config.get("sources", {}).get(source, {}).get("enabled", True):
             try:
                 update_run(source, now_iso(), "OK", 0, saved_by_source.get(source, 0), None)
