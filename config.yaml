@@ -1,310 +1,416 @@
 target:
   headquarters_country:
-    - FR
+  - FR
   operating_countries:
-    - FR
-    - BE
-    - DE
-    - NL
-    - ES
-    - IT
-    - LU
-    - AT
-    - PT
-    - IE
-    - DK
-    - SE
-    - FI
-    - PL
-    - CZ
-
+  - FR
+  - BE
+  - DE
+  - NL
+  - ES
+  - IT
+  - LU
+  - AT
+  - PT
+  - IE
+  - DK
+  - SE
+  - FI
+  - PL
+  - CZ
 qualification:
   enabled: true
   require_company_metadata: true
   min_employees: 50
   allowed_naf_divisions:
-    # Industrie au sens large : extraction, industrie manufacturiere, energie, eau/dechets.
-    - "05"
-    - "06"
-    - "07"
-    - "08"
-    - "09"
-    - "10"
-    - "11"
-    - "12"
-    - "13"
-    - "14"
-    - "15"
-    - "16"
-    - "17"
-    - "18"
-    - "19"
-    - "20"
-    - "21"
-    - "22"
-    - "23"
-    - "24"
-    - "25"
-    - "26"
-    - "27"
-    - "28"
-    - "29"
-    - "30"
-    - "31"
-    - "32"
-    - "33"
-    - "35"
-    - "36"
-    - "37"
-    - "38"
-    - "39"
-    # Commerce.
-    - "45"
-    - "46"
-    - "47"
-    # Services / tertiaire.
-    - "49"
-    - "50"
-    - "51"
-    - "52"
-    - "53"
-    - "55"
-    - "56"
-    - "58"
-    - "59"
-    - "60"
-    - "61"
-    - "62"
-    - "63"
-    - "64"
-    - "65"
-    - "66"
-    - "68"
-    - "69"
-    - "70"
-    - "71"
-    - "72"
-    - "73"
-    - "74"
-    - "75"
-    - "77"
-    - "78"
-    - "79"
-    - "80"
-    - "81"
-    - "82"
-    # Administration publique.
-    - "84"
-    - "85"
-    - "86"
-    - "87"
-    - "88"
-    - "90"
-    - "91"
-    - "92"
-    - "93"
-    - "94"
-    - "95"
-    - "96"
-
+  - '05'
+  - '06'
+  - '07'
+  - 08
+  - 09
+  - '10'
+  - '11'
+  - '12'
+  - '13'
+  - '14'
+  - '15'
+  - '16'
+  - '17'
+  - '18'
+  - '19'
+  - '20'
+  - '21'
+  - '22'
+  - '23'
+  - '24'
+  - '25'
+  - '26'
+  - '27'
+  - '28'
+  - '29'
+  - '30'
+  - '31'
+  - '32'
+  - '33'
+  - '34'
+  - '35'
+  - '36'
+  - '37'
+  - '38'
+  - '39'
+  - '45'
+  - '46'
+  - '47'
+  - '49'
+  - '50'
+  - '51'
+  - '52'
+  - '53'
+  - '55'
+  - '56'
+  - '58'
+  - '59'
+  - '60'
+  - '61'
+  - '62'
+  - '63'
+  - '64'
+  - '65'
+  - '66'
+  - '68'
+  - '69'
+  - '70'
+  - '71'
+  - '72'
+  - '73'
+  - '74'
+  - '75'
+  - '77'
+  - '78'
+  - '79'
+  - '80'
+  - '81'
+  - '82'
+  - '84'
+  - '85'
+  - '86'
+  - '87'
+  - '88'
+  - '90'
+  - '91'
+  - '92'
+  - '93'
+  - '94'
+  - '95'
+  - '96'
 sectors:
-  - id: ai
-    enabled: true
-    label: "IA / Machine Learning"
-    keywords: ["intelligence artificielle", "artificial intelligence", "machine learning", "deep learning", "generative ai", "gpu", "cuda", "inference", "llm"]
-    weight: 20
-  - id: biotech
-    enabled: true
-    label: "Biotech / Bioinformatique"
-    keywords: ["bioinformatique", "bioinformatics", "sequencing", "genomique", "genomics", "hpc", "computational biology"]
-    weight: 16
-  - id: industry
-    enabled: true
-    label: "Industrie 4.0"
-    keywords: ["industrie 4.0", "industry 4.0", "digital twin", "simulation", "edge computing", "vision industrielle", "computer vision"]
-    weight: 14
-  - id: healthcare
-    enabled: true
-    label: "Sante / HealthTech"
-    keywords: ["healthtech", "imagerie medicale", "medical imaging", "hopital", "hospital", "donnees de sante", "health data"]
-    weight: 15
-  - id: finance
-    enabled: true
-    label: "Finance / FinTech / Assurance"
-    keywords: ["fintech", "assurance", "insurance", "banque", "bank", "trading", "risk engine"]
-    weight: 13
-  - id: hosting
-    enabled: true
-    label: "Hebergement / MSP / Cloud prive"
-    keywords: ["hebergeur", "hosting", "managed service provider", "msp", "private cloud", "cloud prive", "datacenter"]
-    weight: 22
-  - id: media
-    enabled: true
-    label: "Media / Video / Gaming"
-    keywords: ["streaming", "video", "rendering", "rendu 3d", "gaming", "vfx"]
-    weight: 14
-  - id: logistics
-    enabled: true
-    label: "Logistique automatisee"
-    keywords: ["logistique", "logistics", "warehouse automation", "automatisation entrepot", "computer vision"]
-    weight: 12
-
+- id: ai
+  enabled: true
+  label: IA / Machine Learning
+  keywords:
+  - intelligence artificielle
+  - artificial intelligence
+  - machine learning
+  - deep learning
+  - generative ai
+  - gpu
+  - cuda
+  - inference
+  - llm
+  weight: 20
+- id: biotech
+  enabled: true
+  label: Biotech / Bioinformatique
+  keywords:
+  - bioinformatique
+  - bioinformatics
+  - sequencing
+  - genomique
+  - genomics
+  - hpc
+  - computational biology
+  weight: 16
+- id: industry
+  enabled: true
+  label: Industrie 4.0
+  keywords:
+  - industrie 4.0
+  - industry 4.0
+  - digital twin
+  - simulation
+  - edge computing
+  - vision industrielle
+  - computer vision
+  weight: 14
+- id: healthcare
+  enabled: true
+  label: Sante / HealthTech
+  keywords:
+  - healthtech
+  - imagerie medicale
+  - medical imaging
+  - hopital
+  - hospital
+  - donnees de sante
+  - health data
+  weight: 15
+- id: finance
+  enabled: true
+  label: Finance / FinTech / Assurance
+  keywords:
+  - fintech
+  - assurance
+  - insurance
+  - banque
+  - bank
+  - trading
+  - risk engine
+  weight: 13
+- id: hosting
+  enabled: true
+  label: Hebergement / MSP / Cloud prive
+  keywords:
+  - hebergeur
+  - hosting
+  - managed service provider
+  - msp
+  - private cloud
+  - cloud prive
+  - datacenter
+  weight: 22
+- id: media
+  enabled: true
+  label: Media / Video / Gaming
+  keywords:
+  - streaming
+  - video
+  - rendering
+  - rendu 3d
+  - gaming
+  - vfx
+  weight: 14
+- id: logistics
+  enabled: true
+  label: Logistique automatisee
+  keywords:
+  - logistique
+  - logistics
+  - warehouse automation
+  - automatisation entrepot
+  - computer vision
+  weight: 12
 markets:
   server:
     enabled: true
-    label: "Serveurs / Compute"
-    keywords: ["serveur", "serveurs", "server", "servers", "compute node", "blade server", "rack server", "infrastructure de calcul"]
-    cpv: ["48820000", "30211000"]
+    label: Serveurs / Compute
+    keywords:
+    - serveur
+    - serveurs
+    - server
+    - servers
+    - compute node
+    - blade server
+    - rack server
+    - infrastructure de calcul
+    cpv:
+    - '48820000'
+    - '30211000'
     weight: 25
   gpu:
     enabled: true
-    label: "GPU / HPC / IA"
-    keywords: ["gpu", "nvidia", "cuda", "h100", "h200", "b200", "accelerator", "accelerateur", "high performance computing", "hpc"]
-    cpv: ["30200000"]
+    label: GPU / HPC / IA
+    keywords:
+    - gpu
+    - nvidia
+    - cuda
+    - h100
+    - h200
+    - b200
+    - accelerator
+    - accelerateur
+    - high performance computing
+    - hpc
+    cpv:
+    - '30200000'
     weight: 30
   storage:
     enabled: true
-    label: "Stockage / Backup"
-    keywords: ["stockage", "storage", "san", "nas", "object storage", "backup", "sauvegarde", "immutable backup", "disaster recovery"]
-    cpv: ["30233100", "30233000"]
+    label: Stockage / Backup
+    keywords:
+    - stockage
+    - storage
+    - san
+    - nas
+    - object storage
+    - backup
+    - sauvegarde
+    - immutable backup
+    - disaster recovery
+    cpv:
+    - '30233100'
+    - '30233000'
     weight: 24
   virtualization:
     enabled: true
-    label: "Virtualisation / Private Cloud"
-    keywords: ["virtualisation", "virtualization", "vmware", "proxmox", "hyper-v", "private cloud", "cloud prive", "hyperconverged", "hci"]
+    label: Virtualisation / Private Cloud
+    keywords:
+    - virtualisation
+    - virtualization
+    - vmware
+    - proxmox
+    - hyper-v
+    - private cloud
+    - cloud prive
+    - hyperconverged
+    - hci
     weight: 20
   network:
     enabled: true
-    label: "Reseau Datacenter"
-    keywords: ["reseau", "network", "ethernet", "infiniband", "100gbe", "400gbe", "switch datacenter", "spine leaf"]
-    cpv: ["32420000", "32422000"]
+    label: Reseau Datacenter
+    keywords:
+    - reseau
+    - network
+    - ethernet
+    - infiniband
+    - 100gbe
+    - 400gbe
+    - switch datacenter
+    - spine leaf
+    cpv:
+    - '32420000'
+    - '32422000'
     weight: 18
   datacenter:
     enabled: true
-    label: "Datacenter / Salle IT"
-    keywords: ["datacenter", "data center", "centre de donnees", "salle informatique", "infrastructure informatique", "infrastructure it"]
+    label: Datacenter / Salle IT
+    keywords:
+    - datacenter
+    - data center
+    - centre de donnees
+    - salle informatique
+    - infrastructure informatique
+    - infrastructure it
     weight: 22
   cloud_repatriation:
     enabled: true
-    label: "FinOps / Cloud Repatriation"
-    keywords: ["finops", "cloud cost", "cout cloud", "cloud repatriation", "rapatriement cloud", "hybrid cloud", "cloud hybride"]
+    label: FinOps / Cloud Repatriation
+    keywords:
+    - finops
+    - cloud cost
+    - cout cloud
+    - cloud repatriation
+    - rapatriement cloud
+    - hybrid cloud
+    - cloud hybride
     weight: 20
-
 job_signals:
   enabled: true
   keywords:
-    - devops
-    - site reliability engineer
-    - sre
-    - platform engineer
-    - infrastructure engineer
-    - infrastructure architect
-    - system administrator
-    - sysadmin
-    - network engineer
-    - cloud architect
-    - gpu engineer
-    - kubernetes
-    - vmware
-    - storage engineer
-    - datacenter engineer
-    - hpc engineer
-    - machine learning engineer
-    - mlops
+  - devops
+  - site reliability engineer
+  - sre
+  - platform engineer
+  - infrastructure engineer
+  - infrastructure architect
+  - system administrator
+  - sysadmin
+  - network engineer
+  - cloud architect
+  - gpu engineer
+  - kubernetes
+  - vmware
+  - storage engineer
+  - datacenter engineer
+  - hpc engineer
+  - machine learning engineer
+  - mlops
   weight: 24
   timing_weight: 20
-
 web_signals:
   enabled: true
   expansion_keywords:
-    - opens new site
-    - new facility
-    - new office
-    - expansion
-    - expands
-    - investment
-    - invests
-    - funding
-    - new factory
-    - new datacenter
-    - data center expansion
-    - ouvre un site
-    - nouveau site
-    - nouvelle usine
-    - investissement
-    - levee de fonds
+  - opens new site
+  - new facility
+  - new office
+  - expansion
+  - expands
+  - investment
+  - invests
+  - funding
+  - new factory
+  - new datacenter
+  - data center expansion
+  - ouvre un site
+  - nouveau site
+  - nouvelle usine
+  - investissement
+  - levee de fonds
   tech_keywords:
-    - artificial intelligence
-    - generative ai
-    - gpu
-    - hpc
-    - datacenter
-    - data center
-    - kubernetes
-    - private cloud
-    - storage
-    - server
-    - infrastructure
-    - cloud repatriation
-    - intelligence artificielle
-    - cloud prive
-    - serveur
-    - stockage
+  - artificial intelligence
+  - generative ai
+  - gpu
+  - hpc
+  - datacenter
+  - data center
+  - kubernetes
+  - private cloud
+  - storage
+  - server
+  - infrastructure
+  - cloud repatriation
+  - intelligence artificielle
+  - cloud prive
+  - serveur
+  - stockage
   expansion_weight: 22
   tech_weight: 22
-
 alerts:
   minimum_score: 65
   hot_score: 80
   critical_score: 90
-
 scoring:
   infra_fit_weight: 0.35
   buying_intent_weight: 0.45
-  timing_weight: 0.20
+  timing_weight: 0.2
   recent_tender_bonus: 30
   recent_company_event_bonus: 12
   multi_signal_bonus: 10
-
 automation:
   lookback_days: 14
   max_pages_per_source: 10
   page_size: 100
   excel_top_leads: 500
   request_timeout_seconds: 45
-  user_agent: "MARKETIA/1.0 public-data-commercial-intelligence"
-
+  user_agent: MARKETIA/1.0 public-data-commercial-intelligence
 grafana:
   enabled: true
   top_opportunities: 500
   recent_events: 2500
   recent_signals: 5000
-
 history:
   enabled: true
   retention_days: 30
   archive_excel: true
-
 sources:
   boamp:
     enabled: true
-    base_url: "https://boamp-datadila.opendatasoft.com/api/explore/v2.0/catalog/datasets/boamp/records"
+    base_url: https://boamp-datadila.opendatasoft.com/api/explore/v2.0/catalog/datasets/boamp/records
   bodacc:
     enabled: true
-    base_url: "https://bodacc-datadila.opendatasoft.com/api/explore/v2.0/catalog/datasets/annonces-commerciales/records"
+    base_url: https://bodacc-datadila.opendatasoft.com/api/explore/v2.0/catalog/datasets/annonces-commerciales/records
   ted:
     enabled: true
-    base_url: "https://api.ted.europa.eu/v3/notices/search"
+    base_url: https://api.ted.europa.eu/v3/notices/search
   recherche_entreprises:
     enabled: true
-    base_url: "https://recherche-entreprises.api.gouv.fr"
+    base_url: https://recherche-entreprises.api.gouv.fr
   arbeitnow:
     enabled: true
-    base_url: "https://www.arbeitnow.com/api/job-board-api"
+    base_url: https://www.arbeitnow.com/api/job-board-api
     max_pages: 5
   gdelt:
     enabled: true
-    base_url: "https://api.gdeltproject.org/api/v2/doc/doc"
-    timespan: "14d"
+    base_url: https://api.gdeltproject.org/api/v2/doc/doc
+    timespan: 14d
     max_records: 250
-    query: '(server OR servers OR datacenter OR "data center" OR GPU OR HPC OR "private cloud" OR storage OR backup OR virtualization OR Kubernetes OR "artificial intelligence")'
+    query: (server OR servers OR datacenter OR "data center" OR GPU OR HPC OR "private
+      cloud" OR storage OR backup OR virtualization OR Kubernetes OR "artificial intelligence")
