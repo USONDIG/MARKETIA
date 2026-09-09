@@ -11,7 +11,9 @@ import yaml
 
 REPO = "USONDIG/MARKETIA"
 CONFIG_PATH = "config.yaml"
+WORKFLOW_FILE = "radar.yml"
 GITHUB_API = f"https://api.github.com/repos/{REPO}/contents/{CONFIG_PATH}"
+ACTIONS_API = f"https://api.github.com/repos/{REPO}/actions"
 RAW_BASE = f"https://raw.githubusercontent.com/{REPO}/main/output/grafana"
 
 NAF_GROUPS = {
@@ -78,6 +80,37 @@ def load_json_feed(name: str):
     return response.json()
 
 
+@st.cache_data(ttl=20, show_spinner=False)
+def load_workflow_runs(limit: int = 5) -> list[dict]:
+    response = requests.get(
+        f"{ACTIONS_API}/workflows/{WORKFLOW_FILE}/runs",
+        headers=_headers(),
+        params={"branch": "main", "per_page": limit},
+        timeout=20,
+    )
+    response.raise_for_status()
+    return response.json().get("workflow_runs", [])
+
+
+def trigger_workflow() -> None:
+    response = requests.post(
+        f"{ACTIONS_API}/workflows/{WORKFLOW_FILE}/dispatches",
+        headers=_headers(),
+        json={"ref": "main"},
+        timeout=20,
+    )
+    response.raise_for_status()
+
+
+def rerun_workflow(run_id: int) -> None:
+    response = requests.post(
+        f"{ACTIONS_API}/runs/{run_id}/rerun",
+        headers=_headers(),
+        timeout=20,
+    )
+    response.raise_for_status()
+
+
 def save_config(config: dict, sha: str) -> str:
     encoded = base64.b64encode(
         yaml.safe_dump(config, sort_keys=False, allow_unicode=True).encode("utf-8")
@@ -112,9 +145,124 @@ def _safe_df(payload) -> pd.DataFrame:
     return pd.DataFrame()
 
 
+def _run_state(run: dict) -> tuple[str, str]:
+    status = str(run.get("status") or "unknown")
+    conclusion = str(run.get("conclusion") or "")
+    if status == "queued":
+        return "🟡", "En attente"
+    if status in {"in_progress", "requested", "waiting", "pending"}:
+        return "🔵", "En cours"
+    if conclusion == "success":
+        return "🟢", "Réussi"
+    if conclusion in {"failure", "timed_out", "cancelled", "action_required", "startup_failure"}:
+        return "🔴", "Échoué"
+    if status == "completed":
+        return "⚪", conclusion or "Terminé"
+    return "⚪", status
+
+
+def render_run_status() -> None:
+    st.markdown("### État des runs MARKETIA")
+    st.caption("Suivi et relance du workflow GitHub Actions MARKETIA Radar.")
+
+    try:
+        runs = load_workflow_runs(5)
+    except requests.HTTPError as exc:
+        if exc.response.status_code in {401, 403}:
+            st.error(
+                "Impossible de lire les runs GitHub Actions. Vérifie que le token GitHub Streamlit possède "
+                "la permission `Actions: Read and write`."
+            )
+        else:
+            st.error(f"Impossible de lire les runs GitHub Actions : {exc}")
+        return
+    except Exception as exc:
+        st.error(f"Impossible de lire les runs GitHub Actions : {exc}")
+        return
+
+    if not runs:
+        st.info("Aucun run MARKETIA trouvé.")
+        return
+
+    latest = runs[0]
+    icon, label = _run_state(latest)
+    latest_number = latest.get("run_number", "?")
+    latest_title = latest.get("display_title") or "MARKETIA Radar"
+    latest_created = str(latest.get("created_at") or "").replace("T", " ").replace("Z", " UTC")
+
+    c1, c2, c3, c4 = st.columns([1, 2, 2, 2])
+    c1.metric("Dernier run", f"#{latest_number}")
+    c2.metric("État", f"{icon} {label}")
+    c3.metric("Déclenchement", latest.get("event", "—"))
+    c4.metric("Date", latest_created or "—")
+    st.caption(latest_title)
+
+    controls1, controls2, controls3 = st.columns([1, 1, 3])
+    with controls1:
+        if st.button("Actualiser", key="refresh_runs", use_container_width=True):
+            load_workflow_runs.clear()
+            load_json_feed.clear()
+            st.rerun()
+    with controls2:
+        if st.button("Lancer maintenant", key="trigger_run", type="primary", use_container_width=True):
+            try:
+                trigger_workflow()
+                load_workflow_runs.clear()
+                st.success("Nouveau run MARKETIA demandé.")
+                st.rerun()
+            except requests.HTTPError as exc:
+                if exc.response.status_code in {401, 403}:
+                    st.error("Permission insuffisante : ajoute `Actions: Read and write` au token GitHub utilisé par Streamlit.")
+                else:
+                    st.error(f"Impossible de lancer MARKETIA : {exc.response.text[:500]}")
+            except Exception as exc:
+                st.error(f"Impossible de lancer MARKETIA : {exc}")
+
+    run_rows = []
+    for run in runs:
+        run_icon, run_label = _run_state(run)
+        run_rows.append(
+            {
+                "Run": f"#{run.get('run_number', '?')}",
+                "État": f"{run_icon} {run_label}",
+                "Déclencheur": run.get("event", ""),
+                "Titre": run.get("display_title", ""),
+                "Créé": str(run.get("created_at") or "").replace("T", " ").replace("Z", " UTC"),
+                "URL": run.get("html_url", ""),
+            }
+        )
+    st.dataframe(pd.DataFrame(run_rows), use_container_width=True, hide_index=True)
+
+    rerunnable = [run for run in runs if run.get("status") == "completed"]
+    if rerunnable:
+        options = {
+            f"#{run.get('run_number')} — {_run_state(run)[1]} — {run.get('display_title', 'MARKETIA Radar')}": run
+            for run in rerunnable
+        }
+        selected_label = st.selectbox("Run à relancer", list(options), key="rerun_selector")
+        selected_run = options[selected_label]
+        if st.button("Relancer le run sélectionné", key="rerun_selected"):
+            try:
+                rerun_workflow(int(selected_run["id"]))
+                load_workflow_runs.clear()
+                st.success(f"Relance du run #{selected_run.get('run_number')} demandée.")
+                st.rerun()
+            except requests.HTTPError as exc:
+                if exc.response.status_code in {401, 403}:
+                    st.error("Permission insuffisante : ajoute `Actions: Read and write` au token GitHub utilisé par Streamlit.")
+                else:
+                    st.error(f"Impossible de relancer ce run : {exc.response.text[:500]}")
+            except Exception as exc:
+                st.error(f"Impossible de relancer ce run : {exc}")
+
+    st.divider()
+
+
 def render_dashboard() -> None:
     st.subheader("Dashboard MARKETIA")
     st.caption("Vue native Streamlit alimentée par les mêmes flux JSON que Grafana.")
+
+    render_run_status()
 
     try:
         stats = _safe_df(load_json_feed("dashboard_stats.json"))
