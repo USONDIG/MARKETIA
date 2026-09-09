@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from datetime import datetime, timezone
 from typing import Any
 
 from database import connect, save_score
@@ -29,16 +28,10 @@ def calculate_scores(config: dict) -> list[dict[str, Any]]:
     with connect() as db:
         rows = db.execute(
             """
-            SELECT
-                e.id AS event_id,
-                e.siren,
-                COALESCE(e.company_name, c.name, 'Unknown') AS company_name,
-                s.signal_type,
-                s.label,
-                s.strength,
-                s.weight,
-                e.event_date,
-                e.source
+            SELECT e.id AS event_id, e.siren,
+                   COALESCE(e.company_name, c.name, 'Unknown') AS company_name,
+                   e.event_type, s.signal_type, s.label, s.strength, s.weight,
+                   e.event_date, e.source
             FROM signals s
             JOIN events e ON e.id = s.event_id
             LEFT JOIN companies c ON c.siren = e.siren
@@ -63,9 +56,12 @@ def calculate_scores(config: dict) -> list[dict[str, Any]]:
         timing = 0.0
         market_labels: set[str] = set()
         contributions: list[tuple[float, str]] = []
+        has_public_tender = False
 
         for row in entity_rows:
             contribution = float(row["strength"]) * float(row["weight"])
+            if row["event_type"] == "public_tender":
+                has_public_tender = True
             if row["signal_type"] == "sector":
                 infra_fit += contribution
             elif row["signal_type"] == "market":
@@ -75,9 +71,16 @@ def calculate_scores(config: dict) -> list[dict[str, Any]]:
                 timing += contribution
             contributions.append((contribution, row["label"] or row["signal_type"]))
 
+        if has_public_tender and market_labels:
+            infra_fit = max(infra_fit, 55.0)
+            buying_intent = max(buying_intent, 78.0)
+            timing = max(timing, 82.0)
         if len(market_labels) >= 2:
             buying_intent += multi_bonus
-        if len(market_labels) >= 3:
+            if has_public_tender:
+                buying_intent = max(buying_intent, 88.0)
+        if len(market_labels) >= 3 and has_public_tender:
+            buying_intent = max(buying_intent, 95.0)
             timing += multi_bonus / 2
 
         infra_fit = clamp(infra_fit)
