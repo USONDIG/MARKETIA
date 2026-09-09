@@ -43,24 +43,19 @@ def _headers() -> dict[str, str]:
 def _authenticated() -> bool:
     if st.session_state.get("authenticated"):
         return True
-
     st.title("MARKETIA — Administration")
     st.caption("Connexion requise")
     with st.form("login"):
         username = st.text_input("Identifiant")
         password = st.text_input("Mot de passe", type="password")
         submitted = st.form_submit_button("Se connecter", use_container_width=True)
-
     if submitted:
         expected_user = str(st.secrets.get("admin_username", ""))
         expected_password = str(st.secrets.get("admin_password", ""))
-        user_ok = hmac.compare_digest(username, expected_user)
-        pass_ok = hmac.compare_digest(password, expected_password)
-        if user_ok and pass_ok:
+        if hmac.compare_digest(username, expected_user) and hmac.compare_digest(password, expected_password):
             st.session_state["authenticated"] = True
             st.rerun()
-        else:
-            st.error("Identifiant ou mot de passe incorrect.")
+        st.error("Identifiant ou mot de passe incorrect.")
     return False
 
 
@@ -95,19 +90,13 @@ def load_workflow_runs(limit: int = 5) -> list[dict]:
 def trigger_workflow() -> None:
     response = requests.post(
         f"{ACTIONS_API}/workflows/{WORKFLOW_FILE}/dispatches",
-        headers=_headers(),
-        json={"ref": "main"},
-        timeout=20,
+        headers=_headers(), json={"ref": "main"}, timeout=20,
     )
     response.raise_for_status()
 
 
 def rerun_workflow(run_id: int) -> None:
-    response = requests.post(
-        f"{ACTIONS_API}/runs/{run_id}/rerun",
-        headers=_headers(),
-        timeout=20,
-    )
+    response = requests.post(f"{ACTIONS_API}/runs/{run_id}/rerun", headers=_headers(), timeout=20)
     response.raise_for_status()
 
 
@@ -163,107 +152,74 @@ def _run_state(run: dict) -> tuple[str, str]:
 
 def render_run_status() -> None:
     st.markdown("### État des runs MARKETIA")
-    st.caption("Suivi et relance du workflow GitHub Actions MARKETIA Radar.")
-
     try:
         runs = load_workflow_runs(5)
-    except requests.HTTPError as exc:
-        if exc.response.status_code in {401, 403}:
-            st.error(
-                "Impossible de lire les runs GitHub Actions. Vérifie que le token GitHub Streamlit possède "
-                "la permission `Actions: Read and write`."
-            )
-        else:
-            st.error(f"Impossible de lire les runs GitHub Actions : {exc}")
-        return
     except Exception as exc:
         st.error(f"Impossible de lire les runs GitHub Actions : {exc}")
         return
-
     if not runs:
         st.info("Aucun run MARKETIA trouvé.")
         return
 
     latest = runs[0]
     icon, label = _run_state(latest)
-    latest_number = latest.get("run_number", "?")
-    latest_title = latest.get("display_title") or "MARKETIA Radar"
-    latest_created = str(latest.get("created_at") or "").replace("T", " ").replace("Z", " UTC")
-
+    created = str(latest.get("created_at") or "").replace("T", " ").replace("Z", " UTC")
     c1, c2, c3, c4 = st.columns([1, 2, 2, 2])
-    c1.metric("Dernier run", f"#{latest_number}")
+    c1.metric("Dernier run", f"#{latest.get('run_number', '?')}")
     c2.metric("État", f"{icon} {label}")
     c3.metric("Déclenchement", latest.get("event", "—"))
-    c4.metric("Date", latest_created or "—")
-    st.caption(latest_title)
+    c4.metric("Date", created or "—")
 
-    controls1, controls2, controls3 = st.columns([1, 1, 3])
-    with controls1:
+    a, b, _ = st.columns([1, 1, 3])
+    with a:
         if st.button("Actualiser", key="refresh_runs", use_container_width=True):
             load_workflow_runs.clear()
             load_json_feed.clear()
             st.rerun()
-    with controls2:
+    with b:
         if st.button("Lancer maintenant", key="trigger_run", type="primary", use_container_width=True):
             try:
                 trigger_workflow()
                 load_workflow_runs.clear()
-                st.success("Nouveau run MARKETIA demandé.")
                 st.rerun()
-            except requests.HTTPError as exc:
-                if exc.response.status_code in {401, 403}:
-                    st.error("Permission insuffisante : ajoute `Actions: Read and write` au token GitHub utilisé par Streamlit.")
-                else:
-                    st.error(f"Impossible de lancer MARKETIA : {exc.response.text[:500]}")
             except Exception as exc:
                 st.error(f"Impossible de lancer MARKETIA : {exc}")
 
-    run_rows = []
+    rows = []
     for run in runs:
         run_icon, run_label = _run_state(run)
-        run_rows.append(
-            {
-                "Run": f"#{run.get('run_number', '?')}",
-                "État": f"{run_icon} {run_label}",
-                "Déclencheur": run.get("event", ""),
-                "Titre": run.get("display_title", ""),
-                "Créé": str(run.get("created_at") or "").replace("T", " ").replace("Z", " UTC"),
-                "URL": run.get("html_url", ""),
-            }
-        )
-    st.dataframe(pd.DataFrame(run_rows), use_container_width=True, hide_index=True)
+        rows.append({
+            "Run": f"#{run.get('run_number', '?')}",
+            "État": f"{run_icon} {run_label}",
+            "Déclencheur": run.get("event", ""),
+            "Titre": run.get("display_title", ""),
+            "Créé": str(run.get("created_at") or "").replace("T", " ").replace("Z", " UTC"),
+            "URL": run.get("html_url", ""),
+        })
+    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
     rerunnable = [run for run in runs if run.get("status") == "completed"]
     if rerunnable:
-        options = {
+        choices = {
             f"#{run.get('run_number')} — {_run_state(run)[1]} — {run.get('display_title', 'MARKETIA Radar')}": run
             for run in rerunnable
         }
-        selected_label = st.selectbox("Run à relancer", list(options), key="rerun_selector")
-        selected_run = options[selected_label]
+        selected_label = st.selectbox("Run à relancer", list(choices), key="rerun_selector")
+        selected_run = choices[selected_label]
         if st.button("Relancer le run sélectionné", key="rerun_selected"):
             try:
                 rerun_workflow(int(selected_run["id"]))
                 load_workflow_runs.clear()
-                st.success(f"Relance du run #{selected_run.get('run_number')} demandée.")
                 st.rerun()
-            except requests.HTTPError as exc:
-                if exc.response.status_code in {401, 403}:
-                    st.error("Permission insuffisante : ajoute `Actions: Read and write` au token GitHub utilisé par Streamlit.")
-                else:
-                    st.error(f"Impossible de relancer ce run : {exc.response.text[:500]}")
             except Exception as exc:
                 st.error(f"Impossible de relancer ce run : {exc}")
-
     st.divider()
 
 
 def render_dashboard() -> None:
     st.subheader("Dashboard MARKETIA")
-    st.caption("Vue native Streamlit alimentée par les mêmes flux JSON que Grafana.")
-
+    st.caption("Vue des opportunités qualifiées.")
     render_run_status()
-
     try:
         stats = _safe_df(load_json_feed("dashboard_stats.json"))
         opportunities = _safe_df(load_json_feed("opportunities.json"))
@@ -287,16 +243,16 @@ def render_dashboard() -> None:
 
     with st.expander("Filtres", expanded=True):
         f1, f2, f3, f4 = st.columns(4)
-        priorities = sorted([x for x in opportunities.get("priority", pd.Series(dtype=str)).dropna().unique().tolist()]) if not opportunities.empty else []
-        countries = sorted([x for x in opportunities.get("country", pd.Series(dtype=str)).dropna().unique().tolist()]) if not opportunities.empty else []
+        priorities = sorted(opportunities.get("priority", pd.Series(dtype=str)).dropna().unique().tolist()) if not opportunities.empty else []
+        countries = sorted(opportunities.get("country", pd.Series(dtype=str)).dropna().unique().tolist()) if not opportunities.empty else []
         with f1:
-            selected_priorities = st.multiselect("Priorité", priorities, default=priorities)
+            selected_priorities = st.multiselect("Priorité", priorities, default=priorities, key="opp_priorities")
         with f2:
-            selected_countries = st.multiselect("Pays", countries, default=countries)
+            selected_countries = st.multiselect("Pays", countries, default=countries, key="opp_countries")
         with f3:
-            min_score = st.slider("Score minimum", 0, 100, 0)
+            min_score = st.slider("Score minimum", 0, 100, 0, key="opp_score")
         with f4:
-            company_search = st.text_input("Entreprise contient", "")
+            company_search = st.text_input("Entreprise contient", "", key="opp_search")
 
     filtered = opportunities.copy()
     if not filtered.empty:
@@ -312,18 +268,13 @@ def render_dashboard() -> None:
     left, right = st.columns([2, 1])
     with left:
         st.markdown("### Top opportunités")
-        preferred_cols = [
-            "priority", "opportunity_score", "company_name", "country", "naf", "employees",
-            "infra_fit", "buying_intent", "timing", "top_signal",
-        ]
-        cols = [c for c in preferred_cols if c in filtered.columns]
+        preferred = ["priority", "opportunity_score", "company_name", "country", "naf", "employees", "infra_fit", "buying_intent", "timing", "top_signal"]
+        cols = [c for c in preferred if c in filtered.columns]
         st.dataframe(filtered[cols] if cols else filtered, use_container_width=True, hide_index=True, height=420)
-
     with right:
         st.markdown("### Répartition par pays")
         if not country_summary.empty and {"country", "opportunities"}.issubset(country_summary.columns):
-            chart_df = country_summary[["country", "opportunities"]].dropna().set_index("country")
-            st.bar_chart(chart_df)
+            st.bar_chart(country_summary[["country", "opportunities"]].dropna().set_index("country"))
         else:
             st.info("Pas encore de données pays.")
 
@@ -342,24 +293,91 @@ def render_dashboard() -> None:
             st.info("Pas encore de synthèse source.")
 
     st.markdown("### Pourquoi maintenant ?")
-    company_options = sorted(filtered["company_name"].dropna().astype(str).unique().tolist()) if not filtered.empty and "company_name" in filtered.columns else []
-    selected_company = st.selectbox("Choisir une entreprise", [""] + company_options)
+    companies = sorted(filtered["company_name"].dropna().astype(str).unique().tolist()) if not filtered.empty and "company_name" in filtered.columns else []
+    selected_company = st.selectbox("Choisir une entreprise", [""] + companies, key="opp_company")
     if selected_company:
         company_signals = signals[signals["company_name"].astype(str) == selected_company] if not signals.empty and "company_name" in signals.columns else pd.DataFrame()
         company_events = events[events["company_name"].astype(str) == selected_company] if not events.empty and "company_name" in events.columns else pd.DataFrame()
         s1, s2 = st.columns(2)
         with s1:
-            st.caption("Signaux détectés")
-            sig_cols = [c for c in ["event_date", "source", "signal_type", "label", "strength", "title", "url"] if c in company_signals.columns]
-            st.dataframe(company_signals[sig_cols] if sig_cols else company_signals, use_container_width=True, hide_index=True, height=320)
+            cols = [c for c in ["event_date", "source", "signal_type", "label", "strength", "title", "url"] if c in company_signals.columns]
+            st.dataframe(company_signals[cols] if cols else company_signals, use_container_width=True, hide_index=True, height=320)
         with s2:
-            st.caption("Événements sources")
-            evt_cols = [c for c in ["event_date", "source", "event_type", "title", "detected_signals", "url"] if c in company_events.columns]
-            st.dataframe(company_events[evt_cols] if evt_cols else company_events, use_container_width=True, hide_index=True, height=320)
+            cols = [c for c in ["event_date", "source", "event_type", "title", "detected_signals", "url"] if c in company_events.columns]
+            st.dataframe(company_events[cols] if cols else company_events, use_container_width=True, hide_index=True, height=320)
 
     grafana_url = str(st.secrets.get("grafana_url", "")).strip()
     if grafana_url:
-        st.link_button("Ouvrir Grafana pour l'analyse avancée", grafana_url, use_container_width=False)
+        st.link_button("Ouvrir Grafana pour l'analyse avancée", grafana_url)
+
+
+def render_discovery() -> None:
+    st.subheader("📡 Radar / Discovery")
+    st.caption("Vue large des comptes détectés, même lorsqu'ils ne sont pas encore totalement enrichis ou qualifiés.")
+    try:
+        discovery = _safe_df(load_json_feed("discovery.json"))
+        stats = _safe_df(load_json_feed("dashboard_stats.json"))
+    except Exception as exc:
+        st.error(f"Impossible de charger le Radar Discovery : {exc}")
+        return
+
+    if st.button("Actualiser Discovery", key="refresh_discovery"):
+        load_json_feed.clear()
+        st.rerun()
+
+    if not stats.empty:
+        row = stats.iloc[0]
+        c1, c2, c3, c4, c5 = st.columns(5)
+        c1.metric("Détectées", int(row.get("discovery_entities", 0) or 0))
+        c2.metric("HIGH", int(row.get("discovery_high", 0) or 0))
+        c3.metric("MEDIUM", int(row.get("discovery_medium", 0) or 0))
+        c4.metric("Identifiées +", int(row.get("identified_or_better", 0) or 0))
+        c5.metric("Qualifiées", int(row.get("qualified_from_discovery", 0) or 0))
+
+    if discovery.empty:
+        st.info("Aucun compte Discovery disponible.")
+        return
+
+    with st.expander("Filtres Discovery", expanded=True):
+        a, b, c, d = st.columns(4)
+        priorities = sorted(discovery.get("discovery_priority", pd.Series(dtype=str)).dropna().astype(str).unique().tolist())
+        statuses = sorted(discovery.get("status", pd.Series(dtype=str)).dropna().astype(str).unique().tolist())
+        countries = sorted(discovery.get("country", pd.Series(dtype=str)).dropna().astype(str).unique().tolist())
+        with a:
+            selected_priorities = st.multiselect("Priorité Discovery", priorities, default=priorities, key="disc_priorities")
+        with b:
+            selected_statuses = st.multiselect("Statut", statuses, default=statuses, key="disc_statuses")
+        with c:
+            selected_countries = st.multiselect("Pays", countries, default=countries, key="disc_countries")
+        with d:
+            min_score = st.slider("Score Discovery minimum", 0, 100, 0, key="disc_score")
+        search = st.text_input("Entreprise / signal / marché contient", "", key="disc_search")
+
+    filtered = discovery.copy()
+    if selected_priorities and "discovery_priority" in filtered.columns:
+        filtered = filtered[filtered["discovery_priority"].isin(selected_priorities)]
+    if selected_statuses and "status" in filtered.columns:
+        filtered = filtered[filtered["status"].isin(selected_statuses)]
+    if selected_countries and "country" in filtered.columns:
+        filtered = filtered[filtered["country"].isin(selected_countries)]
+    if "discovery_score" in filtered.columns:
+        filtered = filtered[pd.to_numeric(filtered["discovery_score"], errors="coerce").fillna(0) >= min_score]
+    if search:
+        mask = pd.Series(False, index=filtered.index)
+        for column in ["company_name", "markets", "top_signals", "sources"]:
+            if column in filtered.columns:
+                mask |= filtered[column].astype(str).str.contains(search, case=False, na=False)
+        filtered = filtered[mask]
+
+    st.markdown(f"### Comptes détectés — {len(filtered)}")
+    preferred = [
+        "discovery_priority", "discovery_score", "status", "company_name", "country", "naf",
+        "employee_range", "event_count", "signal_count", "sources", "markets", "top_signals",
+        "latest_event_date", "latest_title", "latest_url",
+    ]
+    cols = [c for c in preferred if c in filtered.columns]
+    st.dataframe(filtered[cols] if cols else filtered, use_container_width=True, hide_index=True, height=650)
+    st.info("DISCOVERED = signal détecté ; IDENTIFIED = entreprise identifiée ; ENRICHED = métadonnées disponibles ; QUALIFIED = conforme au ciblage MARKETIA.")
 
 
 def main() -> None:
@@ -388,40 +406,28 @@ def main() -> None:
 
     edited = deepcopy(config)
 
-    tab_dashboard, tab_target, tab_sectors, tab_markets, tab_scoring, tab_raw = st.tabs(
-        ["Dashboard", "Ciblage", "Secteurs", "Marchés", "Scoring", "Avancé"]
+    tab_dashboard, tab_discovery, tab_target, tab_sectors, tab_markets, tab_scoring, tab_raw = st.tabs(
+        ["Dashboard", "📡 Radar / Discovery", "Ciblage", "Secteurs", "Marchés", "Scoring", "Avancé"]
     )
 
     with tab_dashboard:
         render_dashboard()
-
+    with tab_discovery:
+        render_discovery()
     with tab_target:
         q = edited.setdefault("qualification", {})
         c1, c2, c3 = st.columns(3)
         with c1:
             q["enabled"] = st.toggle("Activer la qualification", value=bool(q.get("enabled", True)))
         with c2:
-            q["require_company_metadata"] = st.toggle(
-                "Métadonnées entreprise obligatoires", value=bool(q.get("require_company_metadata", True))
-            )
+            q["require_company_metadata"] = st.toggle("Métadonnées entreprise obligatoires", value=bool(q.get("require_company_metadata", True)))
         with c3:
-            q["min_employees"] = int(
-                st.number_input("Effectif minimum", min_value=1, max_value=100000, value=int(q.get("min_employees", 50)), step=10)
-            )
+            q["min_employees"] = int(st.number_input("Effectif minimum", min_value=1, max_value=100000, value=int(q.get("min_employees", 50)), step=10))
 
         current_allowed = [str(x).zfill(2) for x in q.get("allowed_naf_divisions", [])]
-        groups = st.multiselect(
-            "Familles d'activité autorisées",
-            options=list(NAF_GROUPS),
-            default=_selected_groups(current_allowed),
-            help="Sélectionne les grandes familles. Tu peux affiner les divisions NAF juste en dessous.",
-        )
+        groups = st.multiselect("Familles d'activité autorisées", options=list(NAF_GROUPS), default=_selected_groups(current_allowed))
         default_from_groups = sorted({code for group in groups for code in NAF_GROUPS[group]})
-        q["allowed_naf_divisions"] = st.multiselect(
-            "Divisions NAF autorisées",
-            options=ALL_NAF,
-            default=default_from_groups if groups else current_allowed,
-        )
+        q["allowed_naf_divisions"] = st.multiselect("Divisions NAF autorisées", options=ALL_NAF, default=default_from_groups if groups else current_allowed)
 
         target = edited.setdefault("target", {})
         target["headquarters_country"] = st.multiselect(
