@@ -379,6 +379,7 @@ automation:
   max_pages_per_source: 10
   page_size: 100
   excel_top_leads: 500
+  company_enrichment_max_lookups: 400
   request_timeout_seconds: 45
   user_agent: MARKETIA/1.0 public-data-commercial-intelligence
 grafana:
