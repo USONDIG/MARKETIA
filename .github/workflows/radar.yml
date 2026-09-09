@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: marketia-radar
@@ -60,6 +61,35 @@ jobs:
             head -n 21 output/alerts.csv >> "$GITHUB_STEP_SUMMARY"
           else
             echo "Aucun fichier d'alertes généré." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Publish rolling GitHub alert
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          COUNT=$(($(wc -l < output/alerts.csv)-1))
+          if [ "$COUNT" -gt 0 ]; then
+            BODY=$(mktemp)
+            {
+              echo "# MARKETIA Radar Alerts"
+              echo
+              echo "Dernière mise à jour automatique : $(date -u '+%Y-%m-%d %H:%M UTC')"
+              echo
+              echo "**$COUNT opportunité(s) au-dessus du seuil configuré.**"
+              echo
+              echo '```csv'
+              head -n 31 output/alerts.csv
+              echo '```'
+              echo
+              echo "Le détail complet est disponible dans \`output/server_infra_radar.xlsx\`."
+            } > "$BODY"
+            ISSUE=$(gh issue list --state open --search 'MARKETIA Radar Alerts in:title' --json number,title --jq '.[] | select(.title == "MARKETIA Radar Alerts") | .number' | head -n 1)
+            if [ -n "$ISSUE" ]; then
+              gh issue edit "$ISSUE" --body-file "$BODY"
+            else
+              gh issue create --title "MARKETIA Radar Alerts" --body-file "$BODY"
+            fi
           fi
 
       - name: Persist database and outputs
