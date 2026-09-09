@@ -10,6 +10,7 @@ import requests
 
 from contact_database import upsert_contact
 from contacts import build_contact_targets
+from discovery import build_discovery
 from utils import now_iso
 
 SEARCH_URL = "https://html.duckduckgo.com/html/"
@@ -33,6 +34,8 @@ RESULT_RE = re.compile(
     re.I | re.S,
 )
 SNIPPET_RE = re.compile(r'<a[^>]+class="[^"]*result__snippet[^"]*"[^>]*>(.*?)</a>', re.I | re.S)
+EMAIL_RE = re.compile(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", re.I)
+PHONE_RE = re.compile(r"(?:\+\d{1,3}[\s().-]*)?(?:\d[\s().-]*){8,14}\d")
 
 
 def _clean_text(value: str) -> str:
@@ -54,6 +57,15 @@ def _domain(url: str) -> str:
 def _is_blocked(url: str) -> bool:
     domain = _domain(url)
     return domain in BLOCKED_DOMAINS or domain.endswith(".linkedin.com")
+
+
+def _role_class_for_title(title: str) -> str:
+    text = title.lower()
+    if any(token in text for token in ["procurement", "buyer", "achats", "category manager", "purchasing"]):
+        return "BUYER"
+    if any(token in text for token in ["cio", "cto", "dsi", "it director", "directeur informatique"]):
+        return "DECISION_MAKER"
+    return "TECHNICAL_INFLUENCER"
 
 
 def _role_matches(text: str, target_title: str, role_class: str) -> bool:
@@ -79,13 +91,6 @@ def _extract_name(title: str, snippet: str, company_name: str, target_title: str
     return None
 
 
-def _guess_job_title(text: str, target_title: str) -> str:
-    lower = text.lower()
-    if target_title.lower() in lower:
-        return target_title
-    return target_title
-
-
 def _search(query: str, timeout: int, user_agent: str, max_results: int) -> list[dict[str, str]]:
     response = requests.get(
         SEARCH_URL,
@@ -109,6 +114,65 @@ def _search(query: str, timeout: int, user_agent: str, max_results: int) -> list
     return results
 
 
+def _public_coordinates(url: str, timeout: int, user_agent: str) -> tuple[str | None, str | None]:
+    if _is_blocked(url):
+        return None, None
+    try:
+        response = requests.get(url, headers={"User-Agent": user_agent}, timeout=timeout, allow_redirects=True)
+        response.raise_for_status()
+    except requests.RequestException:
+        return None, None
+    if "text/html" not in response.headers.get("Content-Type", "text/html").lower():
+        return None, None
+    text = html.unescape(response.text[:1_000_000])
+    emails = [value for value in EMAIL_RE.findall(text) if not value.lower().endswith(("example.com", "domain.com"))]
+    phones = [re.sub(r"\s+", " ", value).strip() for value in PHONE_RE.findall(_clean_text(text))]
+    return (emails[0] if emails else None, phones[0] if phones else None)
+
+
+def _search_targets(config: dict, max_companies: int) -> list[dict[str, Any]]:
+    qualified = build_contact_targets(limit=max_companies)
+    rows = qualified.to_dict(orient="records") if not qualified.empty else []
+    known_entities = {str(row.get("entity_key") or "") for row in rows}
+
+    discovery = build_discovery(config, limit=max(max_companies * 4, 100))
+    if discovery.empty:
+        return rows
+
+    selected_companies = set(known_entities)
+    for lead in discovery.to_dict(orient="records"):
+        priority = str(lead.get("discovery_priority") or "")
+        if priority not in {"HIGH", "MEDIUM"}:
+            continue
+        company_name = str(lead.get("company_name") or "").strip()
+        if not company_name:
+            continue
+        siren = str(lead.get("siren") or "").strip()
+        entity_key = siren or f"NAME::{company_name.lower()}"
+        if entity_key not in selected_companies and len(selected_companies) >= max_companies:
+            continue
+        selected_companies.add(entity_key)
+        if entity_key in known_entities:
+            continue
+
+        role_text = str(lead.get("likely_contact_roles") or "")
+        titles = [part.strip() for part in role_text.split(",") if part.strip()]
+        for title in titles:
+            rows.append({
+                "entity_key": entity_key,
+                "siren": lead.get("siren"),
+                "company_name": company_name,
+                "opportunity_score": lead.get("discovery_score"),
+                "priority": priority,
+                "role_class": _role_class_for_title(title),
+                "target_title": title,
+                "relevance_score": 80,
+                "markets": lead.get("markets"),
+                "preferred_sources": "site corporate, communiqués, conférences/speakers, réseaux professionnels publics",
+            })
+    return rows
+
+
 def discover_contacts(config: dict) -> dict[str, int]:
     settings = config.get("contacts", {})
     if not settings.get("enabled", True) or not settings.get("search_enabled", True):
@@ -121,15 +185,15 @@ def discover_contacts(config: dict) -> dict[str, int]:
     delay = float(settings.get("search_delay_seconds", 0.35))
     user_agent = str(config.get("automation", {}).get("user_agent", "MARKETIA/1.0 public-contact-discovery"))
 
-    targets = build_contact_targets(limit=max_companies)
-    if targets.empty:
+    targets = _search_targets(config, max_companies)
+    if not targets:
         return {"queries": 0, "found": 0, "saved": 0}
 
     queries = found = saved = 0
     seen_companies: dict[str, int] = {}
     seen_contacts: set[tuple[str, str, str]] = set()
 
-    for row in targets.to_dict(orient="records"):
+    for row in targets:
         entity_key = str(row.get("entity_key") or "")
         company_name = str(row.get("company_name") or "").strip()
         target_title = str(row.get("target_title") or "").strip()
@@ -153,7 +217,6 @@ def discover_contacts(config: dict) -> dict[str, int]:
         for result in results:
             evidence = f"{result['title']} {result['snippet']}"
             if company_name.lower() not in evidence.lower():
-                # The company name must be visible in the public evidence to reduce false matches.
                 continue
             if not _role_matches(evidence, target_title, role_class):
                 continue
@@ -167,19 +230,21 @@ def discover_contacts(config: dict) -> dict[str, int]:
             seen_contacts.add(dedupe)
             found += 1
 
+            professional_email, professional_phone = _public_coordinates(result["url"], timeout, user_agent)
             source_domain = _domain(result["url"])
-            confidence = 72.0 if target_title.lower() in evidence.lower() else 58.0
+            exact_role = target_title.lower() in evidence.lower()
+            confidence = 78.0 if exact_role and (professional_email or professional_phone) else (72.0 if exact_role else 58.0)
             contact: dict[str, Any] = {
                 "entity_key": entity_key,
                 "siren": row.get("siren"),
                 "company_name": company_name,
                 "full_name": full_name,
-                "job_title": _guess_job_title(evidence, target_title),
+                "job_title": target_title,
                 "role_class": role_class,
                 "relevance_score": float(row.get("relevance_score") or 0),
                 "linkedin_url": None,
-                "professional_email": None,
-                "professional_phone": None,
+                "professional_email": professional_email,
+                "professional_phone": professional_phone,
                 "source_name": source_domain or "public_web",
                 "source_url": result["url"],
                 "confidence": confidence,
