@@ -8,6 +8,7 @@ from pathlib import Path
 import pandas as pd
 
 from database import connect
+from qualification import employee_info, naf_division
 
 OUTPUT_DIR = Path("output")
 GRAFANA_DIR = OUTPUT_DIR / "grafana"
@@ -46,6 +47,17 @@ def _prune_history(retention_days: int) -> None:
             shutil.rmtree(path, ignore_errors=True)
 
 
+def _add_qualification_columns(df: pd.DataFrame) -> pd.DataFrame:
+    if df.empty:
+        return df
+    df = df.copy()
+    df["naf_division"] = df["naf"].apply(naf_division)
+    df["employee_min"] = df["employees"].apply(lambda value: employee_info(value)["employee_min"])
+    df["employee_range"] = df["employees"].apply(lambda value: employee_info(value)["employee_range"])
+    df["qualified_target"] = True
+    return df
+
+
 def export_grafana_and_history(config: dict) -> None:
     grafana_cfg = config.get("grafana", {})
     if not grafana_cfg.get("enabled", True):
@@ -65,6 +77,9 @@ def export_grafana_and_history(config: dict) -> None:
         ORDER BY s.opportunity_score DESC
         LIMIT {top_n}
     """)
+    opportunities = _add_qualification_columns(opportunities)
+
+    qualified_sirens = set(opportunities["siren"].dropna().astype(str)) if not opportunities.empty else set()
 
     events = _query(f"""
         SELECT e.event_date, e.source, e.event_type, e.company_name, e.siren,
@@ -76,6 +91,10 @@ def export_grafana_and_history(config: dict) -> None:
         ORDER BY COALESCE(e.event_date, e.collected_at) DESC
         LIMIT {event_limit}
     """)
+    if qualified_sirens and not events.empty:
+        events = events[events["siren"].astype(str).isin(qualified_sirens)]
+    else:
+        events = events.iloc[0:0]
 
     signals = _query(f"""
         SELECT e.company_name, e.siren, e.source, e.country, e.event_date,
@@ -86,34 +105,22 @@ def export_grafana_and_history(config: dict) -> None:
         ORDER BY s.detected_at DESC
         LIMIT {signal_limit}
     """)
+    if qualified_sirens and not signals.empty:
+        signals = signals[signals["siren"].astype(str).isin(qualified_sirens)]
+    else:
+        signals = signals.iloc[0:0]
 
     runs = _query("SELECT * FROM runs ORDER BY source")
 
-    priority_summary = (
-        opportunities.groupby("priority", dropna=False).size().reset_index(name="count")
-        if not opportunities.empty else pd.DataFrame(columns=["priority", "count"])
-    )
-    source_summary = (
-        events.groupby("source", dropna=False).size().reset_index(name="count")
-        if not events.empty else pd.DataFrame(columns=["source", "count"])
-    )
-    country_summary = (
-        opportunities.groupby("country", dropna=False).agg(
-            opportunities=("company_name", "count"),
-            avg_score=("opportunity_score", "mean"),
-            max_score=("opportunity_score", "max"),
-        ).reset_index()
-        if not opportunities.empty else pd.DataFrame(columns=["country", "opportunities", "avg_score", "max_score"])
-    )
-    market_summary = (
-        signals[signals["signal_type"].isin(["market", "job", "web_expansion", "web_tech"])]
-        .groupby("label", dropna=False).size().reset_index(name="count")
-        if not signals.empty else pd.DataFrame(columns=["label", "count"])
-    )
+    priority_summary = opportunities.groupby("priority", dropna=False).size().reset_index(name="count") if not opportunities.empty else pd.DataFrame(columns=["priority", "count"])
+    source_summary = events.groupby("source", dropna=False).size().reset_index(name="count") if not events.empty else pd.DataFrame(columns=["source", "count"])
+    country_summary = opportunities.groupby("country", dropna=False).agg(opportunities=("company_name", "count"), avg_score=("opportunity_score", "mean"), max_score=("opportunity_score", "max")).reset_index() if not opportunities.empty else pd.DataFrame(columns=["country", "opportunities", "avg_score", "max_score"])
+    market_summary = signals[signals["signal_type"].isin(["market", "job", "web_expansion", "web_tech"])].groupby("label", dropna=False).size().reset_index(name="count") if not signals.empty else pd.DataFrame(columns=["label", "count"])
 
     now = datetime.now(timezone.utc).replace(microsecond=0)
     stats = {
         "generated_at": now.isoformat().replace("+00:00", "Z"),
+        "target_rule": "Services FR, 50+ salaries",
         "opportunities": int(len(opportunities)),
         "critical": int((opportunities["priority"] == "CRITICAL").sum()) if not opportunities.empty else 0,
         "hot": int((opportunities["priority"] == "HOT").sum()) if not opportunities.empty else 0,
