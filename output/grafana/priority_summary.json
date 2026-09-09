@@ -1,22 +1,6 @@
 [
   {
-    "priority": "CRITICAL",
-    "count": 8
-  },
-  {
-    "priority": "HOT",
-    "count": 8
-  },
-  {
     "priority": "LOW",
-    "count": 364
-  },
-  {
-    "priority": "WARM",
-    "count": 74
-  },
-  {
-    "priority": "WATCH",
-    "count": 46
+    "count": 1
   }
 ]
