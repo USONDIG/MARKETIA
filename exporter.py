@@ -9,6 +9,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 from database import connect
+from discovery import build_discovery
 from qualification import employee_info, naf_division
 
 OUTPUT_DIR = Path("output")
@@ -36,6 +37,7 @@ def export_outputs(config: dict) -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     threshold = float(config.get("alerts", {}).get("minimum_score", 65))
     top_n = int(config.get("automation", {}).get("excel_top_leads", 500))
+    discovery_n = int(config.get("automation", {}).get("excel_top_discovery", 1000))
 
     opportunities = _query_df(
         f"""
@@ -61,6 +63,7 @@ def export_outputs(config: dict) -> None:
         """
     )
     opportunities = _add_qualification_columns(opportunities)
+    discovery = build_discovery(config, limit=discovery_n)
 
     events = _query_df(
         """
@@ -93,18 +96,22 @@ def export_outputs(config: dict) -> None:
     alerts = opportunities[opportunities["opportunity_score"] >= threshold].copy() if not opportunities.empty else opportunities.copy()
     alerts.to_csv(ALERTS_PATH, index=False, encoding="utf-8-sig")
 
+    discovery_qualified = int((discovery["status"] == "QUALIFIED").sum()) if not discovery.empty else 0
     dashboard = pd.DataFrame([
+        ["Radar / Discovery", int(len(discovery))],
+        ["Discovery qualifies", discovery_qualified],
         ["Leads qualifies", int(len(opportunities))],
         ["CRITICAL", int((opportunities["priority"] == "CRITICAL").sum()) if not opportunities.empty else 0],
         ["HOT", int((opportunities["priority"] == "HOT").sum()) if not opportunities.empty else 0],
         ["WARM", int((opportunities["priority"] == "WARM").sum()) if not opportunities.empty else 0],
         ["Alertes >= seuil", int(len(alerts))],
-        ["Cible", "Services FR, 50+ salaries"],
+        ["Cible qualifiee", "Industrie + commerce + services + administration publique, FR, 50+ salaries"],
         ["Seuil d'alerte", threshold],
     ], columns=["Indicateur", "Valeur"])
 
     with pd.ExcelWriter(XLSX_PATH, engine="openpyxl") as writer:
         dashboard.to_excel(writer, sheet_name="Dashboard", index=False, startrow=2)
+        discovery.to_excel(writer, sheet_name="Discovery", index=False)
         opportunities.to_excel(writer, sheet_name="Opportunities", index=False)
         alerts.to_excel(writer, sheet_name="Alerts", index=False)
         events.to_excel(writer, sheet_name="Events", index=False)
@@ -140,12 +147,20 @@ def export_outputs(config: dict) -> None:
             sheet.column_dimensions[get_column_letter(col_idx)].width = min(max(max_len + 2, 12), 42)
 
     if "Opportunities" in wb.sheetnames and wb["Opportunities"].max_row > 1:
-        score_col = 2
-        rng = f"{get_column_letter(score_col)}2:{get_column_letter(score_col)}{wb['Opportunities'].max_row}"
+        rng = f"B2:B{wb['Opportunities'].max_row}"
         wb["Opportunities"].conditional_formatting.add(
             rng,
             ColorScaleRule(start_type="num", start_value=0, start_color="FEE2E2",
                            mid_type="num", mid_value=65, mid_color="FEF3C7",
+                           end_type="num", end_value=100, end_color="DCFCE7")
+        )
+
+    if "Discovery" in wb.sheetnames and wb["Discovery"].max_row > 1:
+        rng = f"B2:B{wb['Discovery'].max_row}"
+        wb["Discovery"].conditional_formatting.add(
+            rng,
+            ColorScaleRule(start_type="num", start_value=0, start_color="FEE2E2",
+                           mid_type="num", mid_value=60, mid_color="FEF3C7",
                            end_type="num", end_value=100, end_color="DCFCE7")
         )
 
