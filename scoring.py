@@ -4,6 +4,7 @@ from collections import defaultdict
 from typing import Any
 
 from database import connect, save_score
+from qualification import qualifies_company
 from utils import now_iso
 
 
@@ -26,12 +27,16 @@ def _priority(score: float, config: dict) -> str:
 
 def calculate_scores(config: dict) -> list[dict[str, Any]]:
     with connect() as db:
+        # Rebuild the score table every run so previously-qualified companies
+        # disappear as soon as they no longer match the targeting rules.
+        db.execute("DELETE FROM scores")
         rows = db.execute(
             """
             SELECT e.id AS event_id, e.siren,
                    COALESCE(e.company_name, c.name, 'Unknown') AS company_name,
                    e.event_type, s.signal_type, s.label, s.strength, s.weight,
-                   e.event_date, e.source
+                   e.event_date, e.source,
+                   c.naf, c.employees, c.headquarters_country
             FROM signals s
             JOIN events e ON e.id = s.event_id
             LEFT JOIN companies c ON c.siren = e.siren
@@ -40,6 +45,10 @@ def calculate_scores(config: dict) -> list[dict[str, Any]]:
 
     grouped: dict[str, list[Any]] = defaultdict(list)
     for row in rows:
+        # Strict targeting: only score enriched companies that satisfy the
+        # configured service-sector + employee-size rules.
+        if not qualifies_company(row, config):
+            continue
         entity_key = row["siren"] or f"NAME::{row['company_name']}"
         grouped[entity_key].append(row)
 
