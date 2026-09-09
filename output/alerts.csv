@@ -1,1 +1,1 @@
-﻿priority,opportunity_score,infra_fit,buying_intent,timing,company_name,siren,naf,city,employees,sites,headquarters_country,top_signal,calculated_at,naf_division,employee_min,employee_range,qualified_target
+﻿priority,opportunity_score,infra_fit,buying_intent,timing,company_name,siren,naf,city,employees,sites,headquarters_country,top_signal,calculated_at,naf_division,employee_min,employee_range,qualified_target,business_theme,business_theme_secondary,theme_confidence,theme_reason,recommended_angle,likely_contact_roles
