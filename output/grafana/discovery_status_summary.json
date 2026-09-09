@@ -1,15 +1,15 @@
 [
   {
     "status": "DISCOVERED",
-    "count": 519
+    "count": 560
   },
   {
     "status": "ENRICHED",
-    "count": 189
+    "count": 173
   },
   {
     "status": "IDENTIFIED",
-    "count": 289
+    "count": 264
   },
   {
     "status": "QUALIFIED",
