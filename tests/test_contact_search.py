@@ -1,9 +1,9 @@
-from contact_search import _extract_name, _is_blocked, _role_class_for_title, _role_matches
+from contact_search import _extract_name, _is_linkedin, _role_class_for_title, _role_matches
 
 
-def test_linkedin_is_blocked_from_automated_fetch():
-    assert _is_blocked("https://www.linkedin.com/in/jane-doe")
-    assert not _is_blocked("https://www.example.com/team/jane-doe")
+def test_linkedin_is_detected_without_direct_crawling():
+    assert _is_linkedin("https://www.linkedin.com/in/jane-doe")
+    assert not _is_linkedin("https://www.example.com/team/jane-doe")
 
 
 def test_role_classification():
