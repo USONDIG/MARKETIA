@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from business_themes import add_business_theme_columns
 from database import connect
 from discovery import build_discovery
 from qualification import employee_info, naf_division
@@ -80,6 +81,7 @@ def export_grafana_and_history(config: dict) -> None:
         LIMIT {top_n}
     """)
     opportunities = _add_qualification_columns(opportunities)
+    opportunities = add_business_theme_columns(opportunities)
     discovery = build_discovery(config, limit=discovery_n)
 
     qualified_sirens = set(opportunities["siren"].dropna().astype(str)) if not opportunities.empty else set()
@@ -123,6 +125,8 @@ def export_grafana_and_history(config: dict) -> None:
     market_summary = qualified_signals[qualified_signals["signal_type"].isin(["market", "job", "web_expansion", "web_tech"])].groupby("label", dropna=False).size().reset_index(name="count") if not qualified_signals.empty else pd.DataFrame(columns=["label", "count"])
     discovery_status_summary = discovery.groupby("status", dropna=False).size().reset_index(name="count") if not discovery.empty else pd.DataFrame(columns=["status", "count"])
     discovery_source_summary = discovery.assign(source=discovery["sources"].fillna("Unknown")).groupby("source", dropna=False).size().reset_index(name="count") if not discovery.empty else pd.DataFrame(columns=["source", "count"])
+    theme_summary = opportunities.groupby("business_theme", dropna=False).size().reset_index(name="count") if not opportunities.empty else pd.DataFrame(columns=["business_theme", "count"])
+    discovery_theme_summary = discovery.groupby("business_theme", dropna=False).size().reset_index(name="count") if not discovery.empty else pd.DataFrame(columns=["business_theme", "count"])
 
     now = datetime.now(timezone.utc).replace(microsecond=0)
     stats = {
@@ -154,6 +158,8 @@ def export_grafana_and_history(config: dict) -> None:
     _write_json(GRAFANA_DIR / "source_summary.json", _records(source_summary))
     _write_json(GRAFANA_DIR / "country_summary.json", _records(country_summary))
     _write_json(GRAFANA_DIR / "market_summary.json", _records(market_summary))
+    _write_json(GRAFANA_DIR / "theme_summary.json", _records(theme_summary))
+    _write_json(GRAFANA_DIR / "discovery_theme_summary.json", _records(discovery_theme_summary))
     _write_json(GRAFANA_DIR / "discovery_status_summary.json", _records(discovery_status_summary))
     _write_json(GRAFANA_DIR / "discovery_source_summary.json", _records(discovery_source_summary))
     _write_json(GRAFANA_DIR / "dashboard_stats.json", [stats])
