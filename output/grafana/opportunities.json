@@ -1,0 +1,12 @@
+[
+  {"priority":"CRITICAL","opportunity_score":100.0,"infra_fit":100.0,"buying_intent":100.0,"timing":100.0,"company_name":"Pammys™ (dieseo GmbH)","siren":null,"country":null,"top_signal":"Recrutement technique recent","calculated_at":"2026-09-09T20:07:00Z"},
+  {"priority":"HOT","opportunity_score":84.7,"infra_fit":100.0,"buying_intent":74.9,"timing":80.0,"company_name":"Speechify","siren":null,"country":null,"top_signal":"Recrutement technique recent","calculated_at":"2026-09-09T20:07:00Z"},
+  {"priority":"HOT","opportunity_score":84.0,"infra_fit":100.0,"buying_intent":100.0,"timing":20.0,"company_name":"Stark","siren":null,"country":null,"top_signal":"GPU / HPC / IA","calculated_at":"2026-09-09T20:07:00Z"},
+  {"priority":"HOT","opportunity_score":84.0,"infra_fit":100.0,"buying_intent":100.0,"timing":20.0,"company_name":"TransPerfect","siren":null,"country":null,"top_signal":"Recrutement technique recent","calculated_at":"2026-09-09T20:07:00Z"},
+  {"priority":"HOT","opportunity_score":83.4,"infra_fit":64.1,"buying_intent":100.0,"timing":80.0,"company_name":"virtual7 GmbH","siren":null,"country":null,"top_signal":"Recrutement Infrastructure / IA","calculated_at":"2026-09-09T20:07:00Z"},
+  {"priority":"HOT","opportunity_score":80.0,"infra_fit":100.0,"buying_intent":100.0,"timing":0.0,"company_name":"Alan","siren":null,"country":"FR","top_signal":"Stockage / Backup","calculated_at":"2026-09-09T20:07:00Z"},
+  {"priority":"WARM","opportunity_score":78.4,"infra_fit":72.5,"buying_intent":100.0,"timing":40.0,"company_name":"Artefactlinkedin","siren":null,"country":"FR","top_signal":"Recrutement Infrastructure / IA","calculated_at":"2026-09-09T20:07:00Z"},
+  {"priority":"WARM","opportunity_score":77.8,"infra_fit":94.9,"buying_intent":99.1,"timing":0.0,"company_name":"Almetra","siren":null,"country":null,"top_signal":"Serveurs / Compute","calculated_at":"2026-09-09T20:07:00Z"},
+  {"priority":"WARM","opportunity_score":77.5,"infra_fit":75.5,"buying_intent":95.7,"timing":40.0,"company_name":"Mirakl - Labs","siren":null,"country":"FR","top_signal":"Recrutement technique recent","calculated_at":"2026-09-09T20:07:00Z"},
+  {"priority":"WARM","opportunity_score":75.6,"infra_fit":64.5,"buying_intent":100.0,"timing":40.0,"company_name":"Solactive","siren":null,"country":"DE","top_signal":"Recrutement technique recent","calculated_at":"2026-09-09T20:07:00Z"}
+]
