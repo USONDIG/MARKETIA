@@ -64,21 +64,47 @@ def run() -> None:
             print(f"[{source}] ERROR: {exc}")
             traceback.print_exc()
 
+    # Detect commercial signals before enrichment so the finite company lookup
+    # budget is spent on events that can actually become opportunities.
+    signals_by_event: dict[str, list[dict]] = {}
+    relevant_events: list[dict] = []
+    for event in all_events:
+        signals = detect_signals(event, config)
+        signals_by_event[event["id"]] = signals
+        if signals:
+            event["_signal_count"] = len(signals)
+            relevant_events.append(event)
+
+    # Prefer richer signal sets, public tenders and events already carrying a
+    # SIREN. This substantially improves the qualification hit rate after a
+    # clean reset while preserving the strict >=50 employee targeting rule.
+    relevant_events.sort(
+        key=lambda event: (
+            0 if event.get("siren") else 1,
+            0 if event.get("event_type") == "public_tender" else 1,
+            -int(event.get("_signal_count", 0)),
+        )
+    )
+
+    max_lookups = int(config.get("automation", {}).get("company_enrichment_max_lookups", 400))
     try:
-        companies = enrich_events(all_events, config, max_lookups=150)
+        companies = enrich_events(relevant_events, config, max_lookups=max_lookups)
         for company in companies.values():
             upsert_company(company)
-        print(f"[companies] enriched={len(companies)}")
+        print(
+            f"[companies] enriched={len(companies)} "
+            f"relevant_events={len(relevant_events)} max_lookups={max_lookups}"
+        )
     except Exception as exc:
         print(f"[companies] enrichment warning: {exc}")
 
     saved_by_source: dict[str, int] = {}
     for event in all_events:
+        event.pop("_signal_count", None)
         is_new = insert_event(event)
         if is_new:
             saved_by_source[event["source"].lower()] = saved_by_source.get(event["source"].lower(), 0) + 1
-        signals = detect_signals(event, config)
-        replace_signals_for_event(event["id"], signals)
+        replace_signals_for_event(event["id"], signals_by_event.get(event["id"], []))
 
     for source in source_names:
         if config.get("sources", {}).get(source, {}).get("enabled", True):
