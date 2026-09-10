@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import html
 import re
 import time
@@ -40,6 +41,42 @@ PHONE_RE = re.compile(r"(?:\+\d{1,3}[\s().-]*)?(?:\d[\s().-]*){8,14}\d")
 
 def _clean_text(value: str) -> str:
     return re.sub(r"\s+", " ", html.unescape(TAG_RE.sub(" ", value))).strip()
+
+
+def _clean_company_name(value: Any) -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return ""
+    try:
+        parsed = ast.literal_eval(raw)
+    except (ValueError, SyntaxError):
+        parsed = None
+    if isinstance(parsed, dict):
+        preferred = ("fra", "fre", "eng")
+        candidates: list[str] = []
+        for key in preferred:
+            item = parsed.get(key)
+            if isinstance(item, list) and item:
+                candidates.append(str(item[0]))
+            elif isinstance(item, str):
+                candidates.append(item)
+        if not candidates:
+            for item in parsed.values():
+                if isinstance(item, list) and item:
+                    candidates.append(str(item[0]))
+                    break
+                if isinstance(item, str):
+                    candidates.append(item)
+                    break
+        if candidates:
+            raw = candidates[0]
+    elif isinstance(parsed, (list, tuple)) and parsed:
+        raw = str(parsed[0])
+    raw = re.sub(r"\s+", " ", raw).strip(" '[]{}()\"")
+    # Search engines react poorly to huge legal names. Keep a useful, bounded label.
+    if len(raw) > 120:
+        raw = raw[:120].rsplit(" ", 1)[0].strip(" ,;:-")
+    return raw
 
 
 def _unwrap_duckduckgo_url(url: str) -> str:
@@ -116,8 +153,6 @@ def _search(query: str, timeout: int, user_agent: str, max_results: int) -> list
 
 
 def _public_coordinates(url: str, timeout: int, user_agent: str) -> tuple[str | None, str | None]:
-    # LinkedIn pages are deliberately not crawled. We only retain the public
-    # profile URL and search-result evidence exposed by the search engine.
     if _is_linkedin(url):
         return None, None
     try:
@@ -147,7 +182,7 @@ def _search_targets(config: dict, max_companies: int) -> list[dict[str, Any]]:
         priority = str(lead.get("discovery_priority") or "")
         if priority not in {"HIGH", "MEDIUM"}:
             continue
-        company_name = str(lead.get("company_name") or "").strip()
+        company_name = _clean_company_name(lead.get("company_name"))
         if not company_name:
             continue
         siren = str(lead.get("siren") or "").strip()
@@ -181,11 +216,13 @@ def discover_contacts(config: dict) -> dict[str, int]:
     if not settings.get("enabled", True) or not settings.get("search_enabled", True):
         return {"queries": 0, "found": 0, "saved": 0, "linkedin": 0}
 
-    max_companies = int(settings.get("search_max_companies", 25))
-    roles_per_company = int(settings.get("search_roles_per_company", 6))
-    results_per_query = int(settings.get("search_results_per_query", 5))
-    timeout = int(settings.get("search_timeout_seconds", 12))
-    delay = float(settings.get("search_delay_seconds", 0.35))
+    max_companies = int(settings.get("search_max_companies", 12))
+    roles_per_company = int(settings.get("search_roles_per_company", 3))
+    results_per_query = int(settings.get("search_results_per_query", 4))
+    timeout = max(2, min(8, int(settings.get("search_timeout_seconds", 5))))
+    delay = float(settings.get("search_delay_seconds", 0.15))
+    max_runtime_seconds = max(30, int(settings.get("search_max_runtime_seconds", 180)))
+    max_consecutive_failures = max(2, int(settings.get("search_max_consecutive_failures", 5)))
     user_agent = str(config.get("automation", {}).get("user_agent", "MARKETIA/1.0 public-contact-discovery"))
 
     targets = _search_targets(config, max_companies)
@@ -195,10 +232,16 @@ def discover_contacts(config: dict) -> dict[str, int]:
     queries = found = saved = linkedin_found = 0
     seen_companies: dict[str, int] = {}
     seen_contacts: set[tuple[str, str, str]] = set()
+    started = time.monotonic()
+    consecutive_failures = 0
 
     for row in targets:
+        if time.monotonic() - started >= max_runtime_seconds:
+            print(f"[contacts] runtime budget reached ({max_runtime_seconds}s), stopping gracefully")
+            break
+
         entity_key = str(row.get("entity_key") or "")
-        company_name = str(row.get("company_name") or "").strip()
+        company_name = _clean_company_name(row.get("company_name"))
         target_title = str(row.get("target_title") or "").strip()
         role_class = str(row.get("role_class") or "").strip()
         if not entity_key or not company_name or not target_title:
@@ -210,17 +253,25 @@ def discover_contacts(config: dict) -> dict[str, int]:
         seen_companies[entity_key] = count + 1
 
         search_queries = [
-            f'"{company_name}" "{target_title}"',
             f'site:linkedin.com/in "{company_name}" "{target_title}"',
+            f'"{company_name}" "{target_title}"',
         ]
 
         results: list[dict[str, str]] = []
         for query in search_queries:
+            if time.monotonic() - started >= max_runtime_seconds:
+                break
             queries += 1
             try:
-                results.extend(_search(query, timeout=timeout, user_agent=user_agent, max_results=results_per_query))
+                query_results = _search(query, timeout=timeout, user_agent=user_agent, max_results=results_per_query)
+                results.extend(query_results)
+                consecutive_failures = 0
             except requests.RequestException as exc:
+                consecutive_failures += 1
                 print(f"[contacts] search warning company={company_name!r} role={target_title!r}: {exc}")
+                if consecutive_failures >= max_consecutive_failures:
+                    print("[contacts] search provider unavailable, circuit breaker opened")
+                    return {"queries": queries, "found": found, "saved": saved, "linkedin": linkedin_found}
             time.sleep(max(0.0, delay))
 
         seen_urls: set[str] = set()
