@@ -1,14 +1,1 @@
-[
-  {
-    "event_date": "2025-02-04",
-    "source": "BODACC",
-    "event_type": "company_event",
-    "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
-    "siren": "534980537",
-    "country": "FR",
-    "title": "Ventes et cessions",
-    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20250024739",
-    "collected_at": "2026-09-09T21:27:47.610789+00:00",
-    "detected_signals": "Stockage / Backup,Evenement entreprise recent"
-  }
-]
+[]

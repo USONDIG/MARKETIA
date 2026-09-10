@@ -1,7 +1,7 @@
 [
   {
     "status": "DISCOVERED",
-    "count": 687
+    "count": 753
   },
   {
     "status": "ENRICHED",
@@ -9,7 +9,7 @@
   },
   {
     "status": "IDENTIFIED",
-    "count": 137
+    "count": 71
   },
   {
     "status": "QUALIFIED",
