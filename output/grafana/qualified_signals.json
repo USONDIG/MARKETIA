@@ -12,7 +12,7 @@
     "matched_terms": "[\"san\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20250024739",
-    "detected_at": "2026-09-09T23:08:18.592764+00:00"
+    "detected_at": "2026-09-10T09:10:42.103694+00:00"
   },
   {
     "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
@@ -27,7 +27,7 @@
     "matched_terms": "[\"BODACC\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20250024739",
-    "detected_at": "2026-09-09T23:08:18.592764+00:00"
+    "detected_at": "2026-09-10T09:10:42.103694+00:00"
   },
   {
     "company_name": "CLAYENS GENAS",
@@ -42,7 +42,7 @@
     "matched_terms": "[\"san\", \"nas\"]",
     "title": "Modifications diverses",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:B202500192026",
-    "detected_at": "2026-09-09T23:08:17.388675+00:00"
+    "detected_at": "2026-09-10T09:10:40.942832+00:00"
   },
   {
     "company_name": "CLAYENS GENAS",
@@ -57,7 +57,22 @@
     "matched_terms": "[\"BODACC\"]",
     "title": "Modifications diverses",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:B202500192026",
-    "detected_at": "2026-09-09T23:08:17.388675+00:00"
+    "detected_at": "2026-09-10T09:10:40.942832+00:00"
+  },
+  {
+    "company_name": "Office Public de l'Habitat Périgord Habitat",
+    "siren": "272400011",
+    "source": "BODACC",
+    "country": "FR",
+    "event_date": "2025-01-28",
+    "signal_type": "timing",
+    "label": "Evenement entreprise recent",
+    "strength": 0.05,
+    "weight": 12.0,
+    "matched_terms": "[\"BODACC\"]",
+    "title": "Modifications diverses",
+    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:B20250019766",
+    "detected_at": "2026-09-10T09:10:40.611222+00:00"
   },
   {
     "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
@@ -72,7 +87,7 @@
     "matched_terms": "[\"logistics\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20250019811",
-    "detected_at": "2026-09-09T23:08:16.258939+00:00"
+    "detected_at": "2026-09-10T09:10:39.851127+00:00"
   },
   {
     "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
@@ -87,7 +102,7 @@
     "matched_terms": "[\"san\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20250019811",
-    "detected_at": "2026-09-09T23:08:16.258939+00:00"
+    "detected_at": "2026-09-10T09:10:39.851127+00:00"
   },
   {
     "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
@@ -102,7 +117,7 @@
     "matched_terms": "[\"BODACC\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20250019811",
-    "detected_at": "2026-09-09T23:08:16.258939+00:00"
+    "detected_at": "2026-09-10T09:10:39.851127+00:00"
   },
   {
     "company_name": "HGH SYSTEMES INFRAROUGES",
@@ -117,6 +132,6 @@
     "matched_terms": "[\"BODACC\"]",
     "title": "Dépôts des comptes",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:C202500183858",
-    "detected_at": "2026-09-09T23:08:15.465574+00:00"
+    "detected_at": "2026-09-10T09:10:39.090435+00:00"
   }
 ]

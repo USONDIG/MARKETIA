@@ -1,0 +1,38 @@
+[
+  {
+    "event_date": "2025-02-04",
+    "source": "BODACC",
+    "event_type": "company_event",
+    "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
+    "siren": "534980537",
+    "country": "FR",
+    "title": "Ventes et cessions",
+    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20250024739",
+    "collected_at": "2026-09-09T21:27:47.610789+00:00",
+    "detected_signals": "Stockage / Backup,Evenement entreprise recent"
+  },
+  {
+    "event_date": "2025-01-28",
+    "source": "BODACC",
+    "event_type": "company_event",
+    "company_name": "Office Public de l'Habitat Périgord Habitat",
+    "siren": "272400011",
+    "country": "FR",
+    "title": "Modifications diverses",
+    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:B20250019766",
+    "collected_at": "2026-09-09T21:27:45.121886+00:00",
+    "detected_signals": "Evenement entreprise recent"
+  },
+  {
+    "event_date": "2025-01-28",
+    "source": "BODACC",
+    "event_type": "company_event",
+    "company_name": "CLAYENS GENAS",
+    "siren": "325090728",
+    "country": "FR",
+    "title": "Modifications diverses",
+    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:B202500192026",
+    "collected_at": "2026-09-09T21:27:45.704615+00:00",
+    "detected_signals": "Stockage / Backup,Evenement entreprise recent"
+  }
+]
