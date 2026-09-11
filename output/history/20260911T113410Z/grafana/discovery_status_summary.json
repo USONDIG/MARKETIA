@@ -1,0 +1,14 @@
+[
+  {
+    "status": "DISCOVERED",
+    "count": 839
+  },
+  {
+    "status": "ENRICHED",
+    "count": 158
+  },
+  {
+    "status": "QUALIFIED",
+    "count": 3
+  }
+]
