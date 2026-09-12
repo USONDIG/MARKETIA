@@ -17,7 +17,7 @@
   },
   {
     "business_theme": "GPU / IA / HPC",
-    "count": 142
+    "count": 143
   },
   {
     "business_theme": "Migration / rapatriement cloud",
@@ -29,7 +29,7 @@
   },
   {
     "business_theme": "Projet de transformation / nouveau site",
-    "count": 6
+    "count": 7
   },
   {
     "business_theme": "Renfort de compétences / recrutement IT",
@@ -41,18 +41,18 @@
   },
   {
     "business_theme": "Réseau / datacenter",
-    "count": 40
+    "count": 37
   },
   {
     "business_theme": "Stockage / sauvegarde / PRA",
-    "count": 468
+    "count": 472
   },
   {
     "business_theme": "Support / maintenance / services managés",
-    "count": 45
+    "count": 41
   },
   {
     "business_theme": "Virtualisation / cloud privé / HCI",
-    "count": 3
+    "count": 4
   }
 ]
