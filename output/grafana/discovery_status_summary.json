@@ -1,11 +1,11 @@
 [
   {
     "status": "DISCOVERED",
-    "count": 992
+    "count": 993
   },
   {
     "status": "ENRICHED",
-    "count": 7
+    "count": 6
   },
   {
     "status": "QUALIFIED",
