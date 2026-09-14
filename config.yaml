@@ -376,6 +376,16 @@ scoring:
   recent_tender_bonus: 30
   recent_company_event_bonus: 12
   multi_signal_bonus: 10
+contacts:
+  enabled: true
+  search_enabled: true
+  search_max_companies: 20
+  search_roles_per_company: 4
+  search_results_per_query: 6
+  search_timeout_seconds: 6
+  search_delay_seconds: 0.2
+  search_max_runtime_seconds: 240
+  search_max_consecutive_failures: 8
 automation:
   lookback_days: 14
   max_pages_per_source: 10
