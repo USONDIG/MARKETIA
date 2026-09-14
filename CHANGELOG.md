@@ -9,6 +9,23 @@ Le format suit l'esprit de Keep a Changelog et les versions utilisent une numér
 ### Added
 - À compléter à chaque évolution avant publication.
 
+## [1.4.0] - 2026-09-14
+
+### Added
+- Point de rollback `backup/pre-contact-enrichment-20260914` avant l'évolution du moteur Contacts.
+- Paramétrage explicite de la recherche de contacts dans `config.yaml`.
+
+### Changed
+- Profondeur de recherche portée à 20 entreprises par run.
+- Jusqu'à 4 rôles prioritaires sont recherchés par entreprise.
+- Jusqu'à 6 résultats publics sont analysés par requête.
+- Budget de recherche Contacts porté à 240 secondes.
+- Timeout réseau porté à 6 secondes et circuit breaker à 8 échecs consécutifs.
+- La recherche multi-moteurs publics conserve le fallback DuckDuckGo / Bing déjà introduit en version 1.3.0.
+
+### Data quality
+- MARKETIA ne génère pas d'adresse email supposée : seules les coordonnées professionnelles présentes dans une source publique accessible sont conservées.
+
 ## [1.3.0] - 2026-09-14
 
 ### Added
