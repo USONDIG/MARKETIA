@@ -17,6 +17,17 @@ TAG_RE = re.compile(r"<[^>]+>")
 EMAIL_RE = re.compile(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", re.I)
 PHONE_RE = re.compile(r"(?:\+\d{1,3}[\s().-]*)?(?:\d[\s().-]*){8,14}\d")
 
+_ALIAS_STOP_WORDS = {
+    "france", "europe", "centre", "center", "distribution", "international", "holding",
+    "services", "service", "solutions", "sas", "sa", "sarl", "gmbh", "limited", "ltd",
+}
+
+_ROLE_SEARCH_TERMS = {
+    "BUYER": ["IT procurement", "achats IT", "IT buyer"],
+    "DECISION_MAKER": ["DSI", "CIO", "IT Director"],
+    "TECHNICAL_INFLUENCER": ["Infrastructure", "Cloud", "IT Operations"],
+}
+
 
 def _text(value: str) -> str:
     return re.sub(r"\s+", " ", html.unescape(TAG_RE.sub(" ", value))).strip()
@@ -34,6 +45,44 @@ def _mentions(text: str, value: str, require_two: bool = False) -> bool:
         return False
     matches = sum(token in haystack for token in tokens[:4])
     return matches >= (2 if require_two and len(tokens) >= 2 else 1)
+
+
+def _company_aliases(company_name: str) -> list[str]:
+    """Return bounded search aliases from a possibly long legal/company label."""
+    cleaned = re.sub(r"\s+", " ", str(company_name or "")).strip(" ,;|/-")
+    if not cleaned:
+        return []
+
+    aliases: list[str] = []
+
+    def add(value: str) -> None:
+        value = re.sub(r"\s+", " ", value).strip(" ,;|/-")
+        if len(value) >= 3 and value.casefold() not in {item.casefold() for item in aliases}:
+            aliases.append(value)
+
+    add(cleaned)
+    for segment in re.split(r"\s*[,;|/]\s*", cleaned):
+        if not segment:
+            continue
+        add(segment)
+        words = segment.split()
+        short: list[str] = []
+        for word in words:
+            lowered = re.sub(r"[^A-Za-zÀ-ÿ0-9'-]", "", word).casefold()
+            if len(short) >= 2 and lowered in _ALIAS_STOP_WORDS:
+                break
+            short.append(word)
+            if len(short) >= 3:
+                break
+        if short:
+            add(" ".join(short))
+
+    # Prefer short, distinctive aliases for web search while retaining the legal label as evidence fallback.
+    return sorted(aliases[:6], key=lambda value: (len(value.split()), len(value)))
+
+
+def _company_evidence_matches(evidence: str, aliases: list[str]) -> bool:
+    return any(_mentions(evidence, alias) for alias in aliases)
 
 
 def _fetch_public_page(url: str, timeout: int, user_agent: str) -> tuple[str, str]:
@@ -76,10 +125,12 @@ def enrich_person_coordinates(
     max_results: int,
     search_fn: Callable[..., list[dict[str, str]]] = search_public_web,
 ) -> dict[str, Any]:
+    aliases = _company_aliases(company_name) or [company_name]
+    search_company = aliases[0]
     queries = [
-        f'"{full_name}" "{company_name}" email',
-        f'"{full_name}" "{company_name}" contact',
-        f'"{full_name}" "{company_name}" téléphone',
+        f'"{full_name}" "{search_company}" email',
+        f'"{full_name}" "{search_company}" contact',
+        f'"{full_name}" "{search_company}" téléphone',
     ]
     result = {
         "email": None, "phone": None,
@@ -102,7 +153,7 @@ def enrich_person_coordinates(
             except requests.RequestException:
                 continue
             evidence = f"{row.get('title', '')} {row.get('snippet', '')} {page_text}"
-            if not _mentions(evidence, full_name, require_two=True) or not _mentions(evidence, company_name):
+            if not _mentions(evidence, full_name, require_two=True) or not _company_evidence_matches(evidence, aliases):
                 continue
             email, phone = _coordinates(page_text)
             if email and not result["email"]:
@@ -148,13 +199,22 @@ def discover_contacts(config: dict) -> dict[str, int]:
             continue
         per_company[entity_key] = per_company.get(entity_key, 0) + 1
 
-        candidate_queries = [
-            f'site:linkedin.com/in "{company_name}" "{target_title}"',
-            f'"{company_name}" "{target_title}" LinkedIn',
-            f'"{company_name}" "{target_title}"',
-        ]
+        aliases = _company_aliases(company_name) or [company_name]
+        search_aliases = aliases[:3]
+        broad_role = (_ROLE_SEARCH_TERMS.get(role_class) or [target_title])[0]
+        candidate_queries: list[str] = []
+        for alias in search_aliases:
+            candidate_queries.extend([
+                f'site:linkedin.com/in "{alias}" "{target_title}"',
+                f'site:linkedin.com/in "{alias}" "{broad_role}"',
+                f'"{alias}" "{target_title}" LinkedIn',
+            ])
+        candidate_queries = list(dict.fromkeys(candidate_queries))[:7]
+
         candidates: list[dict[str, str]] = []
         for query in candidate_queries:
+            if time.monotonic() - started >= max_runtime:
+                break
             queries += 1
             try:
                 candidates.extend(search_public_web(query, timeout, user_agent, results_per_query))
@@ -169,9 +229,10 @@ def discover_contacts(config: dict) -> dict[str, int]:
                 continue
             seen_urls.add(url)
             evidence = f"{candidate.get('title', '')} {candidate.get('snippet', '')}"
-            if not _mentions(evidence, company_name) or not _role_matches(evidence, target_title, role_class):
+            if not _company_evidence_matches(evidence, aliases) or not _role_matches(evidence, target_title, role_class):
                 continue
-            full_name = _extract_name(str(candidate.get("title") or ""), str(candidate.get("snippet") or ""), company_name, target_title)
+            extraction_company = search_aliases[0]
+            full_name = _extract_name(str(candidate.get("title") or ""), str(candidate.get("snippet") or ""), extraction_company, target_title)
             if not full_name:
                 continue
             person_key = (entity_key, full_name.casefold())
@@ -216,7 +277,7 @@ def discover_contacts(config: dict) -> dict[str, int]:
                 "email_status": enriched["email_status"],
                 "phone_status": enriched["phone_status"],
                 "evidence_summary": ", ".join(filter(None, [role_evidence, "LINKEDIN_PUBLIC_SEARCH" if linkedin_url else "", "EMAIL_PUBLIC" if enriched["email"] else "", "PHONE_PUBLIC" if enriched["phone"] else ""])),
-                "raw_json": json.dumps({"candidate_queries": candidate_queries, "title": candidate.get("title"), "snippet": candidate.get("snippet"), "coordinate_source": enriched["source_url"]}, ensure_ascii=False),
+                "raw_json": json.dumps({"company_aliases": aliases, "candidate_queries": candidate_queries, "title": candidate.get("title"), "snippet": candidate.get("snippet"), "coordinate_source": enriched["source_url"]}, ensure_ascii=False),
                 "updated_at": now_iso(),
             }
             upsert_contact(contact)
