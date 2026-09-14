@@ -6,6 +6,22 @@ from database import connect
 from utils import now_iso
 
 
+EVIDENCE_COLUMNS = {
+    "role_evidence": "TEXT",
+    "linkedin_status": "TEXT",
+    "email_status": "TEXT",
+    "phone_status": "TEXT",
+    "evidence_summary": "TEXT",
+}
+
+
+def _ensure_contact_columns(db) -> None:
+    existing = {str(row["name"]) for row in db.execute("PRAGMA table_info(contacts)").fetchall()}
+    for column, sql_type in EVIDENCE_COLUMNS.items():
+        if column not in existing:
+            db.execute(f"ALTER TABLE contacts ADD COLUMN {column} {sql_type}")
+
+
 def init_contact_db() -> None:
     with connect() as db:
         db.executescript(
@@ -27,6 +43,11 @@ def init_contact_db() -> None:
                 confidence REAL DEFAULT 0,
                 verified_at TEXT,
                 status TEXT DEFAULT 'DISCOVERED',
+                role_evidence TEXT,
+                linkedin_status TEXT,
+                email_status TEXT,
+                phone_status TEXT,
+                evidence_summary TEXT,
                 raw_json TEXT,
                 updated_at TEXT NOT NULL,
                 UNIQUE(entity_key, full_name, job_title)
@@ -37,17 +58,21 @@ def init_contact_db() -> None:
             CREATE INDEX IF NOT EXISTS idx_contacts_relevance ON contacts(relevance_score);
             """
         )
+        _ensure_contact_columns(db)
 
 
 def upsert_contact(contact: dict[str, Any]) -> None:
     with connect() as db:
+        _ensure_contact_columns(db)
         db.execute(
             """
             INSERT INTO contacts (
                 entity_key, siren, company_name, full_name, job_title, role_class,
                 relevance_score, linkedin_url, professional_email, professional_phone,
-                source_name, source_url, confidence, verified_at, status, raw_json, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                source_name, source_url, confidence, verified_at, status,
+                role_evidence, linkedin_status, email_status, phone_status, evidence_summary,
+                raw_json, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(entity_key, full_name, job_title) DO UPDATE SET
                 role_class=excluded.role_class,
                 relevance_score=MAX(contacts.relevance_score, excluded.relevance_score),
@@ -59,6 +84,11 @@ def upsert_contact(contact: dict[str, Any]) -> None:
                 confidence=MAX(contacts.confidence, excluded.confidence),
                 verified_at=COALESCE(excluded.verified_at, contacts.verified_at),
                 status=excluded.status,
+                role_evidence=COALESCE(excluded.role_evidence, contacts.role_evidence),
+                linkedin_status=COALESCE(excluded.linkedin_status, contacts.linkedin_status),
+                email_status=COALESCE(excluded.email_status, contacts.email_status),
+                phone_status=COALESCE(excluded.phone_status, contacts.phone_status),
+                evidence_summary=COALESCE(excluded.evidence_summary, contacts.evidence_summary),
                 raw_json=COALESCE(excluded.raw_json, contacts.raw_json),
                 updated_at=excluded.updated_at
             """,
@@ -69,7 +99,9 @@ def upsert_contact(contact: dict[str, Any]) -> None:
                 contact.get("professional_email"), contact.get("professional_phone"),
                 contact.get("source_name"), contact.get("source_url"),
                 float(contact.get("confidence", 0)), contact.get("verified_at"),
-                contact.get("status", "DISCOVERED"), contact.get("raw_json"),
-                contact.get("updated_at") or now_iso(),
+                contact.get("status", "DISCOVERED"), contact.get("role_evidence"),
+                contact.get("linkedin_status"), contact.get("email_status"),
+                contact.get("phone_status"), contact.get("evidence_summary"),
+                contact.get("raw_json"), contact.get("updated_at") or now_iso(),
             ),
         )
