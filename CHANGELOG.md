@@ -9,6 +9,19 @@ Le format suit l'esprit de Keep a Changelog et les versions utilisent une numér
 ### Added
 - À compléter à chaque évolution avant publication.
 
+## [1.5.0] - 2026-09-14
+
+### Added
+- Bloc contextuel **Contacts associés** en bas du Dashboard pour l'opportunité sélectionnée.
+- Association des contacts à l'entreprise en priorité par SIREN, puis par nom en secours.
+- Métriques par entreprise sélectionnée : nombre de contacts, profils LinkedIn, emails professionnels et téléphones disponibles.
+- Affichage des statuts de preuve disponibles pour le rôle, LinkedIn, email, téléphone et source.
+- Point de rollback `backup/pre-dashboard-context-contacts-20260914` avant cette évolution.
+
+### Changed
+- Le tableau global de contacts du Dashboard est remplacé par une vue liée à l'entreprise sélectionnée ou issue du filtre courant.
+- Une coordonnée n'est affichée que si elle est réellement présente dans `contacts.json` ; aucune coordonnée n'est inventée côté interface.
+
 ## [1.4.0] - 2026-09-14
 
 ### Added
