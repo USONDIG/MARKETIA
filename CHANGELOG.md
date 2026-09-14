@@ -9,6 +9,19 @@ Le format suit l'esprit de Keep a Changelog et les versions utilisent une numér
 ### Added
 - À compléter à chaque évolution avant publication.
 
+## [1.3.0] - 2026-09-14
+
+### Added
+- Moteur de recherche public de secours pour la découverte de contacts : Bing prend le relais quand DuckDuckGo est indisponible, renvoie un 403 ou expire.
+- Tests unitaires du parseur Bing et du mécanisme de fallback.
+
+### Changed
+- La phase Contacts conserve les mêmes règles de qualification, de rôle, de confiance et d'extraction de coordonnées professionnelles publiques, mais n'est plus dépendante d'un seul fournisseur de recherche.
+- Les logs Contacts affichent désormais aussi le nombre de profils LinkedIn détectés.
+
+### Security / Privacy
+- MARKETIA ne génère pas d'adresse email supposée et ne marque pas comme confirmée une coordonnée qui n'a pas été explicitement publiée par une source professionnelle publique accessible.
+
 ## [1.2.0] - 2026-09-14
 
 ### Added
