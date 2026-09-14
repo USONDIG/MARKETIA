@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       reset_data:
-        description: "Reinitialiser la BDD, les sorties et l'historique avant ce run"
+        description: "Reinitialiser les sorties et l'historique avant ce run"
         required: false
         default: false
         type: boolean
@@ -56,7 +56,7 @@ jobs:
 
           echo "requested=$RESET" >> "$GITHUB_OUTPUT"
           if [ "$RESET" = "true" ]; then
-            echo "Reinitialisation complete des donnees MARKETIA"
+            echo "Reinitialisation complete des sorties MARKETIA"
             rm -f data/radar.db
             rm -rf output
             mkdir -p data output/grafana output/history
@@ -125,7 +125,7 @@ jobs:
             fi
           fi
 
-      - name: Persist database, current outputs and history
+      - name: Persist current outputs and history
         shell: bash
         run: |
           set -euo pipefail
@@ -133,8 +133,7 @@ jobs:
           git config user.email "marketia-radar-bot@users.noreply.github.com"
 
           SNAPSHOT=$(mktemp -d)
-          mkdir -p "$SNAPSHOT/data" "$SNAPSHOT/output"
-          [ -d data ] && cp -a data/. "$SNAPSHOT/data/"
+          mkdir -p "$SNAPSHOT/output"
           [ -d output ] && cp -a output/. "$SNAPSHOT/output/"
 
           for ATTEMPT in 1 2 3; do
@@ -142,16 +141,15 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
-            rm -rf data output
-            mkdir -p data output
-            cp -a "$SNAPSHOT/data/." data/
+            rm -rf output
+            mkdir -p output
             cp -a "$SNAPSHOT/output/." output/
 
             if [ "${{ steps.reset.outputs.requested }}" = "true" ]; then
               rm -f .marketia-reset
             fi
 
-            git add -A data output .marketia-reset 2>/dev/null || git add -A data output
+            git add -A output .marketia-reset 2>/dev/null || git add -A output
             if git diff --cached --quiet; then
               echo "Aucun changement genere a publier."
               exit 0
