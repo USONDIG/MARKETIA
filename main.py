@@ -11,7 +11,9 @@ from collectors.public_web import collect_jobs, collect_news
 from collectors.ted import collect_ted
 from contact_database import init_contact_db
 from contact_exporter import export_contact_feeds
+import contact_search
 from contact_search import discover_contacts
+from contact_search_providers import search_public_web
 from database import (
     init_db,
     insert_event,
@@ -116,10 +118,12 @@ def run() -> None:
     print(f"[scoring] entities={len(scores)}")
 
     try:
+        contact_search._search = search_public_web
         contact_stats = discover_contacts(config)
         print(
             f"[contacts] queries={contact_stats['queries']} "
-            f"found={contact_stats['found']} saved={contact_stats['saved']}"
+            f"found={contact_stats['found']} saved={contact_stats['saved']} "
+            f"linkedin={contact_stats.get('linkedin', 0)}"
         )
     except Exception as exc:
         print(f"[contacts] discovery warning: {exc}")
