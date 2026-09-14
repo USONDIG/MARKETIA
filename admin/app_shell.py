@@ -3,8 +3,8 @@ from __future__ import annotations
 import streamlit as st
 
 from app_services import authenticated, load_config, load_json_feed, render_run_status, render_top_bar
-from dashboard_view import render_qualified_dashboard
-from radar_view_v2 import render_radar_discovery
+from dashboard_v2 import render_dashboard
+from radar_v3 import render_radar
 from targeting_view import render_targeting
 
 
@@ -31,8 +31,8 @@ def main() -> None:
 
     dashboard, radar, targeting = st.tabs(["Dashboard", "Radar / Discovery", "Ciblage"])
     with dashboard:
-        render_qualified_dashboard(load_json_feed, render_run_status)
+        render_dashboard(load_json_feed, render_run_status)
     with radar:
-        render_radar_discovery(load_json_feed, key_prefix="main_radar")
+        render_radar(load_json_feed, key_prefix="main_radar")
     with targeting:
         render_targeting(config, sha)
