@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: marketia-contact-api
+    runtime: python
+    plan: free
+    branch: feature/contact-api-render-poc
+    buildCommand: pip install -r contact_api/requirements.txt
+    startCommand: uvicorn contact_api.app:app --host 0.0.0.0 --port $PORT
+    autoDeploy: true
+    healthCheckPath: /health
