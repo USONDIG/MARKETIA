@@ -13,6 +13,8 @@ WORKFLOW_FILE = "radar.yml"
 GITHUB_API = f"https://api.github.com/repos/{REPO}/contents/{CONFIG_PATH}"
 ACTIONS_API = f"https://api.github.com/repos/{REPO}/actions"
 RAW_BASE = f"https://raw.githubusercontent.com/{REPO}/main/output/grafana"
+CONTACTS_API = f"https://api.github.com/repos/{REPO}/contents/output/grafana/contacts.json"
+CONTACTS_BRANCH = "data/contact-results"
 
 
 def headers() -> dict[str, str]:
@@ -47,6 +49,11 @@ def load_config() -> tuple[dict, str]:
 
 @st.cache_data(ttl=60, show_spinner=False)
 def load_json_feed(name: str):
+    if name == "contacts.json":
+        response = requests.get(CONTACTS_API, headers=headers(), params={"ref": CONTACTS_BRANCH}, timeout=20)
+        response.raise_for_status()
+        payload = response.json()
+        return __import__("json").loads(base64.b64decode(payload["content"]).decode("utf-8"))
     response = requests.get(f"{RAW_BASE}/{name}", timeout=20)
     response.raise_for_status()
     return response.json()
