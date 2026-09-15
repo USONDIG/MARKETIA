@@ -3,6 +3,7 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
+from contact_probe import render_contact_probe
 from shared_filters import render_filters
 from shared_ui import clean_values, has_value, render_lead_detail, safe_df
 
@@ -82,27 +83,28 @@ def _render_context_contacts(contacts: pd.DataFrame, lead: pd.Series) -> None:
 
     matched = _contacts_for_lead(contacts, lead)
     if matched.empty:
-        st.info("Aucun contact confirmé pour cette entreprise pour le moment. La recherche automatique continuera lors des prochains runs.")
-        return
+        st.info("Aucun contact sauvegardé pour cette entreprise. Lance la recherche à la demande ci-dessous.")
+    else:
+        linkedin = has_value(matched.get("linkedin_url", pd.Series(index=matched.index, dtype=str)))
+        email = has_value(matched.get("professional_email", pd.Series(index=matched.index, dtype=str)))
+        phone = has_value(matched.get("professional_phone", pd.Series(index=matched.index, dtype=str)))
+        a, b, c, d = st.columns(4)
+        a.metric("Contacts", len(matched))
+        b.metric("LinkedIn", int(linkedin.sum()))
+        c.metric("Email pro", int(email.sum()))
+        d.metric("Téléphone", int(phone.sum()))
 
-    linkedin = has_value(matched.get("linkedin_url", pd.Series(index=matched.index, dtype=str)))
-    email = has_value(matched.get("professional_email", pd.Series(index=matched.index, dtype=str)))
-    phone = has_value(matched.get("professional_phone", pd.Series(index=matched.index, dtype=str)))
-    a, b, c, d = st.columns(4)
-    a.metric("Contacts", len(matched))
-    b.metric("LinkedIn", int(linkedin.sum()))
-    c.metric("Email pro", int(email.sum()))
-    d.metric("Téléphone", int(phone.sum()))
+        display = matched.copy()
+        if "confidence" in display.columns:
+            display["confidence"] = pd.to_numeric(display["confidence"], errors="coerce").round(0)
+        cols = [c for c in [
+            "full_name", "job_title", "role_class", "linkedin_url", "professional_email",
+            "professional_phone", "confidence", "status", "role_evidence", "linkedin_status",
+            "email_status", "phone_status", "evidence_summary", "source_url",
+        ] if c in display.columns]
+        st.dataframe(display[cols] if cols else display, use_container_width=True, hide_index=True, height=min(420, 80 + 38 * max(1, len(display))))
 
-    display = matched.copy()
-    if "confidence" in display.columns:
-        display["confidence"] = pd.to_numeric(display["confidence"], errors="coerce").round(0)
-    cols = [c for c in [
-        "full_name", "job_title", "role_class", "linkedin_url", "professional_email",
-        "professional_phone", "confidence", "status", "role_evidence", "linkedin_status",
-        "email_status", "phone_status", "evidence_summary", "source_url",
-    ] if c in display.columns]
-    st.dataframe(display[cols] if cols else display, use_container_width=True, hide_index=True, height=min(420, 80 + 38 * max(1, len(display))))
+    render_contact_probe(company)
 
 
 def render_dashboard(load_feed, render_run_status) -> None:
