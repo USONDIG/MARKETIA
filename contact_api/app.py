@@ -1,3 +1,6 @@
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import re
+
 from fastapi import FastAPI, Query
 from pydantic import BaseModel
 
@@ -11,38 +14,65 @@ class SearchRequest(BaseModel):
     company: str
 
 
+_GENERIC_SUFFIXES = {
+    "france", "europe", "centre", "center", "distribution", "logistics", "logistique",
+    "sas", "sasu", "sa", "se", "holding", "groupe", "group", "international",
+}
+
+
+def _company_alias(company: str) -> str:
+    value = re.sub(r"\s+", " ", company.strip())
+    first = re.split(r"[,;/|]", value, maxsplit=1)[0].strip()
+    tokens = first.split()
+    while len(tokens) > 2 and tokens[-1].casefold() in _GENERIC_SUFFIXES:
+        tokens.pop()
+    # Long legal names are usually less useful than the commercial brand.
+    if len(tokens) >= 4:
+        tokens = tokens[:2]
+    return " ".join(tokens) or value
+
+
+def _run_query(query: str) -> tuple[str, list[dict], str | None]:
+    try:
+        results = search_public_web(query, timeout=6, user_agent="MARKETIA-contact-api/0.5", max_results=5)
+        return query, results, None
+    except Exception as exc:
+        return query, [], str(exc)
+
+
 def _run_search(company: str) -> dict:
     company = company.strip()
+    alias = _company_alias(company)
     queries = [
-        f'site:linkedin.com/in "{company}" "Infrastructure"',
-        f'site:linkedin.com/in "{company}" "Cloud"',
-        f'site:linkedin.com/in "{company}" "DSI"',
-        f'site:linkedin.com/in "{company}" "IT Director"',
-        f'site:linkedin.com/in "{company}" "IT procurement"',
-        f'site:linkedin.com/in "{company}" "acheteur IT"',
-        f'"{company}" "Infrastructure Director" LinkedIn',
-        f'"{company}" "Infrastructure & Cloud Director" LinkedIn',
+        f'site:linkedin.com/in "{alias}" "Infrastructure"',
+        f'site:linkedin.com/in "{alias}" "Cloud"',
+        f'site:linkedin.com/in "{alias}" "DSI"',
+        f'site:linkedin.com/in "{alias}" "IT Director"',
+        f'site:linkedin.com/in "{alias}" "IT procurement"',
+        f'site:linkedin.com/in "{alias}" "acheteur IT"',
     ]
-    rows = []
+
+    rows_by_query: dict[str, dict] = {}
     total_results = 0
     providers = set()
-    for query in queries:
-        try:
-            results = search_public_web(query, timeout=8, user_agent="MARKETIA-contact-api/0.4", max_results=5)
-        except Exception as exc:
-            rows.append({"query": query, "error": str(exc), "results": []})
-            continue
-        total_results += len(results)
-        providers.update(str(item.get("provider") or "unknown") for item in results)
-        rows.append({"query": query, "error": None, "results": results})
 
-    contacts = qualify_results(company, rows)
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        futures = [executor.submit(_run_query, query) for query in queries]
+        for future in as_completed(futures):
+            query, results, error = future.result()
+            total_results += len(results)
+            providers.update(str(item.get("provider") or "unknown") for item in results)
+            rows_by_query[query] = {"query": query, "error": error, "results": results}
+
+    rows = [rows_by_query[q] for q in queries]
+    contacts = qualify_results(alias, rows)
     print(
-        f"[contact-api] company={company!r} raw_results={total_results} qualified_contacts={len(contacts)} providers={','.join(sorted(providers)) or 'none'}",
+        f"[contact-api] company={company!r} alias={alias!r} raw_results={total_results} qualified_contacts={len(contacts)} providers={','.join(sorted(providers)) or 'none'}",
         flush=True,
     )
     return {
         "company": company,
+        "search_alias": alias,
         "contacts": contacts,
         "qualified_count": len(contacts),
         "raw_result_count": total_results,
