@@ -19,13 +19,18 @@ def _run_search(company: str) -> dict:
         f'"{company}" "Infrastructure Director" LinkedIn',
     ]
     rows = []
+    total_results = 0
+    providers = set()
     for query in queries:
         try:
-            results = search_public_web(query, timeout=8, user_agent="MARKETIA-contact-api/0.2", max_results=5)
+            results = search_public_web(query, timeout=8, user_agent="MARKETIA-contact-api/0.3", max_results=5)
         except Exception as exc:
             rows.append({"query": query, "error": str(exc), "results": []})
             continue
+        total_results += len(results)
+        providers.update(str(item.get("provider") or "unknown") for item in results)
         rows.append({"query": query, "error": None, "results": results})
+    print(f"[contact-api] company={company!r} results={total_results} providers={','.join(sorted(providers)) or 'none'}", flush=True)
     return {"company": company, "queries": rows}
 
 
