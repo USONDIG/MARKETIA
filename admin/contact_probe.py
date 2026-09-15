@@ -1,75 +1,90 @@
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
 import pandas as pd
 import streamlit as st
 
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+from contact_api_client import persist_contacts_to_github, search_contacts
 
-from contact_search_providers import search_public_web
-
-ROLE_TERMS = [
-    "Infrastructure & Cloud Director",
-    "Infrastructure Director",
-    "IT Infrastructure",
-    "IT Director",
-    "DSI",
-    "CIO",
-    "IT procurement",
-    "IT buyer",
-]
+DEFAULT_CONTACT_API_URL = "https://marketia-contact-api.onrender.com"
 
 
-def _search_company(company: str) -> pd.DataFrame:
-    rows: list[dict] = []
-    seen: set[str] = set()
-    for role in ROLE_TERMS:
-        queries = [
-            f'site:linkedin.com/in "{company}" "{role}"',
-            f'"{company}" "{role}" LinkedIn',
-        ]
-        for query in queries:
-            try:
-                results = search_public_web(query, max_results=6, timeout=6)
-            except Exception:
-                continue
-            for result in results:
-                url = str(result.get("url") or "").strip()
-                key = url or f"{result.get('title')}|{result.get('snippet')}"
-                if not key or key in seen:
-                    continue
-                seen.add(key)
-                rows.append({
-                    "role_recherche": role,
-                    "titre": result.get("title"),
-                    "url": url,
-                    "extrait": result.get("snippet"),
-                    "source": result.get("provider"),
-                })
-    return pd.DataFrame(rows)
+def _display_contacts(contacts: list[dict]) -> None:
+    if not contacts:
+        st.warning("Aucun contact qualifié trouvé pour cette entreprise.")
+        return
+
+    rows = []
+    for contact in contacts:
+        rows.append({
+            "Nom": contact.get("full_name"),
+            "Fonction": contact.get("job_title"),
+            "Rôle": contact.get("role_class"),
+            "Score": contact.get("relevance_score"),
+            "LinkedIn": contact.get("linkedin_url"),
+            "Source": contact.get("source_name"),
+            "Preuve": contact.get("evidence_summary"),
+        })
+    frame = pd.DataFrame(rows)
+    st.dataframe(
+        frame,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "LinkedIn": st.column_config.LinkColumn("LinkedIn"),
+            "Score": st.column_config.NumberColumn("Score", format="%d"),
+        },
+    )
 
 
 def render_contact_probe(default_company: str = "XPO Logistics") -> None:
     st.markdown("### Recherche contacts à la demande")
-    st.caption("Cette recherche s'exécute directement dans le processus Streamlit. Elle ne lance ni collecteurs, ni scoring, ni workflow GitHub Actions.")
+    st.caption(
+        "La recherche est exécutée par l'API MARKETIA sur Render, puis les contacts qualifiés sont sauvegardés sur la branche GitHub data/contact-results. Aucun workflow MARKETIA complet n'est lancé."
+    )
+
+    api_url = str(st.secrets.get("contact_api_url", DEFAULT_CONTACT_API_URL)).strip()
+    github_token = str(st.secrets.get("github_token", "")).strip()
     company = st.text_input("Entreprise", value=default_company, key="contact_probe_company")
+
     if st.button("Rechercher les contacts maintenant", type="primary", key="contact_probe_run"):
-        with st.spinner(f"Recherche publique en cours pour {company}…"):
-            result = _search_company(company.strip())
-        st.session_state["contact_probe_result"] = result
+        with st.spinner(f"Recherche et qualification des contacts pour {company}…"):
+            try:
+                payload = search_contacts(api_url, company.strip(), timeout=45)
+            except Exception as exc:
+                st.error(f"Recherche contacts impossible : {exc}")
+                return
+
+        contacts = payload.get("contacts") or []
+        st.session_state["contact_probe_payload"] = payload
         st.session_state["contact_probe_last_company"] = company.strip()
 
-    result = st.session_state.get("contact_probe_result")
-    if isinstance(result, pd.DataFrame):
-        if result.empty:
-            st.warning("Aucun résultat public récupéré depuis l'environnement Streamlit pour cette recherche.")
-        else:
-            linkedin_count = int(result["url"].fillna("").str.contains("linkedin.com/in/", case=False, regex=False).sum())
-            a, b = st.columns(2)
-            a.metric("Résultats", len(result))
-            b.metric("Profils LinkedIn", linkedin_count)
-            st.dataframe(result, use_container_width=True, hide_index=True, height=min(500, 80 + 38 * len(result)))
+        if contacts and github_token:
+            try:
+                persistence = persist_contacts_to_github(github_token, contacts)
+                st.session_state["contact_probe_persistence"] = persistence
+            except Exception as exc:
+                st.session_state["contact_probe_persistence"] = {"error": str(exc)}
+        elif contacts:
+            st.session_state["contact_probe_persistence"] = {"error": "github_token absent"}
+
+    payload = st.session_state.get("contact_probe_payload")
+    if not isinstance(payload, dict):
+        return
+
+    contacts = payload.get("contacts") or []
+    providers = ", ".join(payload.get("providers") or []) or "-"
+    a, b, c = st.columns(3)
+    a.metric("Contacts qualifiés", int(payload.get("qualified_count") or len(contacts)))
+    b.metric("Résultats bruts", int(payload.get("raw_result_count") or 0))
+    c.metric("Source", providers)
+
+    _display_contacts(contacts)
+
+    persistence = st.session_state.get("contact_probe_persistence")
+    if isinstance(persistence, dict):
+        if persistence.get("error"):
+            st.warning(f"Contacts trouvés, mais sauvegarde GitHub non effectuée : {persistence['error']}")
+        elif persistence.get("commit_sha"):
+            st.success(
+                f"Contacts sauvegardés sur GitHub ({persistence.get('branch')}) — {persistence.get('after')} contact(s) dans le référentiel."
+            )
