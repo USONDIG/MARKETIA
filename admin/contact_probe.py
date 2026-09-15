@@ -39,24 +39,42 @@ def _display_contacts(contacts: list[dict]) -> None:
 def render_contact_probe(default_company: str = "XPO Logistics") -> None:
     st.markdown("### Recherche contacts à la demande")
     st.caption(
-        "La recherche est exécutée par l'API MARKETIA sur Render, puis les contacts qualifiés sont sauvegardés sur la branche GitHub data/contact-results. Aucun workflow MARKETIA complet n'est lancé."
+        "La recherche suit automatiquement l'entreprise sélectionnée dans le Dashboard. Elle est exécutée par l'API MARKETIA sur Render, puis les contacts qualifiés sont sauvegardés sur la branche GitHub data/contact-results. Aucun workflow MARKETIA complet n'est lancé."
     )
 
     api_url = str(st.secrets.get("contact_api_url", DEFAULT_CONTACT_API_URL)).strip()
     github_token = str(st.secrets.get("github_token", "")).strip()
-    company = st.text_input("Entreprise", value=default_company, key="contact_probe_company")
+
+    selected_company = str(default_company or "").strip()
+    previous_selected = str(st.session_state.get("contact_probe_selected_company") or "").strip()
+    if selected_company and selected_company != previous_selected:
+        st.session_state["contact_probe_selected_company"] = selected_company
+        st.session_state["contact_probe_company"] = selected_company
+        st.session_state.pop("contact_probe_payload", None)
+        st.session_state.pop("contact_probe_persistence", None)
+        st.session_state.pop("contact_probe_last_company", None)
+
+    if "contact_probe_company" not in st.session_state:
+        st.session_state["contact_probe_company"] = selected_company or "XPO Logistics"
+
+    company = st.text_input(
+        "Entreprise sélectionnée",
+        key="contact_probe_company",
+        help="Le nom suit automatiquement l'opportunité sélectionnée. Tu peux l'ajuster manuellement avant de lancer la recherche.",
+    )
 
     if st.button("Rechercher les contacts maintenant", type="primary", key="contact_probe_run"):
-        with st.spinner(f"Recherche et qualification des contacts pour {company}…"):
+        company_to_search = company.strip()
+        with st.spinner(f"Recherche et qualification des contacts pour {company_to_search}…"):
             try:
-                payload = search_contacts(api_url, company.strip(), timeout=45)
+                payload = search_contacts(api_url, company_to_search, timeout=45)
             except Exception as exc:
                 st.error(f"Recherche contacts impossible : {exc}")
                 return
 
         contacts = payload.get("contacts") or []
         st.session_state["contact_probe_payload"] = payload
-        st.session_state["contact_probe_last_company"] = company.strip()
+        st.session_state["contact_probe_last_company"] = company_to_search
 
         if contacts and github_token:
             try:
