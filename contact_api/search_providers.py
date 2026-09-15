@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import html
+import os
 import re
 from urllib.parse import parse_qs, unquote, urlparse
 
@@ -28,6 +29,32 @@ def _valid_result(url: str) -> bool:
     return not any(name in host for name in ("google.com", "google.fr", "bing.com", "duckduckgo.com", "search.yahoo.com"))
 
 
+def search_serper(query: str, timeout: int, max_results: int) -> list[dict[str, str]]:
+    api_key = os.getenv("SERPER_API_KEY", "").strip()
+    if not api_key:
+        return []
+    response = requests.post(
+        "https://google.serper.dev/search",
+        json={"q": query, "num": min(max_results, 10), "gl": "fr", "hl": "fr"},
+        headers={"X-API-KEY": api_key, "Content-Type": "application/json"},
+        timeout=timeout,
+    )
+    response.raise_for_status()
+    data = response.json()
+    rows: list[dict[str, str]] = []
+    for item in data.get("organic", [])[:max_results]:
+        url = str(item.get("link") or "").strip()
+        if not _valid_result(url):
+            continue
+        rows.append({
+            "url": url,
+            "title": str(item.get("title") or "").strip(),
+            "snippet": str(item.get("snippet") or "").strip(),
+            "provider": "serper",
+        })
+    return rows
+
+
 def _unwrap_ddg(url: str) -> str:
     parsed = urlparse(html.unescape(url))
     if "duckduckgo.com" in parsed.netloc and parsed.path.startswith("/l/"):
@@ -43,12 +70,7 @@ def _unwrap_yahoo(url: str) -> str:
 
 
 def search_google(query: str, timeout: int, user_agent: str, max_results: int) -> list[dict[str, str]]:
-    response = requests.get(
-        "https://www.google.com/search",
-        params={"q": query, "num": min(10, max_results), "hl": "fr", "filter": "0"},
-        headers={"User-Agent": user_agent, "Accept-Language": "fr,en;q=0.8"},
-        timeout=timeout,
-    )
+    response = requests.get("https://www.google.com/search", params={"q": query, "num": min(10, max_results), "hl": "fr", "filter": "0"}, headers={"User-Agent": user_agent, "Accept-Language": "fr,en;q=0.8"}, timeout=timeout)
     response.raise_for_status()
     rows: list[dict[str, str]] = []
     seen: set[str] = set()
@@ -68,12 +90,7 @@ def search_google(query: str, timeout: int, user_agent: str, max_results: int) -
 
 
 def search_bing(query: str, timeout: int, user_agent: str, max_results: int) -> list[dict[str, str]]:
-    response = requests.get(
-        "https://www.bing.com/search",
-        params={"q": query, "setlang": "fr", "count": max(10, max_results)},
-        headers={"User-Agent": user_agent, "Accept-Language": "fr,en;q=0.8"},
-        timeout=timeout,
-    )
+    response = requests.get("https://www.bing.com/search", params={"q": query, "setlang": "fr", "count": max(10, max_results)}, headers={"User-Agent": user_agent, "Accept-Language": "fr,en;q=0.8"}, timeout=timeout)
     response.raise_for_status()
     rows: list[dict[str, str]] = []
     for block in BING_BLOCK_RE.findall(response.text):
@@ -91,12 +108,7 @@ def search_bing(query: str, timeout: int, user_agent: str, max_results: int) -> 
 
 
 def search_duckduckgo(query: str, timeout: int, user_agent: str, max_results: int) -> list[dict[str, str]]:
-    response = requests.get(
-        "https://html.duckduckgo.com/html/",
-        params={"q": query},
-        headers={"User-Agent": user_agent, "Accept-Language": "fr,en;q=0.8"},
-        timeout=timeout,
-    )
+    response = requests.get("https://html.duckduckgo.com/html/", params={"q": query}, headers={"User-Agent": user_agent, "Accept-Language": "fr,en;q=0.8"}, timeout=timeout)
     response.raise_for_status()
     anchors = DDG_RESULT_RE.findall(response.text)
     snippets = DDG_SNIPPET_RE.findall(response.text)
@@ -109,12 +121,7 @@ def search_duckduckgo(query: str, timeout: int, user_agent: str, max_results: in
 
 
 def search_yahoo(query: str, timeout: int, user_agent: str, max_results: int) -> list[dict[str, str]]:
-    response = requests.get(
-        "https://search.yahoo.com/search",
-        params={"p": query},
-        headers={"User-Agent": user_agent, "Accept-Language": "fr,en;q=0.8"},
-        timeout=timeout,
-    )
+    response = requests.get("https://search.yahoo.com/search", params={"p": query}, headers={"User-Agent": user_agent, "Accept-Language": "fr,en;q=0.8"}, timeout=timeout)
     response.raise_for_status()
     rows = []
     for raw_url, raw_title in YAHOO_RESULT_RE.findall(response.text):
@@ -127,6 +134,15 @@ def search_yahoo(query: str, timeout: int, user_agent: str, max_results: int) ->
 
 
 def search_public_web(query: str, timeout: int, user_agent: str, max_results: int) -> list[dict[str, str]]:
+    try:
+        rows = search_serper(query, timeout, max_results)
+        if rows:
+            return rows
+    except requests.RequestException as exc:
+        serper_failure = exc
+    else:
+        serper_failure = None
+
     failures: list[Exception] = []
     for provider in (search_google, search_bing, search_duckduckgo, search_yahoo):
         try:
@@ -135,6 +151,10 @@ def search_public_web(query: str, timeout: int, user_agent: str, max_results: in
                 return rows
         except requests.RequestException as exc:
             failures.append(exc)
+    if serper_failure is not None:
+        failures.insert(0, serper_failure)
     if failures:
-        raise requests.RequestException("No public search provider available") from failures[-1]
+        raise requests.RequestException("No search provider available") from failures[-1]
+    if not os.getenv("SERPER_API_KEY"):
+        raise requests.RequestException("SERPER_API_KEY is not configured and public HTML search providers returned no results")
     return []
