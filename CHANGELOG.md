@@ -9,6 +9,9 @@ Le format suit l'esprit de Keep a Changelog et les versions utilisent une numér
 ### Added
 - À compléter à chaque évolution avant publication.
 
+### Fixed
+- La recherche de contacts à la demande suit désormais automatiquement l'entreprise sélectionnée dans le Dashboard et réinitialise les résultats précédents lorsqu'on change d'opportunité.
+
 ## [1.6.0] - 2026-09-15
 
 ### Added
