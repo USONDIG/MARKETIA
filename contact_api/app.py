@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from contact_search_providers import search_public_web
+from search_providers import search_public_web
 
 app = FastAPI(title="MARKETIA Contact API")
 
