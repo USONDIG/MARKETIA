@@ -9,6 +9,24 @@ Le format suit l'esprit de Keep a Changelog et les versions utilisent une numér
 ### Added
 - À compléter à chaque évolution avant publication.
 
+## [1.6.0] - 2026-09-15
+
+### Added
+- Microservice FastAPI de recherche de contacts déployé sur Render.
+- Recherche web via Serper pour éviter les blocages des moteurs publics depuis les environnements serveur.
+- Qualification, déduplication et scoring des contacts IT / infrastructure / cloud / achats IT.
+- Recherche de contacts à la demande directement depuis le Dashboard Streamlit.
+- Persistance automatique des contacts qualifiés dans `output/grafana/contacts.json` sur la branche dédiée `data/contact-results`.
+- Point de rollback `backup/pre-contact-streamlit-prod-20260915` avant la mise en production Streamlit.
+
+### Changed
+- Streamlit n'exécute plus le scraping de contacts dans son propre processus : il appelle l'API Render à la volée.
+- Le Dashboard lit `contacts.json` depuis la branche `data/contact-results`, tandis que les autres flux continuent d'être lus depuis `main`.
+- Une recherche de contacts et sa sauvegarde ne nécessitent plus de lancer le workflow MARKETIA complet.
+
+### Data quality
+- Les résultats sont conservés avec leur URL source et leur preuve textuelle ; aucune adresse email supposée n'est générée.
+
 ## [1.5.0] - 2026-09-14
 
 ### Added
