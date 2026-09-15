@@ -134,14 +134,11 @@ def search_yahoo(query: str, timeout: int, user_agent: str, max_results: int) ->
 
 
 def search_public_web(query: str, timeout: int, user_agent: str, max_results: int) -> list[dict[str, str]]:
-    try:
-        rows = search_serper(query, timeout, max_results)
-        if rows:
-            return rows
-    except requests.RequestException as exc:
-        serper_failure = exc
-    else:
-        serper_failure = None
+    # When Serper is configured, it is the authoritative provider. Do not fall
+    # back to HTML search engines: those are commonly blocked from server IPs
+    # and can multiply request latency until Streamlit times out.
+    if os.getenv("SERPER_API_KEY", "").strip():
+        return search_serper(query, timeout, max_results)
 
     failures: list[Exception] = []
     for provider in (search_google, search_bing, search_duckduckgo, search_yahoo):
@@ -151,10 +148,6 @@ def search_public_web(query: str, timeout: int, user_agent: str, max_results: in
                 return rows
         except requests.RequestException as exc:
             failures.append(exc)
-    if serper_failure is not None:
-        failures.insert(0, serper_failure)
     if failures:
-        raise requests.RequestException("No search provider available") from failures[-1]
-    if not os.getenv("SERPER_API_KEY"):
-        raise requests.RequestException("SERPER_API_KEY is not configured and public HTML search providers returned no results")
+        raise requests.RequestException("No public search provider available") from failures[-1]
     return []
