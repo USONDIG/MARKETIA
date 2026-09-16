@@ -5,6 +5,7 @@ from fastapi import FastAPI, Query
 from pydantic import BaseModel
 
 from contact_qualifier import qualify_results
+from phone_enrichment import enrich_contacts_with_public_phones
 from search_providers import search_public_web
 
 app = FastAPI(title="MARKETIA Contact API")
@@ -34,7 +35,7 @@ def _company_alias(company: str) -> str:
 
 def _run_query(query: str) -> tuple[str, list[dict], str | None]:
     try:
-        results = search_public_web(query, timeout=6, user_agent="MARKETIA-contact-api/0.5", max_results=5)
+        results = search_public_web(query, timeout=6, user_agent="MARKETIA-contact-api/0.6", max_results=5)
         return query, results, None
     except Exception as exc:
         return query, [], str(exc)
@@ -66,8 +67,10 @@ def _run_search(company: str) -> dict:
 
     rows = [rows_by_query[q] for q in queries]
     contacts = qualify_results(alias, rows)
+    contacts, phone_query_count = enrich_contacts_with_public_phones(contacts, alias)
+    phone_count = sum(1 for contact in contacts if contact.get("professional_phone"))
     print(
-        f"[contact-api] company={company!r} alias={alias!r} raw_results={total_results} qualified_contacts={len(contacts)} providers={','.join(sorted(providers)) or 'none'}",
+        f"[contact-api] company={company!r} alias={alias!r} raw_results={total_results} qualified_contacts={len(contacts)} phones={phone_count} phone_queries={phone_query_count} providers={','.join(sorted(providers)) or 'none'}",
         flush=True,
     )
     return {
@@ -76,6 +79,8 @@ def _run_search(company: str) -> dict:
         "contacts": contacts,
         "qualified_count": len(contacts),
         "raw_result_count": total_results,
+        "phone_count": phone_count,
+        "phone_query_count": phone_query_count,
         "providers": sorted(providers),
         "queries": rows,
     }
