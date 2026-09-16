@@ -32,6 +32,30 @@ def _contact_key(contact: dict[str, Any]) -> str:
     return f"fallback:{company}|{name}|{title}"
 
 
+def _has_value(value: Any) -> bool:
+    if value is None:
+        return False
+    if isinstance(value, str):
+        return bool(value.strip())
+    if isinstance(value, (list, dict, tuple, set)):
+        return bool(value)
+    return True
+
+
+def _merge_contact(existing: dict[str, Any], incoming: dict[str, Any]) -> dict[str, Any]:
+    """Update with new evidence without erasing previously known coordinates."""
+    merged = dict(existing)
+    for key, value in incoming.items():
+        if not _has_value(value):
+            continue
+        if key.endswith("_status") and str(value).upper() == "NOT_FOUND":
+            old_status = str(existing.get(key) or "").strip().upper()
+            if old_status and old_status != "NOT_FOUND":
+                continue
+        merged[key] = value
+    return merged
+
+
 def persist_contacts_to_github(
     github_token: str,
     contacts: list[dict[str, Any]],
@@ -49,7 +73,7 @@ def persist_contacts_to_github(
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {github_token}",
         "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "MARKETIA-Streamlit-contact-persistence/1.0",
+        "User-Agent": "MARKETIA-Streamlit-contact-persistence/1.1",
     }
 
     current = requests.get(api_url, headers=headers, params={"ref": branch}, timeout=timeout)
@@ -68,7 +92,11 @@ def persist_contacts_to_github(
     before = len(merged)
     for item in contacts:
         if isinstance(item, dict):
-            merged[_contact_key(item)] = item
+            key = _contact_key(item)
+            if key in merged:
+                merged[key] = _merge_contact(merged[key], item)
+            else:
+                merged[key] = item
 
     output = sorted(
         merged.values(),
@@ -92,6 +120,6 @@ def persist_contacts_to_github(
         "path": path,
         "before": before,
         "after": len(output),
-        "added_or_updated": max(0, len(output) - before),
+        "added_or_updated": len(contacts),
         "commit_sha": result.get("commit", {}).get("sha"),
     }
