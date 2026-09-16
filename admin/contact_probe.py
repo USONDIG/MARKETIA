@@ -38,7 +38,11 @@ def _display_contacts(contacts: list[dict]) -> None:
     )
 
 
-def render_contact_probe(default_company: str = "XPO Logistics", existing_contacts: list[dict] | None = None) -> None:
+def render_contact_probe(
+    default_company: str = "XPO Logistics",
+    existing_contacts: list[dict] | None = None,
+    siren: str | None = None,
+) -> None:
     known_contacts = existing_contacts or []
     st.markdown("### Recherche contacts à la demande")
     st.caption(
@@ -49,6 +53,7 @@ def render_contact_probe(default_company: str = "XPO Logistics", existing_contac
     github_token = str(st.secrets.get("github_token", "")).strip()
 
     selected_company = str(default_company or "").strip()
+    selected_siren = str(siren or "").strip()
     previous_selected = str(st.session_state.get("contact_probe_selected_company") or "").strip()
     if selected_company and selected_company != previous_selected:
         st.session_state["contact_probe_selected_company"] = selected_company
@@ -80,7 +85,7 @@ def render_contact_probe(default_company: str = "XPO Logistics", existing_contac
         company_to_search = company.strip()
         with st.spinner(f"Recherche et qualification des contacts pour {company_to_search}…"):
             try:
-                payload = search_contacts(api_url, company_to_search, timeout=45)
+                payload = search_contacts(api_url, company_to_search, siren=selected_siren, timeout=45)
             except Exception as exc:
                 st.error(f"Recherche contacts impossible : {exc}")
                 return
@@ -93,6 +98,8 @@ def render_contact_probe(default_company: str = "XPO Logistics", existing_contac
             try:
                 persistence = persist_contacts_to_github(github_token, contacts)
                 st.session_state["contact_probe_persistence"] = persistence
+                st.cache_data.clear()
+                st.rerun()
             except Exception as exc:
                 st.session_state["contact_probe_persistence"] = {"error": str(exc)}
         elif contacts:
