@@ -13,6 +13,7 @@ app = FastAPI(title="MARKETIA Contact API")
 
 class SearchRequest(BaseModel):
     company: str
+    siren: str | None = None
 
 
 _GENERIC_SUFFIXES = {
@@ -27,7 +28,6 @@ def _company_alias(company: str) -> str:
     tokens = first.split()
     while len(tokens) > 2 and tokens[-1].casefold() in _GENERIC_SUFFIXES:
         tokens.pop()
-    # Long legal names are usually less useful than the commercial brand.
     if len(tokens) >= 4:
         tokens = tokens[:2]
     return " ".join(tokens) or value
@@ -35,14 +35,15 @@ def _company_alias(company: str) -> str:
 
 def _run_query(query: str) -> tuple[str, list[dict], str | None]:
     try:
-        results = search_public_web(query, timeout=6, user_agent="MARKETIA-contact-api/0.6", max_results=5)
+        results = search_public_web(query, timeout=6, user_agent="MARKETIA-contact-api/0.7", max_results=5)
         return query, results, None
     except Exception as exc:
         return query, [], str(exc)
 
 
-def _run_search(company: str) -> dict:
+def _run_search(company: str, siren: str | None = None) -> dict:
     company = company.strip()
+    siren = str(siren or "").strip() or None
     alias = _company_alias(company)
     queries = [
         f'site:linkedin.com/in "{alias}" "Infrastructure"',
@@ -67,14 +68,19 @@ def _run_search(company: str) -> dict:
 
     rows = [rows_by_query[q] for q in queries]
     contacts = qualify_results(alias, rows)
+    for contact in contacts:
+        contact["company_name"] = company
+        if siren:
+            contact["siren"] = siren
     contacts, phone_query_count = enrich_contacts_with_public_phones(contacts, alias)
     phone_count = sum(1 for contact in contacts if contact.get("professional_phone"))
     print(
-        f"[contact-api] company={company!r} alias={alias!r} raw_results={total_results} qualified_contacts={len(contacts)} phones={phone_count} phone_queries={phone_query_count} providers={','.join(sorted(providers)) or 'none'}",
+        f"[contact-api] company={company!r} siren={siren!r} alias={alias!r} raw_results={total_results} qualified_contacts={len(contacts)} phones={phone_count} phone_queries={phone_query_count} providers={','.join(sorted(providers)) or 'none'}",
         flush=True,
     )
     return {
         "company": company,
+        "siren": siren,
         "search_alias": alias,
         "contacts": contacts,
         "qualified_count": len(contacts),
@@ -93,9 +99,9 @@ def health():
 
 @app.post("/search")
 def search(payload: SearchRequest):
-    return _run_search(payload.company)
+    return _run_search(payload.company, payload.siren)
 
 
 @app.get("/search")
-def search_get(company: str = Query(..., min_length=2)):
-    return _run_search(company)
+def search_get(company: str = Query(..., min_length=2), siren: str | None = None):
+    return _run_search(company, siren)
