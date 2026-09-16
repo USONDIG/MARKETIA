@@ -11,11 +11,14 @@ DEFAULT_DATA_BRANCH = "data/contact-results"
 DEFAULT_CONTACTS_PATH = "output/grafana/contacts.json"
 
 
-def search_contacts(api_url: str, company: str, timeout: int = 30) -> dict:
+def search_contacts(api_url: str, company: str, siren: str | None = None, timeout: int = 30) -> dict:
     base = api_url.rstrip("/")
+    payload = {"company": company}
+    if str(siren or "").strip():
+        payload["siren"] = str(siren).strip()
     response = requests.post(
         f"{base}/search",
-        json={"company": company},
+        json=payload,
         timeout=timeout,
     )
     response.raise_for_status()
@@ -73,7 +76,7 @@ def persist_contacts_to_github(
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {github_token}",
         "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "MARKETIA-Streamlit-contact-persistence/1.1",
+        "User-Agent": "MARKETIA-Streamlit-contact-persistence/1.2",
     }
 
     current = requests.get(api_url, headers=headers, params={"ref": branch}, timeout=timeout)
