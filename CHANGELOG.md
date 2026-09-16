@@ -14,9 +14,12 @@ Le format suit l'esprit de Keep a Changelog et les versions utilisent une numér
 - MARKETIA affiche en priorité les contacts déjà sauvegardés dans `data/contact-results` sans appeler Render/Serper.
 - Lorsqu'un contact est déjà connu, l'interface propose uniquement une action explicite **Actualiser / enrichir les contacts via Render**.
 - La persistance fusionne désormais les nouvelles preuves avec les données existantes sans effacer une coordonnée déjà connue lorsqu'une nouvelle recherche ne la retrouve pas.
+- Les nouvelles recherches de contacts transmettent le SIREN à l'API Render et le conservent dans chaque contact sauvegardé afin de fiabiliser l'association avec l'opportunité MARKETIA.
 
 ### Fixed
 - La recherche de contacts à la demande suit désormais automatiquement l'entreprise sélectionnée dans le Dashboard et réinitialise les résultats précédents lorsqu'on change d'opportunité.
+- L'affichage des contacts sauvegardés reconnaît désormais les alias entre raison sociale longue et nom commercial court, par exemple `XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE` et `XPO LOGISTICS`.
+- Le cache Streamlit des flux est vidé immédiatement après une sauvegarde de contacts afin que les nouveaux résultats soient visibles sans attendre l'expiration du cache.
 
 ## [1.6.0] - 2026-09-15
 
