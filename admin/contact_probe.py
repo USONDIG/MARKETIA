@@ -20,6 +20,8 @@ def _display_contacts(contacts: list[dict]) -> None:
             "Fonction": contact.get("job_title"),
             "Rôle": contact.get("role_class"),
             "Score": contact.get("relevance_score"),
+            "Téléphone": contact.get("professional_phone"),
+            "Statut tél.": contact.get("phone_status"),
             "LinkedIn": contact.get("linkedin_url"),
             "Source": contact.get("source_name"),
             "Preuve": contact.get("evidence_summary"),
@@ -36,10 +38,11 @@ def _display_contacts(contacts: list[dict]) -> None:
     )
 
 
-def render_contact_probe(default_company: str = "XPO Logistics") -> None:
+def render_contact_probe(default_company: str = "XPO Logistics", existing_contacts: list[dict] | None = None) -> None:
+    known_contacts = existing_contacts or []
     st.markdown("### Recherche contacts à la demande")
     st.caption(
-        "La recherche suit automatiquement l'entreprise sélectionnée dans le Dashboard. Elle est exécutée par l'API MARKETIA sur Render, puis les contacts qualifiés sont sauvegardés sur la branche GitHub data/contact-results. Aucun workflow MARKETIA complet n'est lancé."
+        "MARKETIA affiche d'abord les contacts déjà sauvegardés. Render/Serper n'est appelé que si tu demandes une recherche ou un enrichissement. Aucun workflow MARKETIA complet n'est lancé."
     )
 
     api_url = str(st.secrets.get("contact_api_url", DEFAULT_CONTACT_API_URL)).strip()
@@ -63,7 +66,17 @@ def render_contact_probe(default_company: str = "XPO Logistics") -> None:
         help="Le nom suit automatiquement l'opportunité sélectionnée. Tu peux l'ajuster manuellement avant de lancer la recherche.",
     )
 
-    if st.button("Rechercher les contacts maintenant", type="primary", key="contact_probe_run"):
+    if known_contacts:
+        phone_count = sum(1 for row in known_contacts if str(row.get("professional_phone") or "").strip())
+        st.success(
+            f"{len(known_contacts)} contact(s) déjà connu(s) pour cette entreprise, dont {phone_count} avec téléphone. Aucun appel Render n'est nécessaire pour les afficher."
+        )
+        button_label = "Actualiser / enrichir les contacts via Render"
+    else:
+        st.info("Aucun contact sauvegardé : une recherche Render/Serper est nécessaire pour cette entreprise.")
+        button_label = "Rechercher les contacts maintenant"
+
+    if st.button(button_label, type="primary", key="contact_probe_run"):
         company_to_search = company.strip()
         with st.spinner(f"Recherche et qualification des contacts pour {company_to_search}…"):
             try:
@@ -91,10 +104,11 @@ def render_contact_probe(default_company: str = "XPO Logistics") -> None:
 
     contacts = payload.get("contacts") or []
     providers = ", ".join(payload.get("providers") or []) or "-"
-    a, b, c = st.columns(3)
+    a, b, c, d = st.columns(4)
     a.metric("Contacts qualifiés", int(payload.get("qualified_count") or len(contacts)))
     b.metric("Résultats bruts", int(payload.get("raw_result_count") or 0))
-    c.metric("Source", providers)
+    c.metric("Téléphones", int(payload.get("phone_count") or 0))
+    d.metric("Source", providers)
 
     _display_contacts(contacts)
 
