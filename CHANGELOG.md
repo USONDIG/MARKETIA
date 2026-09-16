@@ -7,7 +7,13 @@ Le format suit l'esprit de Keep a Changelog et les versions utilisent une numér
 ## [Unreleased]
 
 ### Added
-- À compléter à chaque évolution avant publication.
+- Enrichissement des téléphones professionnels via Serper pour les contacts qualifiés, avec validation stricte : le nom du contact, l'entreprise et le numéro doivent apparaître dans la même preuve publique.
+- Conservation de la source et de la preuve du téléphone (`phone_source_url`, `phone_evidence`, `phone_status`, `phone_type`).
+
+### Changed
+- MARKETIA affiche en priorité les contacts déjà sauvegardés dans `data/contact-results` sans appeler Render/Serper.
+- Lorsqu'un contact est déjà connu, l'interface propose uniquement une action explicite **Actualiser / enrichir les contacts via Render**.
+- La persistance fusionne désormais les nouvelles preuves avec les données existantes sans effacer une coordonnée déjà connue lorsqu'une nouvelle recherche ne la retrouve pas.
 
 ### Fixed
 - La recherche de contacts à la demande suit désormais automatiquement l'entreprise sélectionnée dans le Dashboard et réinitialise les résultats précédents lorsqu'on change d'opportunité.
