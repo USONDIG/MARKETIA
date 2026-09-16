@@ -1,11 +1,51 @@
 from __future__ import annotations
 
+import re
+import unicodedata
+
 import pandas as pd
 import streamlit as st
 
 from contact_probe import render_contact_probe
 from shared_filters import render_filters
 from shared_ui import clean_values, has_value, render_lead_detail, safe_df
+
+
+_GENERIC_COMPANY_WORDS = {
+    "france", "europe", "centre", "center", "distribution", "logistics", "logistique",
+    "sas", "sasu", "sa", "se", "holding", "groupe", "group", "international",
+}
+
+
+def _norm_company(value: str) -> str:
+    text = unicodedata.normalize("NFKD", str(value or ""))
+    text = "".join(ch for ch in text if not unicodedata.combining(ch)).casefold()
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _company_aliases(value: str) -> set[str]:
+    raw = str(value or "").strip()
+    if not raw:
+        return set()
+    aliases: set[str] = set()
+    for segment in re.split(r"[,;/|]", raw):
+        norm = _norm_company(segment)
+        if not norm:
+            continue
+        aliases.add(norm)
+        tokens = norm.split()
+        trimmed = list(tokens)
+        while len(trimmed) > 2 and trimmed[-1] in _GENERIC_COMPANY_WORDS:
+            trimmed.pop()
+        if trimmed:
+            aliases.add(" ".join(trimmed))
+        meaningful = [tok for tok in tokens if tok not in _GENERIC_COMPANY_WORDS]
+        if len(meaningful) >= 2:
+            aliases.add(" ".join(meaningful[:2]))
+        elif meaningful:
+            aliases.add(meaningful[0])
+    return {alias for alias in aliases if len(alias) >= 3}
 
 
 def _key(row: pd.Series) -> str:
@@ -56,30 +96,32 @@ def _contacts_for_lead(contacts: pd.DataFrame, lead: pd.Series) -> pd.DataFrame:
         return contacts
     siren = str(lead.get("siren") or "").strip()
     company = str(lead.get("company_name") or "").strip()
+
     if siren and "siren" in contacts.columns:
-        match = contacts[contacts["siren"].fillna("").astype(str) == siren]
+        contact_sirens = contacts["siren"].fillna("").astype(str).str.strip()
+        match = contacts[contact_sirens == siren]
         if not match.empty:
             return match
+
     if company and "company_name" in contacts.columns:
-        company_cf = company.casefold()
         names = contacts["company_name"].fillna("").astype(str)
-        exact = contacts[names.str.casefold() == company_cf]
+        company_norm = _norm_company(company)
+        exact = contacts[names.map(_norm_company) == company_norm]
         if not exact.empty:
             return exact
-        tokens = [token for token in company_cf.replace(",", " ").split() if len(token) >= 4]
-        if tokens:
-            mask = pd.Series(True, index=contacts.index)
-            lowered = names.str.casefold()
-            for token in tokens[:3]:
-                mask &= lowered.str.contains(token, regex=False)
-            fuzzy = contacts[mask]
-            if not fuzzy.empty:
-                return fuzzy
+
+        lead_aliases = _company_aliases(company)
+        alias_mask = names.map(lambda value: bool(lead_aliases & _company_aliases(value)))
+        alias_match = contacts[alias_mask]
+        if not alias_match.empty:
+            return alias_match
+
     return contacts.iloc[0:0]
 
 
 def _render_context_contacts(contacts: pd.DataFrame, lead: pd.Series) -> None:
     company = str(lead.get("company_name") or "Entreprise")
+    siren = str(lead.get("siren") or "").strip()
     st.divider()
     st.markdown(f"## 👥 Contacts associés à {company}")
     st.caption("Contacts reliés à l'entreprise sélectionnée. Les coordonnées ne sont affichées comme confirmées que lorsqu'elles existent dans les données MARKETIA.")
@@ -108,7 +150,7 @@ def _render_context_contacts(contacts: pd.DataFrame, lead: pd.Series) -> None:
         ] if c in display.columns]
         st.dataframe(display[cols] if cols else display, use_container_width=True, hide_index=True, height=min(420, 80 + 38 * max(1, len(display))))
 
-    render_contact_probe(company, existing_contacts=matched.to_dict("records"))
+    render_contact_probe(company, existing_contacts=matched.to_dict("records"), siren=siren)
 
 
 def render_dashboard(load_feed, render_run_status) -> None:
