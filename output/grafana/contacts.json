@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "entity_key": "414642272",
+    "siren": "414642272",
+    "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
+    "full_name": "Paul Panozzo",
+    "job_title": "IT Procurement Manager",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://www.linkedin.com/in/paul-panozzo-6a405463",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://www.linkedin.com/in/paul-panozzo-6a405463",
+    "confidence": 74.0,
+    "verified_at": "2026-09-22T05:32:53.792421+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-09-22T05:32:53.792465+00:00"
+  }
+]
