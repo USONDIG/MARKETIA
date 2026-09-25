@@ -1,38 +1,20 @@
 [
   {
-    "entity_key": "534980537",
-    "siren": "534980537",
-    "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
-    "full_name": "Tiffany Garcia",
-    "job_title": "Category Manager IT",
-    "role_class": "BUYER",
-    "relevance_score": 85.0,
-    "linkedin_url": "https://www.linkedin.com/in/tiffany-garcia-65b8b65b",
-    "professional_email": null,
-    "professional_phone": "8806978927",
-    "source_name": "scout.yahoo.com",
-    "source_url": "https://scout.yahoo.com/chat?q=%22Tiffany+Garcia%22+%22GPV+FRANCE%22+contact&fr2=piv-web",
-    "confidence": 78.0,
-    "verified_at": "2026-09-25T10:20:57.256023+00:00",
-    "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-09-25T10:20:57.256085+00:00"
-  },
-  {
     "entity_key": "414642272",
     "siren": "414642272",
     "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
-    "full_name": "Simran Singh",
-    "job_title": "IT Procurement Manager",
+    "full_name": "Javier Morales",
+    "job_title": "Category Manager IT",
     "role_class": "BUYER",
     "relevance_score": 85.0,
-    "linkedin_url": "https://uk.linkedin.com/in/simran-singh-a317b11aa",
+    "linkedin_url": "https://www.linkedin.com/in/javier-morales-410380106",
     "professional_email": null,
-    "professional_phone": "8806978927",
-    "source_name": "scout.yahoo.com",
-    "source_url": "https://scout.yahoo.com/chat?q=%22Simran+Singh%22+%22XPO+LOGISTICS%22+contact&fr2=piv-web",
-    "confidence": 78.0,
-    "verified_at": "2026-09-25T10:20:09.174695+00:00",
-    "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-09-25T10:20:09.174739+00:00"
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://www.linkedin.com/in/javier-morales-410380106",
+    "confidence": 74.0,
+    "verified_at": "2026-09-25T15:56:32.315191+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-09-25T15:56:32.315240+00:00"
   }
 ]
