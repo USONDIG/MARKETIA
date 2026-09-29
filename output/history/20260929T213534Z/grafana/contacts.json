@@ -1,0 +1,38 @@
+[
+  {
+    "entity_key": "414642272",
+    "siren": "414642272",
+    "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
+    "full_name": "Nitesh Gupta",
+    "job_title": "Category Manager IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://in.linkedin.com/in/nitesh-gupta-375aa953",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://in.linkedin.com/in/nitesh-gupta-375aa953",
+    "confidence": 74.0,
+    "verified_at": "2026-09-29T11:31:04.757627+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-09-29T11:31:04.757674+00:00"
+  },
+  {
+    "entity_key": "414642272",
+    "siren": "414642272",
+    "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
+    "full_name": "Thierry Chanteur",
+    "job_title": "Directeur achats IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://fr.linkedin.com/in/thierry-chanteur-a1a61a134",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://fr.linkedin.com/in/thierry-chanteur-a1a61a134",
+    "confidence": 74.0,
+    "verified_at": "2026-09-29T11:30:52.281374+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-09-29T11:30:52.281419+00:00"
+  }
+]
