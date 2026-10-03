@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "entity_key": "325090728",
+    "siren": "325090728",
+    "company_name": "CLAYENS GENAS",
+    "full_name": "Diana Galvan",
+    "job_title": "Category Manager IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://mx.linkedin.com/in/diana-galvan-3a5ab6139",
+    "professional_email": null,
+    "professional_phone": "8806978927",
+    "source_name": "scout.yahoo.com",
+    "source_url": "https://scout.yahoo.com/chat?q=%22Diana+Galvan%22+%22CLAYENS+GENAS%22+email&fr2=piv-web",
+    "confidence": 78.0,
+    "verified_at": "2026-10-03T15:16:08.734684+00:00",
+    "status": "CONTACT_WITH_COORDINATES",
+    "updated_at": "2026-10-03T15:16:08.734728+00:00"
+  },
+  {
+    "entity_key": "414642272",
+    "siren": "414642272",
+    "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
+    "full_name": "Etien Venne",
+    "job_title": "Category Manager IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://ca.linkedin.com/in/etien-venne-310345187",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://ca.linkedin.com/in/etien-venne-310345187",
+    "confidence": 74.0,
+    "verified_at": "2026-10-03T15:15:47.862208+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-10-03T15:15:47.862258+00:00"
+  },
+  {
+    "entity_key": "414642272",
+    "siren": "414642272",
+    "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
+    "full_name": "Michael Carrell",
+    "job_title": "IT Procurement Manager",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://www.linkedin.com/in/michael-carrell-77905237",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://www.linkedin.com/in/michael-carrell-77905237",
+    "confidence": 74.0,
+    "verified_at": "2026-10-03T15:15:38.115864+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-10-03T15:15:38.115916+00:00"
+  }
+]
