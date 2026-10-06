@@ -1,0 +1,38 @@
+[
+  {
+    "entity_key": "534980537",
+    "siren": "534980537",
+    "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
+    "full_name": "Milan Sukenik",
+    "job_title": "Strategic Buyer IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://sk.linkedin.com/in/milan-sukenik-41b843176",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://sk.linkedin.com/in/milan-sukenik-41b843176",
+    "confidence": 74.0,
+    "verified_at": "2026-10-05T23:16:59.174969+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-10-05T23:16:59.175020+00:00"
+  },
+  {
+    "entity_key": "414642272",
+    "siren": "414642272",
+    "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
+    "full_name": "Michael Carrell",
+    "job_title": "IT Procurement Manager",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://www.linkedin.com/in/michael-carrell-77905237",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://www.linkedin.com/in/michael-carrell-77905237",
+    "confidence": 74.0,
+    "verified_at": "2026-10-05T23:16:08.830402+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-10-05T23:16:08.830450+00:00"
+  }
+]
