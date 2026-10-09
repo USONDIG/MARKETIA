@@ -1,0 +1,38 @@
+[
+  {
+    "entity_key": "534980537",
+    "siren": "534980537",
+    "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
+    "full_name": "Groupe L'OCCITANE",
+    "job_title": "Category Manager IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://fr.linkedin.com/in/ga%C3%ABlle-o-6b9099167",
+    "professional_email": null,
+    "professional_phone": "8806978927",
+    "source_name": "scout.yahoo.com",
+    "source_url": "https://scout.yahoo.com/chat?q=%22Groupe+L%27OCCITANE%22+%22GPV+FRANCE%22+email&fr2=piv-web",
+    "confidence": 78.0,
+    "verified_at": "2026-10-08T22:12:45.586050+00:00",
+    "status": "CONTACT_WITH_COORDINATES",
+    "updated_at": "2026-10-08T22:12:45.586094+00:00"
+  },
+  {
+    "entity_key": "414642272",
+    "siren": "414642272",
+    "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
+    "full_name": "Thierry Chanteur",
+    "job_title": "Directeur achats IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://fr.linkedin.com/in/thierry-chanteur-a1a61a134",
+    "professional_email": "ce.0160862a@ac-poitiers.fr",
+    "professional_phone": "8806978927",
+    "source_name": "lycee-jag.fr",
+    "source_url": "https://lycee-jag.fr/projet-mega-camions/",
+    "confidence": 86.0,
+    "verified_at": "2026-10-08T22:11:43.446346+00:00",
+    "status": "CONTACT_WITH_COORDINATES",
+    "updated_at": "2026-10-08T22:11:43.446401+00:00"
+  }
+]
