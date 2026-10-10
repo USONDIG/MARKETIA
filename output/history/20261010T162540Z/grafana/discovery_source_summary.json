@@ -1,18 +1,18 @@
 [
   {
     "source": "ARBEITNOW",
-    "count": 495
+    "count": 722
   },
   {
     "source": "BODACC",
-    "count": 317
+    "count": 1
   },
   {
     "source": "GDELT",
-    "count": 62
+    "count": 34
   },
   {
     "source": "TED",
-    "count": 126
+    "count": 243
   }
 ]
