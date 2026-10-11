@@ -1,14 +1,14 @@
 [
   {
     "status": "DISCOVERED",
-    "count": 847
+    "count": 996
   },
   {
     "status": "ENRICHED",
-    "count": 150
+    "count": 3
   },
   {
     "status": "QUALIFIED",
-    "count": 3
+    "count": 1
   }
 ]
