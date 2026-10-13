@@ -9,15 +9,15 @@
   },
   {
     "business_theme": "Besoin infrastructure à qualifier",
-    "count": 86
+    "count": 92
   },
   {
     "business_theme": "GPU / IA / HPC",
-    "count": 178
+    "count": 184
   },
   {
     "business_theme": "Migration / rapatriement cloud",
-    "count": 3
+    "count": 4
   },
   {
     "business_theme": "Modernisation datacenter / salle IT",
@@ -29,7 +29,7 @@
   },
   {
     "business_theme": "Renfort de compétences / recrutement IT",
-    "count": 50
+    "count": 49
   },
   {
     "business_theme": "Renouvellement / changement d'infrastructure",
@@ -37,18 +37,18 @@
   },
   {
     "business_theme": "Réseau / datacenter",
-    "count": 55
+    "count": 49
   },
   {
     "business_theme": "Stockage / sauvegarde / PRA",
-    "count": 277
+    "count": 268
   },
   {
     "business_theme": "Support / maintenance / services managés",
-    "count": 43
+    "count": 45
   },
   {
     "business_theme": "Virtualisation / cloud privé / HCI",
-    "count": 7
+    "count": 8
   }
 ]

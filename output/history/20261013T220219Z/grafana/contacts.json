@@ -1,0 +1,38 @@
+[
+  {
+    "entity_key": "534980537",
+    "siren": "534980537",
+    "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
+    "full_name": "Milan Sukenik",
+    "job_title": "Strategic Buyer IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://sk.linkedin.com/in/milan-sukenik-41b843176",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://sk.linkedin.com/in/milan-sukenik-41b843176",
+    "confidence": 74.0,
+    "verified_at": "2026-10-13T12:51:51.584958+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-10-13T12:51:51.585005+00:00"
+  },
+  {
+    "entity_key": "534980537",
+    "siren": "534980537",
+    "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
+    "full_name": "The Org",
+    "job_title": "IT Procurement Manager",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": null,
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "theorg.com",
+    "source_url": "https://theorg.com/org/loccitane-en-provence/org-chart/nicolas-chaigneau",
+    "confidence": 66.0,
+    "verified_at": "2026-10-13T12:51:29.381023+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-10-13T12:51:29.381065+00:00"
+  }
+]
