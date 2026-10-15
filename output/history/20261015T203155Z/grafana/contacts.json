@@ -1,0 +1,38 @@
+[
+  {
+    "entity_key": "522780428",
+    "siren": "522780428",
+    "company_name": "CENTRE D'IMAGERIE MEDICALE CARDINET",
+    "full_name": "Lauren Cardinet",
+    "job_title": "IT Procurement Manager",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://www.linkedin.com/in/laurencardinet",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://www.linkedin.com/in/laurencardinet",
+    "confidence": 74.0,
+    "verified_at": "2026-10-15T15:46:05.803616+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-10-15T15:46:05.803662+00:00"
+  },
+  {
+    "entity_key": "522780428",
+    "siren": "522780428",
+    "company_name": "CENTRE D'IMAGERIE MEDICALE CARDINET",
+    "full_name": "Sven HALLER",
+    "job_title": "Directeur achats IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://ch.linkedin.com/in/sven-haller-88704326",
+    "professional_email": "info@cimc-ge.ch",
+    "professional_phone": "1967-120461",
+    "source_name": "cimc-ge.ch",
+    "source_url": "https://cimc-ge.ch/equipe/",
+    "confidence": 86.0,
+    "verified_at": "2026-10-15T15:45:24.662550+00:00",
+    "status": "CONTACT_WITH_COORDINATES",
+    "updated_at": "2026-10-15T15:45:24.662599+00:00"
+  }
+]

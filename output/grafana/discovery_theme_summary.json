@@ -1,7 +1,7 @@
 [
   {
     "business_theme": "Achat de nouveaux serveurs / compute",
-    "count": 45
+    "count": 48
   },
   {
     "business_theme": "Appel d'offres / achat imminent",
@@ -13,7 +13,7 @@
   },
   {
     "business_theme": "GPU / IA / HPC",
-    "count": 173
+    "count": 178
   },
   {
     "business_theme": "Migration / rapatriement cloud",
@@ -21,7 +21,7 @@
   },
   {
     "business_theme": "Modernisation datacenter / salle IT",
-    "count": 20
+    "count": 15
   },
   {
     "business_theme": "Projet de transformation / nouveau site",
@@ -37,18 +37,18 @@
   },
   {
     "business_theme": "Réseau / datacenter",
-    "count": 50
+    "count": 52
   },
   {
     "business_theme": "Stockage / sauvegarde / PRA",
-    "count": 271
+    "count": 267
   },
   {
     "business_theme": "Support / maintenance / services managés",
-    "count": 45
+    "count": 43
   },
   {
     "business_theme": "Virtualisation / cloud privé / HCI",
-    "count": 7
+    "count": 8
   }
 ]
