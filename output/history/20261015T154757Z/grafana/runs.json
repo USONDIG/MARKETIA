@@ -1,15 +1,15 @@
 [
   {
     "source": "arbeitnow",
-    "last_run": "2026-09-15T11:35:24.993774+00:00",
+    "last_run": "2026-10-15T15:43:42.797285+00:00",
     "last_status": "OK",
     "records_seen": 0,
-    "records_saved": 782,
+    "records_saved": 1423,
     "error": null
   },
   {
     "source": "boamp",
-    "last_run": "2026-09-15T11:35:24.991966+00:00",
+    "last_run": "2026-10-15T15:43:42.795985+00:00",
     "last_status": "OK",
     "records_seen": 0,
     "records_saved": 0,
@@ -17,7 +17,7 @@
   },
   {
     "source": "bodacc",
-    "last_run": "2026-09-15T11:35:24.992542+00:00",
+    "last_run": "2026-10-15T15:43:42.796381+00:00",
     "last_status": "OK",
     "records_seen": 0,
     "records_saved": 0,
@@ -25,15 +25,15 @@
   },
   {
     "source": "gdelt",
-    "last_run": "2026-09-15T11:35:24.994368+00:00",
+    "last_run": "2026-10-15T15:43:42.797696+00:00",
     "last_status": "OK",
     "records_seen": 0,
-    "records_saved": 0,
+    "records_saved": 250,
     "error": null
   },
   {
     "source": "ted",
-    "last_run": "2026-09-15T11:35:24.993152+00:00",
+    "last_run": "2026-10-15T15:43:42.796825+00:00",
     "last_status": "OK",
     "records_seen": 0,
     "records_saved": 100,
