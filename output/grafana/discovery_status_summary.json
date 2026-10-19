@@ -1,10 +1,6 @@
 [
   {
     "status": "DISCOVERED",
-    "count": 999
-  },
-  {
-    "status": "ENRICHED",
-    "count": 1
+    "count": 1000
   }
 ]
