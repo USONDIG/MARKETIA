@@ -1,0 +1,38 @@
+[
+  {
+    "entity_key": "534980537",
+    "siren": "534980537",
+    "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
+    "full_name": "Procurement Coordinator",
+    "job_title": "Strategic Buyer IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://www.linkedin.com/in/ivan-a-705001182",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://www.linkedin.com/in/ivan-a-705001182",
+    "confidence": 74.0,
+    "verified_at": "2026-10-20T10:15:32.177210+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-10-20T10:15:32.177258+00:00"
+  },
+  {
+    "entity_key": "414642272",
+    "siren": "414642272",
+    "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
+    "full_name": "Thierry Chanteur",
+    "job_title": "Directeur achats IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://fr.linkedin.com/in/thierry-chanteur-a1a61a134",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://fr.linkedin.com/in/thierry-chanteur-a1a61a134",
+    "confidence": 74.0,
+    "verified_at": "2026-10-20T10:14:36.789235+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-10-20T10:14:36.789281+00:00"
+  }
+]
