@@ -1,54 +1,54 @@
 [
   {
     "business_theme": "Achat de nouveaux serveurs / compute",
-    "count": 42
-  },
-  {
-    "business_theme": "Appel d'offres / achat imminent",
-    "count": 241
-  },
-  {
-    "business_theme": "Besoin infrastructure à qualifier",
-    "count": 83
-  },
-  {
-    "business_theme": "GPU / IA / HPC",
-    "count": 191
-  },
-  {
-    "business_theme": "Migration / rapatriement cloud",
-    "count": 3
-  },
-  {
-    "business_theme": "Modernisation datacenter / salle IT",
-    "count": 14
-  },
-  {
-    "business_theme": "Projet de transformation / nouveau site",
-    "count": 4
-  },
-  {
-    "business_theme": "Renfort de compétences / recrutement IT",
-    "count": 36
-  },
-  {
-    "business_theme": "Renouvellement / changement d'infrastructure",
-    "count": 4
-  },
-  {
-    "business_theme": "Réseau / datacenter",
-    "count": 49
-  },
-  {
-    "business_theme": "Stockage / sauvegarde / PRA",
-    "count": 279
-  },
-  {
-    "business_theme": "Support / maintenance / services managés",
     "count": 47
   },
   {
+    "business_theme": "Appel d'offres / achat imminent",
+    "count": 244
+  },
+  {
+    "business_theme": "Besoin infrastructure à qualifier",
+    "count": 95
+  },
+  {
+    "business_theme": "GPU / IA / HPC",
+    "count": 168
+  },
+  {
+    "business_theme": "Migration / rapatriement cloud",
+    "count": 4
+  },
+  {
+    "business_theme": "Modernisation datacenter / salle IT",
+    "count": 17
+  },
+  {
+    "business_theme": "Projet de transformation / nouveau site",
+    "count": 3
+  },
+  {
+    "business_theme": "Renfort de compétences / recrutement IT",
+    "count": 46
+  },
+  {
+    "business_theme": "Renouvellement / changement d'infrastructure",
+    "count": 3
+  },
+  {
+    "business_theme": "Réseau / datacenter",
+    "count": 59
+  },
+  {
+    "business_theme": "Stockage / sauvegarde / PRA",
+    "count": 266
+  },
+  {
+    "business_theme": "Support / maintenance / services managés",
+    "count": 40
+  },
+  {
     "business_theme": "Virtualisation / cloud privé / HCI",
-    "count": 7
+    "count": 8
   }
 ]
