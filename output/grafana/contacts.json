@@ -11,11 +11,11 @@
     "professional_email": null,
     "professional_phone": "9757-73649355183",
     "source_name": "scout.yahoo.com",
-    "source_url": "https://scout.yahoo.com/chat?q=%22Justin+Tomlinson%22+%22CLAYENS+GENAS%22+email&fr2=piv-web",
+    "source_url": "https://scout.yahoo.com/chat?q=%22Justin+Tomlinson%22+%22CLAYENS+GENAS%22+t%C3%A9l%C3%A9phone&fr2=piv-web",
     "confidence": 78.0,
-    "verified_at": "2026-11-06T22:18:34.080518+00:00",
+    "verified_at": "2026-11-07T02:59:17.611280+00:00",
     "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:18:34.080564+00:00"
+    "updated_at": "2026-11-07T02:59:17.611336+00:00"
   },
   {
     "entity_key": "325090728",
@@ -29,11 +29,11 @@
     "professional_email": null,
     "professional_phone": "9757-73649355183",
     "source_name": "scout.yahoo.com",
-    "source_url": "https://scout.yahoo.com/chat?q=%22Diana+Galvan%22+%22CLAYENS+GENAS%22+email&fr2=piv-web",
+    "source_url": "https://scout.yahoo.com/chat?q=%22Diana+Galvan%22+%22CLAYENS+GENAS%22+contact&fr2=piv-web",
     "confidence": 78.0,
-    "verified_at": "2026-11-06T22:17:45.800886+00:00",
+    "verified_at": "2026-11-07T02:58:40.865281+00:00",
     "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:17:45.800930+00:00"
+    "updated_at": "2026-11-07T02:58:40.865339+00:00"
   },
   {
     "entity_key": "325090728",
@@ -49,9 +49,9 @@
     "source_name": "www.gifas.fr",
     "source_url": "https://www.gifas.fr/membre/clayens-genas",
     "confidence": 86.0,
-    "verified_at": "2026-11-06T22:17:00.940917+00:00",
+    "verified_at": "2026-11-07T02:58:29.555811+00:00",
     "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:17:00.940963+00:00"
+    "updated_at": "2026-11-07T02:58:29.555871+00:00"
   },
   {
     "entity_key": "414642272",
@@ -67,99 +67,63 @@
     "source_name": "scout.yahoo.com",
     "source_url": "https://scout.yahoo.com/chat?q=%22Tom+Ng%22+%22XPO+LOGISTICS%22+email&fr2=piv-web",
     "confidence": 78.0,
-    "verified_at": "2026-11-06T22:16:31.528283+00:00",
+    "verified_at": "2026-11-07T02:58:11.191049+00:00",
     "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:16:31.528331+00:00"
+    "updated_at": "2026-11-07T02:58:11.191139+00:00"
   },
   {
     "entity_key": "414642272",
     "siren": "414642272",
     "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
-    "full_name": "Michael Carrell",
-    "job_title": "IT Procurement Manager",
-    "role_class": "BUYER",
-    "relevance_score": 85.0,
-    "linkedin_url": "https://www.linkedin.com/in/michael-carrell-77905237",
-    "professional_email": null,
-    "professional_phone": "9757-73649355183",
-    "source_name": "scout.yahoo.com",
-    "source_url": "https://scout.yahoo.com/chat?q=%22Michael+Carrell%22+%22XPO+LOGISTICS%22+email&fr2=piv-web",
-    "confidence": 78.0,
-    "verified_at": "2026-11-06T22:16:13.228425+00:00",
-    "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:16:13.228475+00:00"
-  },
-  {
-    "entity_key": "414642272",
-    "siren": "414642272",
-    "company_name": "XPO LOGISTICS CENTRE FRANCE, XPO DISTRIBUTION EUROPE FRANCE",
-    "full_name": "Andrey Popov",
+    "full_name": "Jerome Marey",
     "job_title": "Directeur achats IT",
     "role_class": "BUYER",
     "relevance_score": 85.0,
-    "linkedin_url": "https://ru.linkedin.com/in/andrey-popov-00825984",
+    "linkedin_url": "https://fr.linkedin.com/in/jerome-marey-88335988",
     "professional_email": null,
     "professional_phone": "9757-73649355183",
     "source_name": "scout.yahoo.com",
-    "source_url": "https://scout.yahoo.com/chat?q=%22Andrey+Popov%22+%22XPO+LOGISTICS%22+email&fr2=piv-web",
+    "source_url": "https://scout.yahoo.com/chat?q=%22Jerome+Marey%22+%22XPO+LOGISTICS%22+email&fr2=piv-web",
     "confidence": 78.0,
-    "verified_at": "2026-11-06T22:15:55.993782+00:00",
+    "verified_at": "2026-11-07T02:57:46.101603+00:00",
     "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:15:55.993831+00:00"
+    "updated_at": "2026-11-07T02:57:46.101659+00:00"
   },
   {
     "entity_key": "404969552",
     "siren": "404969552",
     "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
-    "full_name": "Tifrea Mihail-Gabriel",
+    "full_name": "Anne Parani",
     "job_title": "Strategic Buyer IT",
     "role_class": "BUYER",
     "relevance_score": 85.0,
-    "linkedin_url": "https://fr.linkedin.com/in/tifrea-mihail-gabriel-a1364410",
+    "linkedin_url": "https://ca.linkedin.com/in/anne-parani-a41400159",
     "professional_email": null,
     "professional_phone": "9757-73649355183",
     "source_name": "scout.yahoo.com",
-    "source_url": "https://scout.yahoo.com/chat?q=%22Tifrea+Mihail-Gabriel%22+%22MARTEK+POWER+F%22+email&fr2=piv-web",
+    "source_url": "https://scout.yahoo.com/chat?q=%22Anne+Parani%22+%22MARTEK+POWER+F%22+email&fr2=piv-web",
     "confidence": 78.0,
-    "verified_at": "2026-11-06T22:15:43.804985+00:00",
+    "verified_at": "2026-11-07T02:57:34.274272+00:00",
     "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:15:43.805032+00:00"
-  },
-  {
-    "entity_key": "404969552",
-    "siren": "404969552",
-    "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
-    "full_name": "Cindy Martinez",
-    "job_title": "Category Manager IT",
-    "role_class": "BUYER",
-    "relevance_score": 85.0,
-    "linkedin_url": "https://www.linkedin.com/in/cindy-martinez-b4434313",
-    "professional_email": null,
-    "professional_phone": "9757-73649355183",
-    "source_name": "scout.yahoo.com",
-    "source_url": "https://scout.yahoo.com/chat?q=%22Cindy+Martinez%22+%22MARTEK+POWER+F%22+email&fr2=piv-web",
-    "confidence": 78.0,
-    "verified_at": "2026-11-06T22:15:32.773466+00:00",
-    "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:15:32.773513+00:00"
+    "updated_at": "2026-11-07T02:57:34.274330+00:00"
   },
   {
     "entity_key": "404969552",
     "siren": "404969552",
     "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
     "full_name": "Rene San Pedro",
-    "job_title": "IT Procurement Manager",
+    "job_title": "Category Manager IT",
     "role_class": "BUYER",
     "relevance_score": 85.0,
     "linkedin_url": "https://www.linkedin.com/in/rene-san-pedro-65678365",
     "professional_email": null,
     "professional_phone": "9757-73649355183",
     "source_name": "scout.yahoo.com",
-    "source_url": "https://scout.yahoo.com/chat?q=%22Rene+San+Pedro%22+%22MARTEK+POWER+F%22+email&fr2=piv-web",
+    "source_url": "https://scout.yahoo.com/chat?q=%22Rene+San+Pedro%22+%22MARTEK+POWER+F%22+contact&fr2=piv-web",
     "confidence": 78.0,
-    "verified_at": "2026-11-06T22:15:20.518922+00:00",
+    "verified_at": "2026-11-07T02:57:22.053330+00:00",
     "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:15:20.518978+00:00"
+    "updated_at": "2026-11-07T02:57:22.053393+00:00"
   },
   {
     "entity_key": "404969552",
@@ -175,8 +139,8 @@
     "source_name": "scout.yahoo.com",
     "source_url": "https://scout.yahoo.com/chat?q=%22Michele+Taylor%22+%22MARTEK+POWER+F%22+email&fr2=piv-web",
     "confidence": 78.0,
-    "verified_at": "2026-11-06T22:15:06.644641+00:00",
+    "verified_at": "2026-11-07T02:57:02.556637+00:00",
     "status": "CONTACT_WITH_COORDINATES",
-    "updated_at": "2026-11-06T22:15:06.644692+00:00"
+    "updated_at": "2026-11-07T02:57:02.556699+00:00"
   }
 ]
