@@ -9,11 +9,11 @@
   },
   {
     "business_theme": "Besoin infrastructure à qualifier",
-    "count": 83
+    "count": 85
   },
   {
     "business_theme": "GPU / IA / HPC",
-    "count": 180
+    "count": 179
   },
   {
     "business_theme": "Migration / rapatriement cloud",
@@ -45,7 +45,7 @@
   },
   {
     "business_theme": "Support / maintenance / services managés",
-    "count": 50
+    "count": 49
   },
   {
     "business_theme": "Virtualisation / cloud privé / HCI",
