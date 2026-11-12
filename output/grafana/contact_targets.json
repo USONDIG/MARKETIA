@@ -10,7 +10,7 @@
     "relevance_score": 85,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484859+00:00"
+    "generated_at": "2026-11-12T22:55:47.536235+00:00"
   },
   {
     "entity_key": "404969552",
@@ -23,7 +23,7 @@
     "relevance_score": 85,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484874+00:00"
+    "generated_at": "2026-11-12T22:55:47.536256+00:00"
   },
   {
     "entity_key": "404969552",
@@ -36,7 +36,7 @@
     "relevance_score": 85,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484878+00:00"
+    "generated_at": "2026-11-12T22:55:47.536259+00:00"
   },
   {
     "entity_key": "404969552",
@@ -49,7 +49,7 @@
     "relevance_score": 85,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484882+00:00"
+    "generated_at": "2026-11-12T22:55:47.536262+00:00"
   },
   {
     "entity_key": "404969552",
@@ -62,7 +62,7 @@
     "relevance_score": 90,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484885+00:00"
+    "generated_at": "2026-11-12T22:55:47.536265+00:00"
   },
   {
     "entity_key": "404969552",
@@ -75,7 +75,7 @@
     "relevance_score": 90,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484889+00:00"
+    "generated_at": "2026-11-12T22:55:47.536268+00:00"
   },
   {
     "entity_key": "404969552",
@@ -88,7 +88,7 @@
     "relevance_score": 90,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484893+00:00"
+    "generated_at": "2026-11-12T22:55:47.536270+00:00"
   },
   {
     "entity_key": "404969552",
@@ -101,7 +101,46 @@
     "relevance_score": 90,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484896+00:00"
+    "generated_at": "2026-11-12T22:55:47.536272+00:00"
+  },
+  {
+    "entity_key": "404969552",
+    "siren": "404969552",
+    "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
+    "opportunity_score": 17.3,
+    "priority": "LOW",
+    "role_class": "TECHNICAL_INFLUENCER",
+    "target_title": "Storage Manager",
+    "relevance_score": 95,
+    "markets": "Reseau Datacenter, Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536274+00:00"
+  },
+  {
+    "entity_key": "404969552",
+    "siren": "404969552",
+    "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
+    "opportunity_score": 17.3,
+    "priority": "LOW",
+    "role_class": "TECHNICAL_INFLUENCER",
+    "target_title": "Backup Manager",
+    "relevance_score": 95,
+    "markets": "Reseau Datacenter, Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536277+00:00"
+  },
+  {
+    "entity_key": "404969552",
+    "siren": "404969552",
+    "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
+    "opportunity_score": 17.3,
+    "priority": "LOW",
+    "role_class": "TECHNICAL_INFLUENCER",
+    "target_title": "Infrastructure Manager",
+    "relevance_score": 95,
+    "markets": "Reseau Datacenter, Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536279+00:00"
   },
   {
     "entity_key": "404969552",
@@ -114,7 +153,7 @@
     "relevance_score": 95,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484899+00:00"
+    "generated_at": "2026-11-12T22:55:47.536281+00:00"
   },
   {
     "entity_key": "404969552",
@@ -127,7 +166,7 @@
     "relevance_score": 95,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484902+00:00"
+    "generated_at": "2026-11-12T22:55:47.536283+00:00"
   },
   {
     "entity_key": "404969552",
@@ -140,46 +179,7 @@
     "relevance_score": 95,
     "markets": "Reseau Datacenter, Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484905+00:00"
-  },
-  {
-    "entity_key": "404969552",
-    "siren": "404969552",
-    "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
-    "opportunity_score": 17.3,
-    "priority": "LOW",
-    "role_class": "TECHNICAL_INFLUENCER",
-    "target_title": "Storage Manager",
-    "relevance_score": 95,
-    "markets": "Reseau Datacenter, Stockage / Backup",
-    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484908+00:00"
-  },
-  {
-    "entity_key": "404969552",
-    "siren": "404969552",
-    "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
-    "opportunity_score": 17.3,
-    "priority": "LOW",
-    "role_class": "TECHNICAL_INFLUENCER",
-    "target_title": "Backup Manager",
-    "relevance_score": 95,
-    "markets": "Reseau Datacenter, Stockage / Backup",
-    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484912+00:00"
-  },
-  {
-    "entity_key": "404969552",
-    "siren": "404969552",
-    "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
-    "opportunity_score": 17.3,
-    "priority": "LOW",
-    "role_class": "TECHNICAL_INFLUENCER",
-    "target_title": "Infrastructure Manager",
-    "relevance_score": 95,
-    "markets": "Reseau Datacenter, Stockage / Backup",
-    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484915+00:00"
+    "generated_at": "2026-11-12T22:55:47.536286+00:00"
   },
   {
     "entity_key": "414642272",
@@ -192,7 +192,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484922+00:00"
+    "generated_at": "2026-11-12T22:55:47.536291+00:00"
   },
   {
     "entity_key": "414642272",
@@ -205,7 +205,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484925+00:00"
+    "generated_at": "2026-11-12T22:55:47.536293+00:00"
   },
   {
     "entity_key": "414642272",
@@ -218,7 +218,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484928+00:00"
+    "generated_at": "2026-11-12T22:55:47.536295+00:00"
   },
   {
     "entity_key": "414642272",
@@ -231,7 +231,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484931+00:00"
+    "generated_at": "2026-11-12T22:55:47.536297+00:00"
   },
   {
     "entity_key": "414642272",
@@ -244,7 +244,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484934+00:00"
+    "generated_at": "2026-11-12T22:55:47.536299+00:00"
   },
   {
     "entity_key": "414642272",
@@ -257,7 +257,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484937+00:00"
+    "generated_at": "2026-11-12T22:55:47.536301+00:00"
   },
   {
     "entity_key": "414642272",
@@ -270,7 +270,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484940+00:00"
+    "generated_at": "2026-11-12T22:55:47.536302+00:00"
   },
   {
     "entity_key": "414642272",
@@ -283,7 +283,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484943+00:00"
+    "generated_at": "2026-11-12T22:55:47.536304+00:00"
   },
   {
     "entity_key": "414642272",
@@ -296,7 +296,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484946+00:00"
+    "generated_at": "2026-11-12T22:55:47.536306+00:00"
   },
   {
     "entity_key": "414642272",
@@ -309,7 +309,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484949+00:00"
+    "generated_at": "2026-11-12T22:55:47.536308+00:00"
   },
   {
     "entity_key": "414642272",
@@ -322,7 +322,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484952+00:00"
+    "generated_at": "2026-11-12T22:55:47.536310+00:00"
   },
   {
     "entity_key": "325090728",
@@ -335,7 +335,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484958+00:00"
+    "generated_at": "2026-11-12T22:55:47.536314+00:00"
   },
   {
     "entity_key": "325090728",
@@ -348,7 +348,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484961+00:00"
+    "generated_at": "2026-11-12T22:55:47.536316+00:00"
   },
   {
     "entity_key": "325090728",
@@ -361,7 +361,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484964+00:00"
+    "generated_at": "2026-11-12T22:55:47.536318+00:00"
   },
   {
     "entity_key": "325090728",
@@ -374,7 +374,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484966+00:00"
+    "generated_at": "2026-11-12T22:55:47.536320+00:00"
   },
   {
     "entity_key": "325090728",
@@ -387,7 +387,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484969+00:00"
+    "generated_at": "2026-11-12T22:55:47.536322+00:00"
   },
   {
     "entity_key": "325090728",
@@ -400,7 +400,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484972+00:00"
+    "generated_at": "2026-11-12T22:55:47.536324+00:00"
   },
   {
     "entity_key": "325090728",
@@ -413,7 +413,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484975+00:00"
+    "generated_at": "2026-11-12T22:55:47.536326+00:00"
   },
   {
     "entity_key": "325090728",
@@ -426,7 +426,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484978+00:00"
+    "generated_at": "2026-11-12T22:55:47.536328+00:00"
   },
   {
     "entity_key": "325090728",
@@ -439,7 +439,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484981+00:00"
+    "generated_at": "2026-11-12T22:55:47.536330+00:00"
   },
   {
     "entity_key": "325090728",
@@ -452,7 +452,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484984+00:00"
+    "generated_at": "2026-11-12T22:55:47.536332+00:00"
   },
   {
     "entity_key": "325090728",
@@ -465,7 +465,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484987+00:00"
+    "generated_at": "2026-11-12T22:55:47.536334+00:00"
   },
   {
     "entity_key": "534980537",
@@ -478,7 +478,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484991+00:00"
+    "generated_at": "2026-11-12T22:55:47.536337+00:00"
   },
   {
     "entity_key": "534980537",
@@ -491,7 +491,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484994+00:00"
+    "generated_at": "2026-11-12T22:55:47.536339+00:00"
   },
   {
     "entity_key": "534980537",
@@ -504,7 +504,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.484997+00:00"
+    "generated_at": "2026-11-12T22:55:47.536341+00:00"
   },
   {
     "entity_key": "534980537",
@@ -517,7 +517,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485000+00:00"
+    "generated_at": "2026-11-12T22:55:47.536343+00:00"
   },
   {
     "entity_key": "534980537",
@@ -530,7 +530,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485003+00:00"
+    "generated_at": "2026-11-12T22:55:47.536345+00:00"
   },
   {
     "entity_key": "534980537",
@@ -543,7 +543,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485006+00:00"
+    "generated_at": "2026-11-12T22:55:47.536347+00:00"
   },
   {
     "entity_key": "534980537",
@@ -556,7 +556,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485009+00:00"
+    "generated_at": "2026-11-12T22:55:47.536349+00:00"
   },
   {
     "entity_key": "534980537",
@@ -569,7 +569,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485012+00:00"
+    "generated_at": "2026-11-12T22:55:47.536351+00:00"
   },
   {
     "entity_key": "534980537",
@@ -582,7 +582,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485014+00:00"
+    "generated_at": "2026-11-12T22:55:47.536353+00:00"
   },
   {
     "entity_key": "534980537",
@@ -595,7 +595,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485017+00:00"
+    "generated_at": "2026-11-12T22:55:47.536355+00:00"
   },
   {
     "entity_key": "534980537",
@@ -608,7 +608,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485020+00:00"
+    "generated_at": "2026-11-12T22:55:47.536357+00:00"
   },
   {
     "entity_key": "440410884",
@@ -621,7 +621,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485025+00:00"
+    "generated_at": "2026-11-12T22:55:47.536384+00:00"
   },
   {
     "entity_key": "440410884",
@@ -634,7 +634,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485028+00:00"
+    "generated_at": "2026-11-12T22:55:47.536386+00:00"
   },
   {
     "entity_key": "440410884",
@@ -647,7 +647,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485030+00:00"
+    "generated_at": "2026-11-12T22:55:47.536388+00:00"
   },
   {
     "entity_key": "440410884",
@@ -660,7 +660,7 @@
     "relevance_score": 85,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485033+00:00"
+    "generated_at": "2026-11-12T22:55:47.536390+00:00"
   },
   {
     "entity_key": "440410884",
@@ -673,7 +673,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485036+00:00"
+    "generated_at": "2026-11-12T22:55:47.536392+00:00"
   },
   {
     "entity_key": "440410884",
@@ -686,7 +686,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485040+00:00"
+    "generated_at": "2026-11-12T22:55:47.536394+00:00"
   },
   {
     "entity_key": "440410884",
@@ -699,7 +699,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485043+00:00"
+    "generated_at": "2026-11-12T22:55:47.536396+00:00"
   },
   {
     "entity_key": "440410884",
@@ -712,7 +712,7 @@
     "relevance_score": 90,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485046+00:00"
+    "generated_at": "2026-11-12T22:55:47.536398+00:00"
   },
   {
     "entity_key": "440410884",
@@ -725,7 +725,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485049+00:00"
+    "generated_at": "2026-11-12T22:55:47.536400+00:00"
   },
   {
     "entity_key": "440410884",
@@ -738,7 +738,7 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485051+00:00"
+    "generated_at": "2026-11-12T22:55:47.536402+00:00"
   },
   {
     "entity_key": "440410884",
@@ -751,7 +751,293 @@
     "relevance_score": 95,
     "markets": "Stockage / Backup",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485054+00:00"
+    "generated_at": "2026-11-12T22:55:47.536404+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "BUYER",
+    "target_title": "Directeur achats IT",
+    "relevance_score": 85,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536407+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "BUYER",
+    "target_title": "IT Procurement Manager",
+    "relevance_score": 85,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536409+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "BUYER",
+    "target_title": "Category Manager IT",
+    "relevance_score": 85,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536411+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "BUYER",
+    "target_title": "Strategic Buyer IT",
+    "relevance_score": 85,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536413+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "DECISION_MAKER",
+    "target_title": "DSI / CIO",
+    "relevance_score": 90,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536415+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "DECISION_MAKER",
+    "target_title": "CTO",
+    "relevance_score": 90,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536417+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "DECISION_MAKER",
+    "target_title": "Head of Infrastructure",
+    "relevance_score": 90,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536419+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "DECISION_MAKER",
+    "target_title": "IT Director",
+    "relevance_score": 90,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536421+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "TECHNICAL_INFLUENCER",
+    "target_title": "Storage Manager",
+    "relevance_score": 95,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536423+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "TECHNICAL_INFLUENCER",
+    "target_title": "Backup Manager",
+    "relevance_score": 95,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536425+00:00"
+  },
+  {
+    "entity_key": "515369783",
+    "siren": "515369783",
+    "company_name": "LA SAS TESTEDIS",
+    "opportunity_score": 7.4,
+    "priority": "LOW",
+    "role_class": "TECHNICAL_INFLUENCER",
+    "target_title": "Infrastructure Manager",
+    "relevance_score": 95,
+    "markets": "Stockage / Backup",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536427+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "BUYER",
+    "target_title": "Directeur achats IT",
+    "relevance_score": 85,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536430+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "BUYER",
+    "target_title": "IT Procurement Manager",
+    "relevance_score": 85,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536432+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "BUYER",
+    "target_title": "Category Manager IT",
+    "relevance_score": 85,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536433+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "BUYER",
+    "target_title": "Strategic Buyer IT",
+    "relevance_score": 85,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536435+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "DECISION_MAKER",
+    "target_title": "DSI / CIO",
+    "relevance_score": 90,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536437+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "DECISION_MAKER",
+    "target_title": "CTO",
+    "relevance_score": 90,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536439+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "DECISION_MAKER",
+    "target_title": "Head of Infrastructure",
+    "relevance_score": 90,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536441+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "DECISION_MAKER",
+    "target_title": "IT Director",
+    "relevance_score": 90,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536443+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "TECHNICAL_INFLUENCER",
+    "target_title": "Network Manager",
+    "relevance_score": 95,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536445+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "TECHNICAL_INFLUENCER",
+    "target_title": "Head of Network",
+    "relevance_score": 95,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536447+00:00"
+  },
+  {
+    "entity_key": "517401212",
+    "siren": "517401212",
+    "company_name": "STRADA ACTION",
+    "opportunity_score": 5.5,
+    "priority": "LOW",
+    "role_class": "TECHNICAL_INFLUENCER",
+    "target_title": "Datacenter Network Architect",
+    "relevance_score": 95,
+    "markets": "Reseau Datacenter",
+    "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
+    "generated_at": "2026-11-12T22:55:47.536449+00:00"
   },
   {
     "entity_key": "510782535",
@@ -764,7 +1050,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485059+00:00"
+    "generated_at": "2026-11-12T22:55:47.536453+00:00"
   },
   {
     "entity_key": "510782535",
@@ -777,7 +1063,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485062+00:00"
+    "generated_at": "2026-11-12T22:55:47.536455+00:00"
   },
   {
     "entity_key": "510782535",
@@ -790,7 +1076,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485065+00:00"
+    "generated_at": "2026-11-12T22:55:47.536457+00:00"
   },
   {
     "entity_key": "510782535",
@@ -803,7 +1089,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485068+00:00"
+    "generated_at": "2026-11-12T22:55:47.536459+00:00"
   },
   {
     "entity_key": "510782535",
@@ -816,7 +1102,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485070+00:00"
+    "generated_at": "2026-11-12T22:55:47.536461+00:00"
   },
   {
     "entity_key": "510782535",
@@ -829,7 +1115,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485073+00:00"
+    "generated_at": "2026-11-12T22:55:47.536463+00:00"
   },
   {
     "entity_key": "510782535",
@@ -842,7 +1128,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485076+00:00"
+    "generated_at": "2026-11-12T22:55:47.536465+00:00"
   },
   {
     "entity_key": "510782535",
@@ -855,7 +1141,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485079+00:00"
+    "generated_at": "2026-11-12T22:55:47.536467+00:00"
   },
   {
     "entity_key": "325486454",
@@ -868,7 +1154,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485084+00:00"
+    "generated_at": "2026-11-12T22:55:47.536470+00:00"
   },
   {
     "entity_key": "325486454",
@@ -881,7 +1167,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485086+00:00"
+    "generated_at": "2026-11-12T22:55:47.536471+00:00"
   },
   {
     "entity_key": "325486454",
@@ -894,7 +1180,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485089+00:00"
+    "generated_at": "2026-11-12T22:55:47.536473+00:00"
   },
   {
     "entity_key": "325486454",
@@ -907,7 +1193,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485092+00:00"
+    "generated_at": "2026-11-12T22:55:47.536475+00:00"
   },
   {
     "entity_key": "325486454",
@@ -920,7 +1206,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485095+00:00"
+    "generated_at": "2026-11-12T22:55:47.536477+00:00"
   },
   {
     "entity_key": "325486454",
@@ -933,7 +1219,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485098+00:00"
+    "generated_at": "2026-11-12T22:55:47.536480+00:00"
   },
   {
     "entity_key": "325486454",
@@ -946,7 +1232,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485101+00:00"
+    "generated_at": "2026-11-12T22:55:47.536482+00:00"
   },
   {
     "entity_key": "325486454",
@@ -959,7 +1245,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485103+00:00"
+    "generated_at": "2026-11-12T22:55:47.536484+00:00"
   },
   {
     "entity_key": "272400011",
@@ -972,7 +1258,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485108+00:00"
+    "generated_at": "2026-11-12T22:55:47.536487+00:00"
   },
   {
     "entity_key": "272400011",
@@ -985,7 +1271,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485110+00:00"
+    "generated_at": "2026-11-12T22:55:47.536489+00:00"
   },
   {
     "entity_key": "272400011",
@@ -998,7 +1284,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485113+00:00"
+    "generated_at": "2026-11-12T22:55:47.536490+00:00"
   },
   {
     "entity_key": "272400011",
@@ -1011,7 +1297,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485117+00:00"
+    "generated_at": "2026-11-12T22:55:47.536492+00:00"
   },
   {
     "entity_key": "272400011",
@@ -1024,7 +1310,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485120+00:00"
+    "generated_at": "2026-11-12T22:55:47.536494+00:00"
   },
   {
     "entity_key": "272400011",
@@ -1037,7 +1323,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485122+00:00"
+    "generated_at": "2026-11-12T22:55:47.536496+00:00"
   },
   {
     "entity_key": "272400011",
@@ -1050,7 +1336,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485125+00:00"
+    "generated_at": "2026-11-12T22:55:47.536498+00:00"
   },
   {
     "entity_key": "272400011",
@@ -1063,7 +1349,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485128+00:00"
+    "generated_at": "2026-11-12T22:55:47.536500+00:00"
   },
   {
     "entity_key": "394026934",
@@ -1076,7 +1362,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485132+00:00"
+    "generated_at": "2026-11-12T22:55:47.536503+00:00"
   },
   {
     "entity_key": "394026934",
@@ -1089,7 +1375,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485135+00:00"
+    "generated_at": "2026-11-12T22:55:47.536505+00:00"
   },
   {
     "entity_key": "394026934",
@@ -1102,7 +1388,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485138+00:00"
+    "generated_at": "2026-11-12T22:55:47.536507+00:00"
   },
   {
     "entity_key": "394026934",
@@ -1115,7 +1401,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485141+00:00"
+    "generated_at": "2026-11-12T22:55:47.536509+00:00"
   },
   {
     "entity_key": "394026934",
@@ -1128,7 +1414,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485144+00:00"
+    "generated_at": "2026-11-12T22:55:47.536511+00:00"
   },
   {
     "entity_key": "394026934",
@@ -1141,7 +1427,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485147+00:00"
+    "generated_at": "2026-11-12T22:55:47.536513+00:00"
   },
   {
     "entity_key": "394026934",
@@ -1154,7 +1440,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485150+00:00"
+    "generated_at": "2026-11-12T22:55:47.536515+00:00"
   },
   {
     "entity_key": "394026934",
@@ -1167,7 +1453,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485153+00:00"
+    "generated_at": "2026-11-12T22:55:47.536517+00:00"
   },
   {
     "entity_key": "957517931",
@@ -1180,7 +1466,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485157+00:00"
+    "generated_at": "2026-11-12T22:55:47.536520+00:00"
   },
   {
     "entity_key": "957517931",
@@ -1193,7 +1479,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485160+00:00"
+    "generated_at": "2026-11-12T22:55:47.536522+00:00"
   },
   {
     "entity_key": "957517931",
@@ -1206,7 +1492,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485163+00:00"
+    "generated_at": "2026-11-12T22:55:47.536524+00:00"
   },
   {
     "entity_key": "957517931",
@@ -1219,7 +1505,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485166+00:00"
+    "generated_at": "2026-11-12T22:55:47.536526+00:00"
   },
   {
     "entity_key": "957517931",
@@ -1232,7 +1518,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485169+00:00"
+    "generated_at": "2026-11-12T22:55:47.536528+00:00"
   },
   {
     "entity_key": "957517931",
@@ -1245,7 +1531,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485172+00:00"
+    "generated_at": "2026-11-12T22:55:47.536530+00:00"
   },
   {
     "entity_key": "957517931",
@@ -1258,7 +1544,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485174+00:00"
+    "generated_at": "2026-11-12T22:55:47.536532+00:00"
   },
   {
     "entity_key": "957517931",
@@ -1271,7 +1557,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485177+00:00"
+    "generated_at": "2026-11-12T22:55:47.536534+00:00"
   },
   {
     "entity_key": "834104648",
@@ -1284,7 +1570,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485182+00:00"
+    "generated_at": "2026-11-12T22:55:47.536537+00:00"
   },
   {
     "entity_key": "834104648",
@@ -1297,7 +1583,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485184+00:00"
+    "generated_at": "2026-11-12T22:55:47.536539+00:00"
   },
   {
     "entity_key": "834104648",
@@ -1310,7 +1596,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485187+00:00"
+    "generated_at": "2026-11-12T22:55:47.536541+00:00"
   },
   {
     "entity_key": "834104648",
@@ -1323,7 +1609,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485190+00:00"
+    "generated_at": "2026-11-12T22:55:47.536543+00:00"
   },
   {
     "entity_key": "834104648",
@@ -1336,7 +1622,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485193+00:00"
+    "generated_at": "2026-11-12T22:55:47.536545+00:00"
   },
   {
     "entity_key": "834104648",
@@ -1349,7 +1635,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485196+00:00"
+    "generated_at": "2026-11-12T22:55:47.536547+00:00"
   },
   {
     "entity_key": "834104648",
@@ -1362,7 +1648,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485199+00:00"
+    "generated_at": "2026-11-12T22:55:47.536549+00:00"
   },
   {
     "entity_key": "834104648",
@@ -1375,7 +1661,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485202+00:00"
+    "generated_at": "2026-11-12T22:55:47.536550+00:00"
   },
   {
     "entity_key": "813025103",
@@ -1388,7 +1674,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485206+00:00"
+    "generated_at": "2026-11-12T22:55:47.536553+00:00"
   },
   {
     "entity_key": "813025103",
@@ -1401,7 +1687,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485209+00:00"
+    "generated_at": "2026-11-12T22:55:47.536556+00:00"
   },
   {
     "entity_key": "813025103",
@@ -1414,7 +1700,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485212+00:00"
+    "generated_at": "2026-11-12T22:55:47.536558+00:00"
   },
   {
     "entity_key": "813025103",
@@ -1427,7 +1713,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485215+00:00"
+    "generated_at": "2026-11-12T22:55:47.536560+00:00"
   },
   {
     "entity_key": "813025103",
@@ -1440,7 +1726,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485218+00:00"
+    "generated_at": "2026-11-12T22:55:47.536562+00:00"
   },
   {
     "entity_key": "813025103",
@@ -1453,7 +1739,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485221+00:00"
+    "generated_at": "2026-11-12T22:55:47.536563+00:00"
   },
   {
     "entity_key": "813025103",
@@ -1466,7 +1752,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485224+00:00"
+    "generated_at": "2026-11-12T22:55:47.536565+00:00"
   },
   {
     "entity_key": "813025103",
@@ -1479,7 +1765,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485227+00:00"
+    "generated_at": "2026-11-12T22:55:47.536568+00:00"
   },
   {
     "entity_key": "490073723",
@@ -1492,7 +1778,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485231+00:00"
+    "generated_at": "2026-11-12T22:55:47.536570+00:00"
   },
   {
     "entity_key": "490073723",
@@ -1505,7 +1791,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485234+00:00"
+    "generated_at": "2026-11-12T22:55:47.536572+00:00"
   },
   {
     "entity_key": "490073723",
@@ -1518,7 +1804,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485236+00:00"
+    "generated_at": "2026-11-12T22:55:47.536574+00:00"
   },
   {
     "entity_key": "490073723",
@@ -1531,7 +1817,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485239+00:00"
+    "generated_at": "2026-11-12T22:55:47.536576+00:00"
   },
   {
     "entity_key": "490073723",
@@ -1544,7 +1830,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485242+00:00"
+    "generated_at": "2026-11-12T22:55:47.536578+00:00"
   },
   {
     "entity_key": "490073723",
@@ -1557,7 +1843,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485245+00:00"
+    "generated_at": "2026-11-12T22:55:47.536580+00:00"
   },
   {
     "entity_key": "490073723",
@@ -1570,7 +1856,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485248+00:00"
+    "generated_at": "2026-11-12T22:55:47.536582+00:00"
   },
   {
     "entity_key": "490073723",
@@ -1583,7 +1869,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485250+00:00"
+    "generated_at": "2026-11-12T22:55:47.536584+00:00"
   },
   {
     "entity_key": "510605454",
@@ -1596,7 +1882,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485255+00:00"
+    "generated_at": "2026-11-12T22:55:47.536587+00:00"
   },
   {
     "entity_key": "510605454",
@@ -1609,7 +1895,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485257+00:00"
+    "generated_at": "2026-11-12T22:55:47.536588+00:00"
   },
   {
     "entity_key": "510605454",
@@ -1622,7 +1908,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485260+00:00"
+    "generated_at": "2026-11-12T22:55:47.536590+00:00"
   },
   {
     "entity_key": "510605454",
@@ -1635,7 +1921,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485263+00:00"
+    "generated_at": "2026-11-12T22:55:47.536592+00:00"
   },
   {
     "entity_key": "510605454",
@@ -1648,7 +1934,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485266+00:00"
+    "generated_at": "2026-11-12T22:55:47.536594+00:00"
   },
   {
     "entity_key": "510605454",
@@ -1661,7 +1947,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485269+00:00"
+    "generated_at": "2026-11-12T22:55:47.536597+00:00"
   },
   {
     "entity_key": "510605454",
@@ -1674,7 +1960,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485271+00:00"
+    "generated_at": "2026-11-12T22:55:47.536598+00:00"
   },
   {
     "entity_key": "510605454",
@@ -1687,7 +1973,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485274+00:00"
+    "generated_at": "2026-11-12T22:55:47.536600+00:00"
   },
   {
     "entity_key": "315871640",
@@ -1700,7 +1986,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485279+00:00"
+    "generated_at": "2026-11-12T22:55:47.536603+00:00"
   },
   {
     "entity_key": "315871640",
@@ -1713,7 +1999,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485281+00:00"
+    "generated_at": "2026-11-12T22:55:47.536605+00:00"
   },
   {
     "entity_key": "315871640",
@@ -1726,7 +2012,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485284+00:00"
+    "generated_at": "2026-11-12T22:55:47.536607+00:00"
   },
   {
     "entity_key": "315871640",
@@ -1739,7 +2025,7 @@
     "relevance_score": 85,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485287+00:00"
+    "generated_at": "2026-11-12T22:55:47.536609+00:00"
   },
   {
     "entity_key": "315871640",
@@ -1752,7 +2038,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485290+00:00"
+    "generated_at": "2026-11-12T22:55:47.536611+00:00"
   },
   {
     "entity_key": "315871640",
@@ -1765,7 +2051,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485293+00:00"
+    "generated_at": "2026-11-12T22:55:47.536613+00:00"
   },
   {
     "entity_key": "315871640",
@@ -1778,7 +2064,7 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485295+00:00"
+    "generated_at": "2026-11-12T22:55:47.536615+00:00"
   },
   {
     "entity_key": "315871640",
@@ -1791,6 +2077,6 @@
     "relevance_score": 90,
     "markets": "",
     "preferred_sources": "LinkedIn, réseaux professionnels, site corporate, conférences/speakers",
-    "generated_at": "2026-11-12T14:00:39.485298+00:00"
+    "generated_at": "2026-11-12T22:55:47.536617+00:00"
   }
 ]
