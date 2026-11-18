@@ -1,12 +1,12 @@
 [
   {
-    "generated_at": "2026-11-18T00:02:22Z",
+    "generated_at": "2026-11-18T14:15:13Z",
     "target_rule": "Industry + commerce + services + public administration, FR, 50+ salaries",
     "discovery_entities": 1000,
     "discovery_high": 0,
-    "discovery_medium": 249,
-    "identified_or_better": 25,
-    "qualified_from_discovery": 3,
+    "discovery_medium": 253,
+    "identified_or_better": 1,
+    "qualified_from_discovery": 1,
     "opportunities": 17,
     "critical": 0,
     "hot": 0,
