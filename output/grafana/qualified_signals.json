@@ -1,5 +1,65 @@
 [
   {
+    "company_name": "STRADA ACTION",
+    "siren": "517401212",
+    "source": "BODACC",
+    "country": "FR",
+    "event_date": "2009-10-27",
+    "signal_type": "market",
+    "label": "Reseau Datacenter",
+    "strength": 0.67,
+    "weight": 18.0,
+    "matched_terms": "[\"reseau\"]",
+    "title": "Créations",
+    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090207744",
+    "detected_at": "2026-11-25T01:27:57.427351+00:00"
+  },
+  {
+    "company_name": "STRADA ACTION",
+    "siren": "517401212",
+    "source": "BODACC",
+    "country": "FR",
+    "event_date": "2009-10-27",
+    "signal_type": "timing",
+    "label": "Evenement entreprise recent",
+    "strength": 0.05,
+    "weight": 12.0,
+    "matched_terms": "[\"BODACC\"]",
+    "title": "Créations",
+    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090207744",
+    "detected_at": "2026-11-25T01:27:57.427351+00:00"
+  },
+  {
+    "company_name": "LA SAS TESTEDIS",
+    "siren": "515369783",
+    "source": "BODACC",
+    "country": "FR",
+    "event_date": "2009-10-27",
+    "signal_type": "market",
+    "label": "Stockage / Backup",
+    "strength": 0.67,
+    "weight": 24.0,
+    "matched_terms": "[\"san\"]",
+    "title": "Créations",
+    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090207298",
+    "detected_at": "2026-11-25T01:27:57.257223+00:00"
+  },
+  {
+    "company_name": "LA SAS TESTEDIS",
+    "siren": "515369783",
+    "source": "BODACC",
+    "country": "FR",
+    "event_date": "2009-10-27",
+    "signal_type": "timing",
+    "label": "Evenement entreprise recent",
+    "strength": 0.05,
+    "weight": 12.0,
+    "matched_terms": "[\"BODACC\"]",
+    "title": "Créations",
+    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090207298",
+    "detected_at": "2026-11-25T01:27:57.257223+00:00"
+  },
+  {
     "company_name": "GROUPE SEB RETAILING, GROUPE SEB FRANCE",
     "siren": "440410884",
     "source": "BODACC",
@@ -12,7 +72,7 @@
     "matched_terms": "[\"stockage\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A200900551148",
-    "detected_at": "2026-11-24T15:56:12.477713+00:00"
+    "detected_at": "2026-11-25T01:27:55.818242+00:00"
   },
   {
     "company_name": "GROUPE SEB RETAILING, GROUPE SEB FRANCE",
@@ -27,7 +87,7 @@
     "matched_terms": "[\"BODACC\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A200900551148",
-    "detected_at": "2026-11-24T15:56:12.477713+00:00"
+    "detected_at": "2026-11-25T01:27:55.818242+00:00"
   },
   {
     "company_name": "IDEX ENERGIES, SOCIETE PARISIENNE D'EXPLOITATION DE CHAUFFAGE",
@@ -42,22 +102,7 @@
     "matched_terms": "[\"BODACC\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A200900521937",
-    "detected_at": "2026-11-24T15:56:11.910730+00:00"
-  },
-  {
-    "company_name": "L'AGENCE DE PROTECTION",
-    "siren": "510605454",
-    "source": "BODACC",
-    "country": "FR",
-    "event_date": "2009-03-15",
-    "signal_type": "timing",
-    "label": "Evenement entreprise recent",
-    "strength": 0.05,
-    "weight": 12.0,
-    "matched_terms": "[\"BODACC\"]",
-    "title": "Créations",
-    "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090052150",
-    "detected_at": "2026-11-24T15:56:11.813813+00:00"
+    "detected_at": "2026-11-25T01:27:54.815826+00:00"
   },
   {
     "company_name": "LES HEBIHENS",
@@ -72,7 +117,7 @@
     "matched_terms": "[\"logistique\"]",
     "title": "Créations",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090050992",
-    "detected_at": "2026-11-24T15:56:11.614054+00:00"
+    "detected_at": "2026-11-25T01:27:54.290851+00:00"
   },
   {
     "company_name": "LES HEBIHENS",
@@ -87,7 +132,7 @@
     "matched_terms": "[\"BODACC\"]",
     "title": "Créations",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090050992",
-    "detected_at": "2026-11-24T15:56:11.614054+00:00"
+    "detected_at": "2026-11-25T01:27:54.290851+00:00"
   },
   {
     "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
@@ -102,7 +147,7 @@
     "matched_terms": "[\"san\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090050978",
-    "detected_at": "2026-11-24T15:56:11.608274+00:00"
+    "detected_at": "2026-11-25T01:27:54.280713+00:00"
   },
   {
     "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
@@ -117,7 +162,7 @@
     "matched_terms": "[\"network\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090050978",
-    "detected_at": "2026-11-24T15:56:11.608274+00:00"
+    "detected_at": "2026-11-25T01:27:54.280713+00:00"
   },
   {
     "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
@@ -132,6 +177,6 @@
     "matched_terms": "[\"BODACC\"]",
     "title": "Ventes et cessions",
     "url": "https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:A20090050978",
-    "detected_at": "2026-11-24T15:56:11.608274+00:00"
+    "detected_at": "2026-11-25T01:27:54.280713+00:00"
   }
 ]
