@@ -1,10 +1,6 @@
 [
   {
-    "label": "Reseau Datacenter",
-    "count": 2
-  },
-  {
     "label": "Stockage / Backup",
-    "count": 3
+    "count": 2
   }
 ]
