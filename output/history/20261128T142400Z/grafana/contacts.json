@@ -1,0 +1,38 @@
+[
+  {
+    "entity_key": "534980537",
+    "siren": "534980537",
+    "company_name": "GPV FRANCE, OCCITANE ENVELOPPES",
+    "full_name": "Marisa Álvarez",
+    "job_title": "Category Manager IT",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://es.linkedin.com/in/marisa-%C3%A1lvarez-del-val-200a4471",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://es.linkedin.com/in/marisa-%C3%A1lvarez-del-val-200a4471",
+    "confidence": 74.0,
+    "verified_at": "2026-11-28T00:40:30.367721+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-11-28T00:40:30.367764+00:00"
+  },
+  {
+    "entity_key": "404969552",
+    "siren": "404969552",
+    "company_name": "MARTEK POWER F, EMERSON NETWORK POWER ENERGY SYSTEMS",
+    "full_name": "Jody Waugh",
+    "job_title": "IT Procurement Manager",
+    "role_class": "BUYER",
+    "relevance_score": 85.0,
+    "linkedin_url": "https://uk.linkedin.com/in/jody-waugh-b1062613",
+    "professional_email": null,
+    "professional_phone": null,
+    "source_name": "LinkedIn public search",
+    "source_url": "https://uk.linkedin.com/in/jody-waugh-b1062613",
+    "confidence": 74.0,
+    "verified_at": "2026-11-28T00:37:53.153046+00:00",
+    "status": "CONTACT_CONFIRMED",
+    "updated_at": "2026-11-28T00:37:53.153092+00:00"
+  }
+]
